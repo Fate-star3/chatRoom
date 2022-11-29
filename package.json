@@ -1,0 +1,75 @@
+{
+  "name": "client",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && cross-env ENV=local vite build",
+    "preview": "vite preview",
+    "build:dev": "tsc && cross-env ENV=dev vite build",
+    "build:pre": "tsc && cross-env ENV=pre vite build",
+    "build:prod": "tsc && cross-env ENV=prod vite build",
+    "lint": "eslint src --no-fix",
+    "lint:style": "stylelint \"src/**/*.scss\" --custom-syntax postcss-scss",
+    "lint:style:fix": "stylelint \"src/**/*.scss\" --fix --custom-syntax postcss-scss",
+    "prettier": "prettier --check",
+    "prepare": "husky install",
+    "pre-check": "lint-staged"
+  },
+  "dependencies": {
+    "lint-staged": "^13.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.2.0",
+    "@commitlint/config-conventional": "^17.2.0",
+    "@types/node": "^18.11.7",
+    "@types/react": "^18.0.22",
+    "@types/react-dom": "^18.0.7",
+    "@typescript-eslint/eslint-plugin": "^5.42.1",
+    "@vitejs/plugin-react": "^2.2.0",
+    "antd": "^4.23.6",
+    "cz-customizable": "^7.0.0",
+    "eslint": "^8.26.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-import-resolver-typescript": "^3.5.2",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.10",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.2",
+    "postcss": "^8.4.18",
+    "postcss-plugin-px2rem": "^0.8.1",
+    "postcss-scss": "^4.0.5",
+    "sass": "^1.55.0",
+    "stylelint": "^14.14.0",
+    "stylelint-config-css-modules": "^4.1.0",
+    "stylelint-config-recess-order": "^3.0.0",
+    "stylelint-config-standard": "^29.0.0",
+    "stylelint-less": "^1.0.6",
+    "stylelint-order": "^5.0.0",
+    "stylelint-scss": "^4.3.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.2.0",
+    "weixin-js-sdk": "^1.6.0"
+  },
+  "lint-staged": {
+    "src/**/*.{js?(x),ts?(x)}": [
+      "npm run lint"
+    ],
+    "src/**/*.scss": [
+      "npm run lint:style"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    }
+  }
+}

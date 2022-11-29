@@ -1,0 +1,17 @@
+# Browsers that we support
+
+# 注释是这样写的，以#号开头
+
+last 1 version
+
+# 最后的一个版本
+
+> 1%
+
+# 代表全球超过 1%使用的浏览器
+
+maintained node versions
+
+# 所有还被 node 基金会维护的 node 版本
+
+not dead

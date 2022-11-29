@@ -1,0 +1,40 @@
+.loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 60%);
+
+  .loading-anima {
+    width: 250px;
+    height: 250px;
+    margin: 400px auto 25px;
+    border: 6px solid rgba(#fa811b, 0.2);
+    border-left-color: #fa811b;
+    border-radius: 100%;
+    animation: circle infinite 1s linear;
+  }
+
+  .loading-img {
+    position: absolute;
+    top: 404px;
+    left: calc((100vw - 240px) / 2);
+    width: 240px;
+    height: 240px;
+    border-radius: 240px;
+  }
+}
+
+@keyframes circle {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
