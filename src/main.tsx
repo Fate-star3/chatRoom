@@ -4,9 +4,8 @@ import { BrowserRouter } from 'react-router-dom'
 
 import App from './App'
 
-// import '@/styles/reset.scss'
-import './styles/reset.scss'
-import Loading from '@/components/Loading'
+import '@/styles/reset.scss'
+import Loading from '@/components/Loading/'
 import Toast from '@/components/Toast'
 import { StoreProvider } from '@/store'
 

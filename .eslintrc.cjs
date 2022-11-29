@@ -105,7 +105,7 @@ module.exports = {
         jsx: 'never',
         js: 'never',
         json: 'never',
-        scss: 'never'
+        scss: 'off'
       }
     ],
     'import/no-unresolved': 'off',
