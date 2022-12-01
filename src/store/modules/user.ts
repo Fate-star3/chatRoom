@@ -1,21 +1,22 @@
-// import { useState } from 'react'
+import { useState } from 'react'
 
-// import { useMemoizedFn } from '@/hooks'
-// import { UserInfoType } from '@/services/types/user'
-// import { getCookie, setCookie } from '@/utils/storage'
+import { useMemoizedFn } from '@/hooks'
+import { IUserInfo } from '@/server/type/user'
 
-// export default () => {
-//   const [userInfo, _setUserInfo] = useState<UserInfoType>(JSON.parse(getCookie('dpuserinfo')))
-//   const [loginStatus, _setLoginStatus] = useState<boolean>(!!getCookie('dptoken'))
+export default () => {
+  const [userInfo, _setUserInfo] = useState<IUserInfo>({
+    status: false,
+    account: 1647749125,
+    password: 1314520
+  })
+  const [loginStatus, _setLoginStatus] = useState<boolean>(false)
 
-//   const setUserInfo: React.Dispatch<React.SetStateAction<UserInfoType>> = useMemoizedFn(value => {
-//     _setUserInfo(value)
-//     setCookie('dpuserinfo', JSON.stringify(value))
-//   })
+  const setUserInfo: React.Dispatch<React.SetStateAction<IUserInfo>> = useMemoizedFn(value => {
+    _setUserInfo(value)
+  })
 
-//   const setLoginStatus: React.Dispatch<React.SetStateAction<boolean>> = useMemoizedFn(value => {
-//     _setLoginStatus(value)
-//   })
-//   return { userInfo, setUserInfo, loginStatus, setLoginStatus }
-// }
-export default {}
+  const setLoginStatus: React.Dispatch<React.SetStateAction<boolean>> = useMemoizedFn(value => {
+    _setLoginStatus(value)
+  })
+  return { userInfo, setUserInfo, loginStatus, setLoginStatus }
+}

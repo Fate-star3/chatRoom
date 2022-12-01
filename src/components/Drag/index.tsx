@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, Children } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import styles from './index.module.scss'
 

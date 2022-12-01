@@ -1,0 +1,122 @@
+import { useEffect, useState, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import styles from './index.module.scss'
+
+import Toast from '@/components/Toast'
+import { useModel } from '@/store'
+import { formatParams } from '@/utils/tools'
+
+const Login = () => {
+  const { userInfo, setUserInfo } = useModel('user')
+  const navigate = useNavigate()
+  const [account, setAccount] = useState<number | string>('')
+  const [password, setPassword] = useState<number | string>('')
+  const accountRef = useRef<HTMLDivElement | null>(null)
+  const passwordRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const current = accountRef.current as HTMLElement
+    const current1 = passwordRef.current as HTMLElement
+    if (formatParams(account)) {
+      current.style.display = 'block'
+    } else {
+      current.style.display = 'none'
+    }
+    if (formatParams(password)) {
+      current1.style.display = 'block'
+    } else {
+      current1.style.display = 'none'
+    }
+  }, [account, password])
+
+  /**
+   * 处理登录的逻辑
+   */
+  const handleLogin = () => {
+    console.warn('handleLogin', account, password)
+
+    if (!formatParams(account) || !formatParams(password)) {
+      Toast.show('请输入信息')
+    }
+    if (account === userInfo.account && password === userInfo.password) {
+      setUserInfo({
+        ...userInfo,
+        status: true
+      })
+      navigate('/message')
+    }
+  }
+  return (
+    <div className={styles.login}>
+      <div className={styles.logo} />
+      <div className={styles.content}>
+        <ul className={styles.list}>
+          <li className={styles.item}>
+            <div
+              className={styles.del_touch}
+              ref={accountRef}
+              onClick={() => {
+                setAccount('')
+              }}
+            >
+              <span className={styles.del_u} />
+            </div>
+            <input
+              className={styles.inputstyle}
+              placeholder='QQ号码/手机/邮箱'
+              value={account}
+              onChange={e => {
+                setAccount(e.target.value)
+              }}
+            />
+          </li>
+          <li className={styles.item}>
+            <div
+              className={styles.del_touch}
+              ref={passwordRef}
+              onClick={() => {
+                setPassword('')
+              }}
+            >
+              <span className={styles.del_u} />
+            </div>
+            <input
+              className={styles.inputstyle}
+              maxLength={16}
+              type='password'
+              value={password}
+              onChange={e => {
+                setPassword(e.target.value)
+              }}
+              placeholder='请输入你的QQ密码'
+            />
+          </li>
+        </ul>
+        <div
+          className={styles.btn_login}
+          onClick={() => {
+            handleLogin()
+          }}
+        >
+          登录
+        </div>
+        <div className={styles.btn_login_v2}>免登录</div>
+      </div>
+      <div id='zc_feedback' className={styles.feedback}>
+        <span className={styles.forgetpwd}>找回密码</span>
+        <span id='split' className={styles.split} />
+        <span
+          onClick={() => {
+            navigate('/register')
+          }}
+          className={styles.register}
+        >
+          新用户注册
+        </span>
+      </div>
+    </div>
+  )
+}
+
+export default Login
