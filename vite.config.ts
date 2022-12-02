@@ -28,6 +28,15 @@ export default defineConfig({
   server: {
     port: 3000,
     host: '0.0.0.0',
-    proxy: {}
+    proxy: {
+      // 配置跨域
+      '/api': {
+        // 当有 /api开头的地址是，代理到target地址
+        target: 'http://localhost:8000', // 这里后台的地址模拟的;应该填写你们真实的后台接口
+        // rewrite: (path) => path.replace(/^\/api/, ''),//rewrite的作用就是将axios请求地址的/api去掉，如果不需要去掉api的话，不写rewrite就行。
+        secure: false,
+        changeOrigin: true
+      }
+    }
   }
 })

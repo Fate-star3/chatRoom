@@ -15,11 +15,22 @@
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
+    "sourceMap": true,
+    "noFallthroughCasesInSwitch": true,
+    "importHelpers": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "removeComments": true,
+    "strictNullChecks": false,
+    "noUnusedLocals": false,
+    "typeRoots": [
+      "node_modules/@types",
+      "./typings",
+      "./@types"
+    ],
     "paths": {
       "@/*": [
         "src/*"
@@ -33,10 +44,5 @@
     "node_modules",
     "vite.config.ts",
     "dist"
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
   ]
 }

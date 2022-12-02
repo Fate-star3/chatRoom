@@ -7,7 +7,7 @@ import styles from './index.module.scss'
 const Footer = () => {
   const [visible, setVisible] = useState<boolean>(false)
   const { pathname } = useLocation()
-  console.warn('pathname', pathname)
+  // console.warn('pathname', pathname)
 
   useEffect(() => {
     if (['/message', '/mine', '/contacts'].includes(pathname)) {

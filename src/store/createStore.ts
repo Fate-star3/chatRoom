@@ -30,7 +30,7 @@ function createStore<T>(store: () => T) {
     }
     prevStore = currentStore
     // eslint-disable-next-line
-    let keys: any[] = Object.keys(currentStore)
+    let keys: any[] = Object.keys(currentStore as Object)
     let i = 0
     const length = keys.length
     /** 遍历状态，递归形成多层级嵌套Context */
@@ -88,7 +88,7 @@ function createStore<T>(store: () => T) {
 export default createStore
 
 /** 浅对比对象 */
-function Shallow<T>(obj1: T, obj2: T) {
+function Shallow<T extends object>(obj1: T, obj2: T) {
   if (obj1 === obj2) return true
   if (Object.keys(obj1).length !== Object.keys(obj2).length) return false
   for (const key in obj1) {

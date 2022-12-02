@@ -1,17 +1,19 @@
+import { Toast } from 'antd-mobile'
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './index.module.scss'
 
-import Toast from '@/components/Toast'
+import { LoginUserInfo } from '@/server/user'
 import { useModel } from '@/store'
-import { formatParams } from '@/utils/tools'
+import { setCookie } from '@/utils/storage'
+import { formatParams, asyncFetch } from '@/utils/tools'
 
 const Login = () => {
-  const { userInfo, setUserInfo } = useModel('user')
+  const { userInfo, setUserInfo, setLoginStatus } = useModel('user')
   const navigate = useNavigate()
-  const [account, setAccount] = useState<number | string>('')
-  const [password, setPassword] = useState<number | string>('')
+  const [account, setAccount] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
   const accountRef = useRef<HTMLDivElement | null>(null)
   const passwordRef = useRef<HTMLDivElement>(null)
 
@@ -37,15 +39,35 @@ const Login = () => {
     console.warn('handleLogin', account, password)
 
     if (!formatParams(account) || !formatParams(password)) {
-      Toast.show('请输入信息')
-    }
-    if (account === userInfo.account && password === userInfo.password) {
-      setUserInfo({
-        ...userInfo,
-        status: true
+      Toast.show({
+        content: '请输入信息',
+        icon: 'fail'
       })
-      navigate('/message')
     }
+    // 处理接口
+    asyncFetch(
+      LoginUserInfo({
+        account,
+        password
+      }),
+      {
+        onSuccess(data) {
+          setUserInfo({
+            ...userInfo
+          })
+          setCookie('usertoken', data?.token)
+          setLoginStatus(true)
+          Toast.show({
+            content: '登录成功',
+            icon: 'success',
+            afterClose: () => {
+              navigate('/message')
+            }
+          })
+          console.log(data, 'data')
+        }
+      }
+    )
   }
   return (
     <div className={styles.login}>
@@ -103,9 +125,9 @@ const Login = () => {
         </div>
         <div className={styles.btn_login_v2}>免登录</div>
       </div>
-      <div id='zc_feedback' className={styles.feedback}>
+      <div className={styles.feedback}>
         <span className={styles.forgetpwd}>找回密码</span>
-        <span id='split' className={styles.split} />
+        <span className={styles.split} />
         <span
           onClick={() => {
             navigate('/register')

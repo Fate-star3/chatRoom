@@ -16,15 +16,15 @@ export default function () {
   /** 横屏状态显示提示 */
   function handleHintOnLandscape() {
     const { width, height } = docEl.getBoundingClientRect()
-    // if (width > height) {
-    //   clearTimeout(toastTimerId)
-    //   toastTimerId = setTimeout(() => {
-    //     Toast.show('暂不支持横屏浏览，请竖屏后继续使用', 'always')
-    //   }, 600)
-    // } else {
-    //   clearTimeout(toastTimerId)
-    //   Toast.hide()
-    // }
+    if (width > height) {
+      clearTimeout(toastTimerId)
+      toastTimerId = setTimeout(() => {
+        Toast.show('暂不支持横屏浏览，请竖屏后继续使用', 'always')
+      }, 600)
+    } else {
+      clearTimeout(toastTimerId)
+      Toast.hide()
+    }
   }
 
   window.addEventListener(
