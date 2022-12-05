@@ -5,7 +5,9 @@ export interface IUserInfo {
   account: string
   password: string
   age?: number
-  time?: string
+  date?: string
   avatar?: any
   status?: boolean
+  email?: string
+  indentify?: string
 }
