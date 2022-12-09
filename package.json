@@ -18,8 +18,10 @@
     "pre-check": "lint-staged"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.8.0",
     "antd-mobile-icons": "^0.3.0",
     "axios": "^1.2.0",
+    "dayjs": "^1.11.7",
     "jsonwebtoken": "^8.5.1",
     "lint-staged": "^13.0.3",
     "react": "^18.2.0",

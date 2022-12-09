@@ -37,7 +37,7 @@ const Login = () => {
    * 处理登录的逻辑
    */
   const handleLogin = () => {
-    console.warn('handleLogin', account, password)
+    // console.warn('handleLogin', account, password)
 
     if (!formatParams(account) || !formatParams(password)) {
       Toast.show({

@@ -1,3 +1,5 @@
+import { get } from 'http'
+
 import {
   RequestConfig,
   HttpRequestConfig,
@@ -6,6 +8,7 @@ import {
   HttpSuccessResponse
 } from './types'
 
+import { getCookie, setCookie } from '@/utils/storage'
 import { formatParams, serializeObject, getType } from '@/utils/tools'
 
 function transformRequest(data: any, headers) {
@@ -89,7 +92,8 @@ const fetchInstance = async <T>(config: HttpRequestConfig): Promise<T> => {
 
 const defaultHeaders = {
   credentials: 'include',
-  mode: 'no-cors'
+  mode: 'no-cors',
+  Authorization: `Bearer${getCookie('usertoken')}`
 }
 
 export default class DPRequest {

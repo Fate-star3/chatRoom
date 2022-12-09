@@ -9,7 +9,7 @@ const App = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const { userInfo, loginStatus } = useModel('user')
-  console.warn(userInfo, 'userInfo ', loginStatus)
+  // console.warn(userInfo, 'userInfo ', loginStatus)
 
   /** 初始化重定向 */
   const init = () => {

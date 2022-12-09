@@ -1,12 +1,58 @@
 .list {
+  padding-bottom: 64px;
   margin-top: 50px;
   background-color: #fff;
 
   .wrap {
     .item {
-      width: 100%;
-      height: 44px;
-      border-bottom: 1px solid #ccc;
+      position: relative;
+      width: 375px;
+      height: 64px;
+
+      .list_item {
+        display: flex;
+        width: 375px;
+        height: 64px;
+        align-items: center;
+
+        img {
+          width: 48px;
+          height: 48px;
+          margin: 0 16px;
+          border-radius: 12px;
+        }
+
+        .right {
+          span {
+            font-size: 18px;
+            font-weight: 400;
+            letter-spacing: -0.62px;
+            color: #272832;
+          }
+
+          p {
+            max-width: 200px;
+            overflow: hidden;
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: -0.48px;
+            color: rgba(39, 40, 50, 60%);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+
+        .time {
+          position: absolute;
+          top: 0;
+          right: 0;
+          padding: 10px;
+          font-size: 12px;
+          font-weight: 400;
+          letter-spacing: -0.41px;
+          color: rgba(39, 40, 50, 40%);
+        }
+      }
     }
   }
 }
