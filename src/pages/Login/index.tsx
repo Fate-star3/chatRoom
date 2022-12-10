@@ -11,7 +11,7 @@ import { setCookie } from '@/utils/storage'
 import { formatParams, asyncFetch } from '@/utils/tools'
 
 const Login = () => {
-  const { userInfo, setLoginStatus } = useModel('user')
+  const { userInfo, setLoginStatus, setUserInfo } = useModel('user')
   const navigate = useNavigate()
   const [account, setAccount] = useState<string>(userInfo?.account || '')
   const [password, setPassword] = useState<string>(userInfo?.password || '')
@@ -21,6 +21,7 @@ const Login = () => {
   useEffect(() => {
     const current = accountRef.current as HTMLElement
     const current1 = passwordRef.current as HTMLElement
+
     if (formatParams(account)) {
       current.style.display = 'block'
     } else {
@@ -55,8 +56,9 @@ const Login = () => {
         onSuccess(data) {
           setCookie('usertoken', data?.token)
           setLoginStatus(true)
+          setUserInfo(data)
           // const res = decode(data.token, { complete: true })
-          // console.log(data, 'data', res)
+          console.warn(data)
           Toast.show({
             content: '登录成功',
             icon: 'success',

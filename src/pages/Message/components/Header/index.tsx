@@ -3,10 +3,14 @@ import { useNavigate } from 'react-router-dom'
 
 import styles from './index.module.scss'
 
-import { useModel } from '@/store'
+import { IUserInfo } from '@/server/type/user'
 
-const Header = () => {
-  const { userInfo } = useModel('user')
+interface IHeader {
+  userInfo: IUserInfo
+}
+const Header: React.FC<IHeader> = props => {
+  const { userInfo } = props
+
   const navigate = useNavigate()
   console.warn(userInfo?.avatar, userInfo)
 

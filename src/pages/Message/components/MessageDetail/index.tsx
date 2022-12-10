@@ -5,9 +5,10 @@ import { io } from 'socket.io-client'
 import styles from './index.module.scss'
 
 import { useModel } from '@/store'
+import request from '@/utils/request'
 
 const MessageDetail = () => {
-  const { userInfo, setUserInfo } = useModel('user')
+  const { userInfo } = useModel('user')
   const [value, setValue] = useState<string>('')
   const navigate = useNavigate()
   // useEffect(() => {
@@ -62,7 +63,7 @@ const MessageDetail = () => {
               navigate(`/message`)
             }}
           />
-          <div className={styles.username}>{userInfo.name}</div>
+          <div className={styles.username}>{userInfo?.name}</div>
           <div className={styles.more} />
         </div>
       </header>
@@ -81,7 +82,17 @@ const MessageDetail = () => {
           <div className='func' />
         </div>
 
-        {/* <input type='submit' value='send' className={styles.submit} id='submit' /> */}
+        <input
+          type='submit'
+          value='send'
+          className={styles.submit}
+          id='submit'
+          onClick={e => {
+            e.preventDefault()
+            const res = request.get('/user/test')
+            console.warn('res', res)
+          }}
+        />
       </form>
     </div>
   )
