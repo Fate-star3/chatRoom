@@ -1,10 +1,45 @@
 .detail {
-  background-color: #fff;
+  background-color: #f4f4f4;
 
   .back {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
     width: 100%;
     height: 44px;
-    background-color: pink;
+    box-shadow: 0 0.5px 0 0 rgba(0, 0, 0, 10%);
+    overflow: hidden;
+
+    .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .back_icon {
+        width: 20px;
+        height: 20px;
+        margin: 12px;
+        background: url('@/assets/images/back.png') no-repeat;
+        background-size: contain;
+      }
+
+      .username {
+        font-size: 20px;
+        font-weight: 400;
+        letter-spacing: -0.69px;
+        color: #272832;
+      }
+
+      .more {
+        width: 24px;
+        height: 24px;
+        margin: 20px 12px 0 0;
+        line-height: 24px;
+        background: url('@/assets/images/more.png') no-repeat;
+        background-size: contain;
+      }
+    }
   }
 
   .form {
@@ -14,44 +49,45 @@
     display: flex;
     width: 100%;
     height: 50px;
-    background: rgba(0, 0, 0, 15%);
+    background: #f4f4f4;
     backdrop-filter: blur(10px);
-  }
+    box-shadow: inset 0 0.5px 0 0 rgba(0, 0, 0, 10%);
 
-  input {
-    padding: 5px;
-    margin: 10px;
-    border: none;
-    border-radius: 10px;
-    flex-grow: 1;
-  }
+    input {
+      padding: 5px;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      flex-grow: 1;
+    }
 
-  .input:focus {
-    outline: none;
-  }
+    .input:focus {
+      outline: none;
+    }
 
-  .submit {
-    color: #fff;
-    background: #333;
-    border: none;
-    border-radius: 3px;
-    outline: none;
-  }
+    .submit {
+      color: #fff;
+      background: #333;
+      border: none;
+      border-radius: 3px;
+      outline: none;
+    }
 
-  .messages {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-  }
+    .messages {
+      padding: 0;
+      margin: 0;
+      list-style-type: none;
+    }
 
-  .messages > li {
-    width: 100%;
-    height: 44px;
-    line-height: 44px;
-    border-bottom: 1px solid #ccc;
-  }
+    .messages > li {
+      width: 100%;
+      height: 44px;
+      line-height: 44px;
+      border-bottom: 1px solid #ccc;
+    }
 
-  .messages > li:nth-child(odd) {
-    background: #efefef;
+    .messages > li:nth-child(odd) {
+      background: #efefef;
+    }
   }
 }

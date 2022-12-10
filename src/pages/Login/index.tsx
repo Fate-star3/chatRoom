@@ -1,4 +1,5 @@
 import { Toast } from 'antd-mobile'
+import { decode, verify } from 'jsonwebtoken'
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -10,10 +11,10 @@ import { setCookie } from '@/utils/storage'
 import { formatParams, asyncFetch } from '@/utils/tools'
 
 const Login = () => {
-  const { userInfo, setUserInfo, setLoginStatus } = useModel('user')
+  const { userInfo, setLoginStatus } = useModel('user')
   const navigate = useNavigate()
-  const [account, setAccount] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
+  const [account, setAccount] = useState<string>(userInfo?.account || '')
+  const [password, setPassword] = useState<string>(userInfo?.password || '')
   const accountRef = useRef<HTMLDivElement | null>(null)
   const passwordRef = useRef<HTMLDivElement>(null)
 
@@ -36,7 +37,7 @@ const Login = () => {
    * 处理登录的逻辑
    */
   const handleLogin = () => {
-    console.warn('handleLogin', account, password)
+    // console.warn('handleLogin', account, password)
 
     if (!formatParams(account) || !formatParams(password)) {
       Toast.show({
@@ -52,11 +53,10 @@ const Login = () => {
       }),
       {
         onSuccess(data) {
-          setUserInfo({
-            ...userInfo
-          })
           setCookie('usertoken', data?.token)
           setLoginStatus(true)
+          // const res = decode(data.token, { complete: true })
+          // console.log(data, 'data', res)
           Toast.show({
             content: '登录成功',
             icon: 'success',
@@ -64,7 +64,6 @@ const Login = () => {
               navigate('/message')
             }
           })
-          console.log(data, 'data')
         }
       }
     )

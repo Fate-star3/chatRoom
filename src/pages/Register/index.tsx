@@ -41,7 +41,7 @@ const Register = () => {
     // 校对
     if (!formatParams(account) || !formatParams(password)) {
       Toast.show({
-        content: '请输入信息',
+        content: '请输入信息！',
         icon: 'fail'
       })
     } else {
@@ -58,9 +58,21 @@ const Register = () => {
             setUserInfo({
               ...userInfo,
               account,
-              password
+              password,
+              name: data.name,
+              email: data.email,
+              avatar: data.avatar,
+              indentify: data.indentify,
+              date: data.date
             })
-            navigate('/login')
+            Toast.show({
+              content: '注册成功！',
+              icon: 'success',
+              afterClose: () => {
+                navigate('/login')
+              }
+            })
+
             console.log(data, 'data')
           }
         }
