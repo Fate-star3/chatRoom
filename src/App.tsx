@@ -17,7 +17,7 @@ const App = () => {
       if (pathname === '/message') navigate('/message')
     } else if (pathname === '/register') {
       navigate('/register')
-    } else if (pathname !== '/login') {
+    } else {
       navigate('/login')
     }
   }
