@@ -22,6 +22,20 @@
           border-radius: 12px;
         }
 
+        .circle {
+          position: absolute;
+          top: 0;
+          left: 50px;
+          width: 16px;
+          height: 16px;
+          font-size: 14px;
+          line-height: 18px;
+          color: #fff;
+          text-align: center;
+          background: #ff5d5b;
+          border-radius: 9px;
+        }
+
         .right {
           span {
             font-size: 18px;
@@ -32,6 +46,7 @@
 
           p {
             max-width: 200px;
+            padding-top: 5px;
             overflow: hidden;
             font-size: 14px;
             font-weight: 400;

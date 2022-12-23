@@ -8,7 +8,7 @@ import { useModel } from '@/store'
 const App = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const { userInfo, loginStatus } = useModel('user')
+  const { loginStatus } = useModel('user')
   // console.warn(userInfo, 'userInfo ', loginStatus)
 
   /** 初始化重定向 */

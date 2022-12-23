@@ -10,7 +10,7 @@ const Footer = () => {
   // console.warn('pathname', pathname)
 
   useEffect(() => {
-    if (['/message', '/mine', '/contacts'].includes(pathname)) {
+    if (['/message', '/mine', '/contacts', '/'].includes(pathname)) {
       setVisible(true)
     } else {
       setVisible(false)

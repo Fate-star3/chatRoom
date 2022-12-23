@@ -7,3 +7,16 @@ const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss' // 时间格式化的字符串
 export default function formUtcSting(utcSting: string, format: string = DATE_TIME_FORMAT) {
   return dayjs.utc(utcSting).format(format) // 拿到dayjs 这里有个utc 的函数，有了utc 这个函数之后，我们可以把这个utcSting 传进去，用它的结果去调用format
 }
+
+export const getDate = (date: string) => {
+  const now = dayjs()
+
+  // console.log(now.isSame(dayjs(date.slice(0, 10)), 'day'))
+  if (now.isSame(dayjs(date.slice(0, 10)), 'day')) {
+    if ((date.slice(10, 13) as unknown as number) < 12) {
+      return `上午${date.slice(10, 16)}`
+    }
+    return `下午${date.slice(10, 16)}`
+  }
+  return date.slice(0, 10)
+}

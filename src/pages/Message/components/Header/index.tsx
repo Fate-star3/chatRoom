@@ -12,7 +12,6 @@ const Header: React.FC<IHeader> = props => {
   const { userInfo } = props
 
   const navigate = useNavigate()
-  console.warn(userInfo?.avatar, userInfo)
 
   return (
     <div className={styles.header}>
