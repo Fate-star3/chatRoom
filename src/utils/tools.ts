@@ -345,3 +345,15 @@ export function intervalFrame(cb: () => void, time: number): number {
   })
   return frame
 }
+/**
+ * 剪切板功能
+ * @param content 复制的内容
+ * @param onSuccess 成功的回调函数
+ */
+export function clipboard(content: string, onSuccess?: Function) {
+  navigator.clipboard.writeText(content).then(() => {
+    if (onSuccess && typeof onSuccess === 'function') {
+      onSuccess()
+    }
+  })
+}

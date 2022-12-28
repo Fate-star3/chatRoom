@@ -1,6 +1,6 @@
 import runtime from '@/common/runtime'
 
-export const localStorageKey = 'com.drpanda.distribute.'
+export const localStorageKey = 'yyx'
 
 export class SessionStorage {
   key: any

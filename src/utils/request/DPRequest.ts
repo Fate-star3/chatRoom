@@ -91,7 +91,7 @@ const fetchInstance = async <T>(config: HttpRequestConfig): Promise<T> => {
 const defaultHeaders = {
   credentials: 'include',
   mode: 'no-cors',
-  Authorization: `Bearer${getCookie('usertoken')}`
+  Authorization: getCookie('usertoken')
 }
 
 export default class DPRequest {
