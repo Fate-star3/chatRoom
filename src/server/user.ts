@@ -17,7 +17,19 @@ export const RegisterUserInfo = (RegisterData: IUserInfo) => {
 export const LoginUserInfo = (LoginData: IUserInfo) => {
   return request.post<IUserInfo>('/user/login', LoginData)
 }
-
+/**
+ * 获取单个用户信息
+ * @param account
+ * @returns
+ */
 export const getUserInfo = (account: string) => {
   return request.get<IUserInfo>(`/user/userInfo?account=${account}`)
+}
+/**
+ * 获取正则匹配成功对应的用户
+ * @param account
+ * @returns
+ */
+export const getAllUserInfo = (account: string) => {
+  return request.get<IUserInfo[]>(`/user/search?account=${account}`)
 }

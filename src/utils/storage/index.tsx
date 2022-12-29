@@ -73,9 +73,9 @@ const getCookieName = (name: string) => {
  */
 export const setCookie = (name: string, value: string, days = 30) => {
   // 单独校验 token 的长度
-  if (name === Cookie.Token && value?.length < 64) {
-    return
-  }
+  // if (name === Cookie.Token && value?.length < 64) {
+  //   return
+  // }
   const cookieName = getCookieName(name)
   removeCookie(name)
   const expires = new Date()

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -10,17 +11,14 @@ interface IHeader {
 }
 const Header: React.FC<IHeader> = props => {
   const { userInfo } = props
-
+  console.log(userInfo?.avatar)
   const navigate = useNavigate()
 
   return (
     <div className={styles.header}>
       <div className={styles.wrap}>
         <div className={styles.left}>
-          <img
-            src='https://yach-static.zhiyinlou.com/online/jsapi/1665281276537/jde9gmmno8/3d040adc-e2b0-4629-9c0f-b7487334af5e.png'
-            alt='图片失踪了！'
-          />
+          <img src={userInfo?.avatar} />
         </div>
         <div className={styles.middle} />
         <div className={styles.right}>

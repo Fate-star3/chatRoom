@@ -45,8 +45,6 @@ const Register = () => {
         icon: 'fail'
       })
     } else {
-      console.warn('----------', account, password)
-
       // 处理接口
       asyncFetch(
         RegisterUserInfo({

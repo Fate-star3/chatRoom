@@ -1,5 +1,5 @@
 import { Toast } from 'antd-mobile'
-import { decode, verify } from 'jsonwebtoken'
+// import { decode, verify } from 'jsonwebtoken'
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -54,9 +54,9 @@ const Login = () => {
       }),
       {
         onSuccess(data) {
+          setUserInfo(data)
           setCookie('usertoken', data?.token)
           setLoginStatus(true)
-          setUserInfo(data)
           // const res = decode(data.token, { complete: true })
           console.warn(data)
           Toast.show({
