@@ -1,54 +1,45 @@
 import { Button } from 'antd-mobile'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { io } from 'socket.io-client'
 
 import Message from './components/Message'
 import styles from './index.module.scss'
 
+import Toast from '@/components/Toast'
 import { useModel } from '@/store'
 
 const MessageDetail = () => {
   const { userInfo } = useModel('user')
   const [value, setValue] = useState<string>('')
   const navigate = useNavigate()
+  const { state } = useLocation()
+  console.log(useLocation())
+
   const socket = io('http://127.0.0.1:8000/')
   const messages = document.getElementById('messages') as HTMLElement
   const input = document.getElementById('input') as HTMLInputElement
 
   const sendMessage = () => {
     if (input.value) {
-      socket.emit('chat message', input.value)
-      // const item = document.createElement('li')
-
-      // item.innerHTML = input.value
-      // messages.appendChild(item)
-
-      // console.log('inputvalue', input.value)
-      // window.scrollTo(0, 0)
-    }
-  }
-  useEffect(() => {
-    socket.on('chat message', (msg: string) => {
+      socket.timeout(3000).emit('chat message', input.value, (err, args) => {
+        if (err) {
+          Toast.show(err)
+        }
+        console.log(args)
+      })
       const item = document.createElement('li')
 
-      console.log('msg', msg)
-
-      item.textContent = msg
+      item.innerHTML = input.value
       messages.appendChild(item)
-      // messages.appendChild(Message)
-      window.scrollTo(0, document.body.scrollHeight)
-    })
+      window.scrollTo(0, 0)
+      setValue('')
+    }
+  }
+  // socket.on('global message', args => {
+  //   console.log(args, 'global')
+  // })
 
-    // socket.on('global message', (msg: string) => {
-    //   const item = document.createElement('li')
-    //   console.log('msg', msg)
-
-    //   item.textContent = msg
-    //   messages.appendChild(item)
-    //   window.scrollTo(0, document.body.scrollHeight)
-    // })
-  }, [])
   return (
     <div className={styles.detail}>
       <header className={styles.back}>
@@ -59,7 +50,7 @@ const MessageDetail = () => {
               navigate(`/message`)
             }}
           />
-          <div className={styles.username}>{userInfo?.name}</div>
+          <div className={styles.username}>{state.name}</div>
           <div className={styles.more} />
         </div>
       </header>

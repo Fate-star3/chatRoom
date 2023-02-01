@@ -60,8 +60,11 @@ const Register = () => {
               name: data.name,
               email: data.email,
               avatar: data.avatar,
-              indentify: data.indentify,
-              date: data.date
+              identity: data.identity,
+              date: data.date,
+              signature: data.signature,
+              sex: data.sex,
+              birthday: data.birthday
             })
             Toast.show({
               content: '注册成功！',
@@ -87,46 +90,49 @@ const Register = () => {
       <div className={styles.logo} />
       <div className={styles.content}>
         <ul className={styles.list}>
-          <li className={styles.item}>
-            <div
-              className={styles.del_touch}
-              ref={accountRef}
-              onClick={() => {
-                setAccount('')
-              }}
-            >
-              <span className={styles.del_u} />
-            </div>
-            <input
-              className={styles.inputstyle}
-              placeholder='QQ号码/手机/邮箱'
-              value={account}
-              onChange={e => {
-                setAccount(e.target.value)
-              }}
-            />
-          </li>
-          <li className={styles.item}>
-            <div
-              className={styles.del_touch}
-              ref={passwordRef}
-              onClick={() => {
-                setPassword('')
-              }}
-            >
-              <span className={styles.del_u} />
-            </div>
-            <input
-              className={styles.inputstyle}
-              maxLength={16}
-              type='password'
-              value={password}
-              onChange={e => {
-                setPassword(e.target.value)
-              }}
-              placeholder='请输入你的QQ密码'
-            />
-          </li>
+          <form>
+            <li className={styles.item}>
+              <div
+                className={styles.del_touch}
+                ref={accountRef}
+                onClick={() => {
+                  setAccount('')
+                }}
+              >
+                <span className={styles.del_u} />
+              </div>
+              <input
+                className={styles.inputstyle}
+                placeholder='QQ号码/手机/邮箱'
+                value={account}
+                onChange={e => {
+                  setAccount(e.target.value)
+                }}
+              />
+            </li>
+            <li className={styles.item}>
+              <div
+                className={styles.del_touch}
+                ref={passwordRef}
+                onClick={() => {
+                  setPassword('')
+                }}
+              >
+                <span className={styles.del_u} />
+              </div>
+              <input
+                className={styles.inputstyle}
+                maxLength={16}
+                type='password'
+                value={password}
+                onChange={e => {
+                  setPassword(e.target.value)
+                }}
+                placeholder='请输入你的QQ密码'
+                autoComplete='off'
+              />
+            </li>
+          </form>
         </ul>
         <div
           className={styles.btn_regitser}

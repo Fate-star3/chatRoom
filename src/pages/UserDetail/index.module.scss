@@ -1,0 +1,189 @@
+.container {
+  padding-top: 44px;
+
+  .back {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 100%;
+    height: 44px;
+    box-shadow: 0 0.5px 0 0 rgba(0, 0, 0, 10%);
+    overflow: hidden;
+    background-color: #fff;
+
+    .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .back_icon {
+        width: 20px;
+        height: 20px;
+        margin: 12px;
+        background: url('@/assets/images/back.png') no-repeat;
+        background-size: contain;
+      }
+
+      .username {
+        padding-right: 20px;
+        font-size: 20px;
+        font-weight: 400;
+        letter-spacing: -0.69px;
+        color: #272832;
+      }
+
+      .more {
+        width: 24px;
+        height: 24px;
+        margin: 20px 12px 0 0;
+        line-height: 24px;
+        background: url('@/assets/images/more.png') no-repeat;
+        background-size: contain;
+      }
+    }
+  }
+
+  .content {
+    padding-left: 20px;
+
+    .next {
+      width: 10px;
+      height: 15px;
+      padding-left: 10px;
+    }
+
+    .avatar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 74px;
+      background: #fff;
+
+      .left {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .right {
+        display: flex;
+        align-items: center;
+        padding-right: 20px;
+
+        img {
+          &:nth-child(1) {
+            width: 60px;
+            height: 60px;
+          }
+        }
+      }
+    }
+
+    .signature {
+      display: flex;
+      height: 50px;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+
+      .left {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .right {
+        display: flex;
+        align-items: center;
+        padding-right: 20px;
+
+        span {
+          font-size: 16px;
+        }
+      }
+    }
+
+    .name {
+      display: flex;
+      height: 50px;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+
+      .left {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .right {
+        display: flex;
+        align-items: center;
+        padding-right: 20px;
+
+        span {
+          font-size: 16px;
+        }
+      }
+    }
+
+    .sex {
+      display: flex;
+      height: 50px;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+
+      .left {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .right {
+        display: flex;
+        align-items: center;
+        padding-right: 20px;
+
+        span {
+          font-size: 16px;
+        }
+      }
+    }
+
+    .birthday {
+      display: flex;
+      height: 50px;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+
+      .left {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .right {
+        display: flex;
+        align-items: center;
+        padding-right: 20px;
+
+        span {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 80px;
+    letter-spacing: 1px;
+    color: #ff5d5b;
+    text-align: center;
+    border-radius: 5px;
+  }
+}

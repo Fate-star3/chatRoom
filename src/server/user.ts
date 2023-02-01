@@ -30,6 +30,13 @@ export const getUserInfo = (account: string) => {
  * @param account
  * @returns
  */
-export const getAllUserInfo = (account: string) => {
+export const getAllUserInfo = (account?: string) => {
   return request.get<IUserInfo[]>(`/user/search?account=${account}`)
+}
+
+export const updateUserInfo = (body: IUserInfo) => {
+  const options = {
+    data: body
+  }
+  return request.post('/user/update', options)
 }

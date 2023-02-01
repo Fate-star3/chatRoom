@@ -14,7 +14,9 @@ const Login = () => {
   const { userInfo, setLoginStatus, setUserInfo } = useModel('user')
   const navigate = useNavigate()
   const [account, setAccount] = useState<string>(userInfo?.account || '')
-  const [password, setPassword] = useState<string>(userInfo?.password || '')
+  const [password, setPassword] = useState<string>(
+    userInfo?.password.length <= 20 && userInfo?.password.length > 0 ? userInfo?.password : ''
+  )
   const accountRef = useRef<HTMLDivElement | null>(null)
   const passwordRef = useRef<HTMLDivElement>(null)
 
@@ -38,8 +40,6 @@ const Login = () => {
    * 处理登录的逻辑
    */
   const handleLogin = () => {
-    // console.warn('handleLogin', account, password)
-
     if (!formatParams(account) || !formatParams(password)) {
       Toast.show({
         content: '请输入信息',
@@ -54,7 +54,7 @@ const Login = () => {
       }),
       {
         onSuccess(data) {
-          setUserInfo(data)
+          setUserInfo({ ...userInfo, ...data })
           setCookie('usertoken', data?.token)
           setLoginStatus(true)
           // const res = decode(data.token, { complete: true })
@@ -75,46 +75,49 @@ const Login = () => {
       <div className={styles.logo} />
       <div className={styles.content}>
         <ul className={styles.list}>
-          <li className={styles.item}>
-            <div
-              className={styles.del_touch}
-              ref={accountRef}
-              onClick={() => {
-                setAccount('')
-              }}
-            >
-              <span className={styles.del_u} />
-            </div>
-            <input
-              className={styles.inputstyle}
-              placeholder='QQ号码/手机/邮箱'
-              value={account}
-              onChange={e => {
-                setAccount(e.target.value)
-              }}
-            />
-          </li>
-          <li className={styles.item}>
-            <div
-              className={styles.del_touch}
-              ref={passwordRef}
-              onClick={() => {
-                setPassword('')
-              }}
-            >
-              <span className={styles.del_u} />
-            </div>
-            <input
-              className={styles.inputstyle}
-              maxLength={16}
-              type='password'
-              value={password}
-              onChange={e => {
-                setPassword(e.target.value)
-              }}
-              placeholder='请输入你的QQ密码'
-            />
-          </li>
+          <form>
+            <li className={styles.item}>
+              <div
+                className={styles.del_touch}
+                ref={accountRef}
+                onClick={() => {
+                  setAccount('')
+                }}
+              >
+                <span className={styles.del_u} />
+              </div>
+              <input
+                className={styles.inputstyle}
+                placeholder='QQ号码/手机/邮箱'
+                value={account}
+                onChange={e => {
+                  setAccount(e.target.value)
+                }}
+              />
+            </li>
+            <li className={styles.item}>
+              <div
+                className={styles.del_touch}
+                ref={passwordRef}
+                onClick={() => {
+                  setPassword('')
+                }}
+              >
+                <span className={styles.del_u} />
+              </div>
+              <input
+                className={styles.inputstyle}
+                maxLength={16}
+                type='password'
+                value={password}
+                onChange={e => {
+                  setPassword(e.target.value)
+                }}
+                placeholder='请输入你的QQ密码'
+                autoComplete='off'
+              />
+            </li>
+          </form>
         </ul>
         <div
           className={styles.btn_login}

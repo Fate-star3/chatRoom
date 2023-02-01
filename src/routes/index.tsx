@@ -10,6 +10,7 @@ const Login = lazy(() => import('@/pages/Login'))
 const Register = lazy(() => import('@/pages/Register'))
 const MessageDetail = lazy(() => import('@/pages/Message/components/MessageDetail'))
 const Search = lazy(() => import('@/pages/Search'))
+const UserDetail = lazy(() => import('@/pages/UserDetail'))
 
 // Routes 不能和react-router-dom 一样
 // 使用lazy动态加载组件时候报错如下
@@ -26,6 +27,7 @@ const RoutesConfig = () => {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/search' element={<Search />} />
+        <Route path='/userDetail' element={<UserDetail />} />
 
         <Route path='*' element={<Navigate to='/' />} />
       </Routes>

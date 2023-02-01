@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 
 import styles from './index.module.scss'
 
-import useDebounce from '@/hooks/useDebounce'
 import { IUserInfo } from '@/server/type/user'
 import { getAllUserInfo } from '@/server/user'
 import { asyncFetch } from '@/utils/tools'
@@ -20,12 +19,17 @@ const Search = () => {
           setListData(result)
         }
       })
+    } else {
+      setListData([])
     }
   }, [searchValue])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setSearchValue(value)
+  }
+  const sendMessage = (account, name) => {
+    navigate(`/message/detail/${account}`, { state: { name } })
   }
   return (
     <div className={styles.search}>
@@ -53,23 +57,19 @@ const Search = () => {
                       <img src={item?.avatar} alt='' />
                       <div className={styles.right}>
                         <div className={styles.msg}>
-                          <span
-                            // eslint-disable-next-line react/no-danger
-                            dangerouslySetInnerHTML={{ __html: item?.name }}
-                            className={styles.span}
-                          />
-                          <span
-                            // eslint-disable-next-line react/no-danger
-                            dangerouslySetInnerHTML={{ __html: item?.account }}
-                            className={styles.span}
-                          />
+                          <span className={styles.span}>{item?.name}</span>
+                          <span className={styles.span}>{item?.account}</span>
                         </div>
                         {item.status ? (
                           <button type='button' className={styles.btn_send_f}>
                             加好友
                           </button>
                         ) : (
-                          <button type='button' className={styles.btn_send}>
+                          <button
+                            type='button'
+                            className={styles.btn_send}
+                            onClick={() => sendMessage(item.account, item.name)}
+                          >
                             发消息
                           </button>
                         )}

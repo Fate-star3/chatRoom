@@ -11,13 +11,14 @@ interface IHeader {
 }
 const Header: React.FC<IHeader> = props => {
   const { userInfo } = props
-  console.log(userInfo?.avatar)
   const navigate = useNavigate()
-
+  const backToUserDetail = () => {
+    navigate('/userDetail')
+  }
   return (
     <div className={styles.header}>
       <div className={styles.wrap}>
-        <div className={styles.left}>
+        <div className={styles.left} onClick={() => backToUserDetail()}>
           <img src={userInfo?.avatar} />
         </div>
         <div className={styles.middle} />
