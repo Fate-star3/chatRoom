@@ -14,9 +14,7 @@ const Login = () => {
   const { userInfo, setLoginStatus, setUserInfo } = useModel('user')
   const navigate = useNavigate()
   const [account, setAccount] = useState<string>(userInfo?.account || '')
-  const [password, setPassword] = useState<string>(
-    userInfo?.password.length <= 20 && userInfo?.password.length > 0 ? userInfo?.password : ''
-  )
+  const [password, setPassword] = useState<string>('')
   const accountRef = useRef<HTMLDivElement | null>(null)
   const passwordRef = useRef<HTMLDivElement>(null)
 
@@ -54,11 +52,11 @@ const Login = () => {
       }),
       {
         onSuccess(data) {
-          setUserInfo({ ...userInfo, ...data })
+          console.log(userInfo, data)
+
+          setUserInfo(data)
           setCookie('usertoken', data?.token)
           setLoginStatus(true)
-          // const res = decode(data.token, { complete: true })
-          console.warn(data)
           Toast.show({
             content: '登录成功',
             icon: 'success',

@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 
 import App from './App'
 
@@ -13,11 +13,11 @@ import flexible from '@/utils//flexible'
 flexible()
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <BrowserRouter>
+  <HashRouter>
     <StoreProvider>
       <App />
       {React.createElement(Loading.init)}
       {React.createElement(Toast.init)}
     </StoreProvider>
-  </BrowserRouter>
+  </HashRouter>
 )

@@ -1,4 +1,7 @@
 /* eslint-disable react/no-unknown-property */
+import { Popover } from 'antd-mobile'
+import { HandPayCircleOutline, ScanningOutline, TransportQRcodeOutline } from 'antd-mobile-icons'
+import { Action } from 'antd-mobile/es/components/popover'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -15,6 +18,16 @@ const Header: React.FC<IHeader> = props => {
   const backToUserDetail = () => {
     navigate('/userDetail')
   }
+  const actions: Action[] = [
+    {
+      key: 'group',
+      icon: <ScanningOutline />,
+      text: '创建群聊',
+      onClick: () => navigate('/createGroup')
+    },
+    { key: '', icon: <ScanningOutline />, text: '加好友/群', onClick: () => navigate('/search') },
+    { key: 'scan', icon: <ScanningOutline />, text: '扫一扫', disabled: true }
+  ]
   return (
     <div className={styles.header}>
       <div className={styles.wrap}>
@@ -29,7 +42,9 @@ const Header: React.FC<IHeader> = props => {
               navigate('/search')
             }}
           />
-          <div className={styles.add} />
+          <Popover.Menu actions={actions} placement='bottom-end' trigger='click' destroyOnHide>
+            <div className={styles.add} />
+          </Popover.Menu>
         </div>
       </div>
     </div>

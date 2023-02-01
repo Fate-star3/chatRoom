@@ -54,7 +54,6 @@ const Register = () => {
         {
           onSuccess(data) {
             setUserInfo({
-              ...userInfo,
               account,
               password,
               name: data.name,

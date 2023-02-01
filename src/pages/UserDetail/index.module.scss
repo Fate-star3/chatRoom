@@ -44,6 +44,11 @@
     }
   }
 
+  .preview {
+    width: 250px;
+    height: 250px;
+  }
+
   .content {
     padding-left: 20px;
 
@@ -57,7 +62,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 74px;
+      height: 80px;
       background: #fff;
 
       .left {
@@ -70,11 +75,9 @@
         align-items: center;
         padding-right: 20px;
 
-        img {
-          &:nth-child(1) {
-            width: 60px;
-            height: 60px;
-          }
+        .img {
+          width: 60px;
+          height: 60px;
         }
       }
     }
@@ -185,5 +188,9 @@
     color: #ff5d5b;
     text-align: center;
     border-radius: 5px;
+  }
+
+  .textArea {
+    margin-top: 20px;
   }
 }

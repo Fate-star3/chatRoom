@@ -1,5 +1,5 @@
 import { Button } from 'antd-mobile'
-import React, { useEffect, useState } from 'react'
+import { memo, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { io } from 'socket.io-client'
 
@@ -7,16 +7,13 @@ import Message from './components/Message'
 import styles from './index.module.scss'
 
 import Toast from '@/components/Toast'
-import { useModel } from '@/store'
 
 const MessageDetail = () => {
-  const { userInfo } = useModel('user')
   const [value, setValue] = useState<string>('')
   const navigate = useNavigate()
   const { state } = useLocation()
   console.log(useLocation())
-
-  const socket = io('http://127.0.0.1:8000/')
+  const socket = useMemo(() => io('http://127.0.0.1:8000/'), [])
   const messages = document.getElementById('messages') as HTMLElement
   const input = document.getElementById('input') as HTMLInputElement
 
@@ -39,6 +36,20 @@ const MessageDetail = () => {
   // socket.on('global message', args => {
   //   console.log(args, 'global')
   // })
+  useEffect(() => {
+    document.addEventListener('keydown', e => {
+      if (e.keyCode === 13) {
+        sendMessage()
+      }
+    })
+    return () => {
+      document.removeEventListener('keydown', e => {
+        if (e.keyCode === 13) {
+          sendMessage()
+        }
+      })
+    }
+  }, [value])
 
   return (
     <div className={styles.detail}>
@@ -96,4 +107,4 @@ const MessageDetail = () => {
   )
 }
 
-export default MessageDetail
+export default memo(MessageDetail)

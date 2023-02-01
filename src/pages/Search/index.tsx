@@ -60,8 +60,14 @@ const Search = () => {
                           <span className={styles.span}>{item?.name}</span>
                           <span className={styles.span}>{item?.account}</span>
                         </div>
-                        {item.status ? (
-                          <button type='button' className={styles.btn_send_f}>
+                        {!item.status ? (
+                          <button
+                            type='button'
+                            className={styles.btn_send_f}
+                            onClick={() => {
+                              navigate('/friendDetail')
+                            }}
+                          >
                             加好友
                           </button>
                         ) : (

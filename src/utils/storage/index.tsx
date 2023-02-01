@@ -77,9 +77,10 @@ export const setCookie = (name: string, value: string, days = 30) => {
   //   return
   // }
   const cookieName = getCookieName(name)
-  removeCookie(name)
+  // removeCookie(name)
   const expires = new Date()
   expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000)
+
   document.cookie = `${cookieName}=${encodeURIComponent(
     value
   )};expires=${expires.toUTCString()};path=${Cookie.Path}`

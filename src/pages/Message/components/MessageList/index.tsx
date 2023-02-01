@@ -24,12 +24,9 @@ const MessageList: React.FC<IMessageList> = props => {
         result.forEach(item => {
           item.isTop = false
         })
-
-        if (!localStorage.getItem('list')) {
-          console.log('resultgetItem')
+        if (localStorage.getItem('list')) {
           setListData(JSON.parse(localStorage.getItem('list')))
         } else {
-          console.log('result')
           setListData(result.filter(item => item.account !== userInfo.account))
         }
       }
