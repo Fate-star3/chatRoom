@@ -7,14 +7,16 @@ import styles from './index.module.scss'
 
 import { LoginUserInfo } from '@/server/user'
 import { useModel } from '@/store'
-import { setCookie } from '@/utils/storage'
+import { getCookie, setCookie } from '@/utils/storage'
 import { formatParams, asyncFetch } from '@/utils/tools'
 
 const Login = () => {
   const { userInfo, setLoginStatus, setUserInfo } = useModel('user')
   const navigate = useNavigate()
   const [account, setAccount] = useState<string>(userInfo?.account || '')
-  const [password, setPassword] = useState<string>('')
+  const [password, setPassword] = useState<string>(
+    getCookie('userinfo') && userInfo?.password.length <= 20 ? userInfo?.password : ''
+  )
   const accountRef = useRef<HTMLDivElement | null>(null)
   const passwordRef = useRef<HTMLDivElement>(null)
 
@@ -86,7 +88,7 @@ const Login = () => {
               </div>
               <input
                 className={styles.inputstyle}
-                placeholder='QQ号码/手机/邮箱'
+                placeholder='请输入你的chatRoom账号'
                 value={account}
                 onChange={e => {
                   setAccount(e.target.value)
@@ -111,7 +113,7 @@ const Login = () => {
                 onChange={e => {
                   setPassword(e.target.value)
                 }}
-                placeholder='请输入你的QQ密码'
+                placeholder='请输入你的chatRoom密码'
                 autoComplete='off'
               />
             </li>

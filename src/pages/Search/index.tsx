@@ -65,7 +65,13 @@ const Search = () => {
                             type='button'
                             className={styles.btn_send_f}
                             onClick={() => {
-                              navigate('/friendDetail')
+                              navigate('/friendDetail', {
+                                state: {
+                                  name: item?.name,
+                                  avatar: item?.avatar,
+                                  signature: item?.signature
+                                }
+                              })
                             }}
                           >
                             加好友

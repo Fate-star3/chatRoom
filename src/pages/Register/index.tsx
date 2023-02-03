@@ -102,7 +102,7 @@ const Register = () => {
               </div>
               <input
                 className={styles.inputstyle}
-                placeholder='QQ号码/手机/邮箱'
+                placeholder='请输入你的chatRoom账号'
                 value={account}
                 onChange={e => {
                   setAccount(e.target.value)
@@ -127,7 +127,7 @@ const Register = () => {
                 onChange={e => {
                   setPassword(e.target.value)
                 }}
-                placeholder='请输入你的QQ密码'
+                placeholder='请输入你的chatRoom密码'
                 autoComplete='off'
               />
             </li>

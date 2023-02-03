@@ -1,6 +1,12 @@
 /* eslint-disable react/no-unknown-property */
 import { Popover } from 'antd-mobile'
-import { HandPayCircleOutline, ScanningOutline, TransportQRcodeOutline } from 'antd-mobile-icons'
+import {
+  AddCircleOutline,
+  HandPayCircleOutline,
+  ScanningOutline,
+  TransportQRcodeOutline,
+  UserAddOutline
+} from 'antd-mobile-icons'
 import { Action } from 'antd-mobile/es/components/popover'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -11,9 +17,11 @@ import { IUserInfo } from '@/server/type/user'
 
 interface IHeader {
   userInfo: IUserInfo
+  listData: IUserInfo[]
+  setListData: (value: any) => void
 }
 const Header: React.FC<IHeader> = props => {
-  const { userInfo } = props
+  const { userInfo, listData, setListData } = props
   const navigate = useNavigate()
   const backToUserDetail = () => {
     navigate('/userDetail')
@@ -21,11 +29,14 @@ const Header: React.FC<IHeader> = props => {
   const actions: Action[] = [
     {
       key: 'group',
-      icon: <ScanningOutline />,
+      icon: <AddCircleOutline />,
       text: '创建群聊',
-      onClick: () => navigate('/createGroup')
+      onClick: () =>
+        navigate('/createGroup', {
+          state: { listData: JSON.stringify(listData), setListData }
+        })
     },
-    { key: '', icon: <ScanningOutline />, text: '加好友/群', onClick: () => navigate('/search') },
+    { key: '', icon: <UserAddOutline />, text: '加好友/群', onClick: () => navigate('/search') },
     { key: 'scan', icon: <ScanningOutline />, text: '扫一扫', disabled: true }
   ]
   return (
@@ -34,7 +45,7 @@ const Header: React.FC<IHeader> = props => {
         <div className={styles.left} onClick={() => backToUserDetail()}>
           <img src={userInfo?.avatar} />
         </div>
-        <div className={styles.middle} />
+        {/* <div className={styles.middle} /> */}
         <div className={styles.right}>
           <div
             className={styles.search}

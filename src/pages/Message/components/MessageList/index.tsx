@@ -6,36 +6,27 @@ import { useNavigate } from 'react-router-dom'
 import styles from './index.module.scss'
 
 import { IUserInfo } from '@/server/type/user'
-import { getAllUserInfo } from '@/server/user'
 import { getDate } from '@/utils/date-format'
-import { asyncFetch } from '@/utils/tools'
 
 interface IMessageList {
   userInfo: IUserInfo
+  listData: IUserInfo[]
+  setListData: (value: any) => void
 }
 const MessageList: React.FC<IMessageList> = props => {
-  const { userInfo } = props
+  const { userInfo, listData, setListData } = props
   const navigate = useNavigate()
-  const [listData, setListData] = useState<IUserInfo[]>([])
   useEffect(() => {
-    asyncFetch(getAllUserInfo(''), {
-      onSuccess(result) {
-        console.log(result)
-        result.forEach(item => {
-          item.isTop = false
-        })
-        if (localStorage.getItem('list')) {
-          setListData(JSON.parse(localStorage.getItem('list')))
-        } else {
-          setListData(result.filter(item => item.account !== userInfo.account))
-        }
-      }
-    })
+    if (localStorage.getItem('list')) {
+      setListData(JSON.parse(localStorage.getItem('list')))
+    } else {
+      setListData(listData.filter(item => item.account !== userInfo.account))
+    }
   }, [])
   useEffect(() => {
     if (listData.length) {
       localStorage.setItem('list', JSON.stringify(listData))
-      console.log('localStorage')
+      console.log('消息列表并保存到localStorage!')
     }
   }, [listData])
 

@@ -39,16 +39,11 @@ const UserDetail = () => {
   const HandleUpdateUserInfo = data => {
     asyncFetch(updateUserInfo(data), {
       onSuccess(result) {
-        console.log(1)
+        console.log(result)
       }
     })
   }
 
-  // useEffect(() => {
-  //   if (modalVisible || popupVisible) {
-  //     HandleUpdateUserInfo(userInfo)
-  //   }
-  // }, [userInfo, modalVisible, popupVisible])
   // 更换头像
   const updateAvatar = () => {
     const inputFile = document.createElement('input')
@@ -63,7 +58,27 @@ const UserDetail = () => {
       reader.addEventListener(
         'load',
         e => {
-          setUserInfo({ ...userInfo, avatar: e.target.result })
+          const canvas = document.createElement('canvas')
+          const ctx = canvas.getContext('2d')
+          // canvas.style.display = 'none'
+          document.body.appendChild(canvas)
+          canvas.width = 60
+          canvas.height = 60
+          const img = new Image()
+          img.src = e.target.result as string
+          img.onload = () => {
+            // canvas对图片进行缩放
+            // 绘制图片
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+          }
+          // 清除画布
+          ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+          const imageDataURL = canvas.toDataURL(file.type || 'image/png')
+          console.log(imageDataURL)
+
+          document.body.removeChild(canvas)
+          setUserInfo({ ...userInfo, avatar: imageDataURL })
         },
         false
       )
@@ -131,8 +146,19 @@ const UserDetail = () => {
           </div>
         </div>
       </div>
-      <footer className={styles.footer} onClick={handleLogout}>
-        退出登录
+      <footer className={styles.footer}>
+        <span
+          className={styles.goback}
+          onClick={() => {
+            HandleUpdateUserInfo(userInfo)
+            navigate('/message')
+          }}
+        >
+          保存返回
+        </span>
+        <span className={styles.logout} onClick={handleLogout}>
+          退出登录
+        </span>
       </footer>
       <Popup
         visible={nameVisible}
