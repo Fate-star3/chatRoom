@@ -1,16 +1,47 @@
-import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Toast } from 'antd-mobile'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
+import checkImg from '@/assets/images/Group 2@2x.png'
 import groupImg from '@/assets/images/group.png'
 
 import styles from './index.module.scss'
 
+import { createGroup } from '@/server/group'
+import { useModel } from '@/store'
+import { asyncFetch } from '@/utils/tools'
+
 const CreateGroup = () => {
   const navigate = useNavigate()
-  const { state } = useLocation()
+  const { listData, setListData } = useModel('userList')
   const [groupName, setGroupName] = useState<string>('')
-  console.log(state)
-
+  useEffect(() => {
+    console.log('清除缓存')
+    listData.forEach(item => {
+      item.isCheck = false
+      setListData(listData.slice())
+    })
+  }, [])
+  // 创建 群聊
+  const create = () => {
+    if (!groupName) {
+      return Toast.show('请输入群聊名称')
+    }
+    asyncFetch(
+      createGroup({
+        name: groupName || '',
+        member: listData.filter(item => item.isCheck) || []
+      }),
+      {
+        onSuccess(result?) {
+          console.log(result)
+        },
+        onFinish() {
+          navigate(`/messageDetail/${groupName}`)
+        }
+      }
+    )
+  }
   return (
     <div className={styles.container}>
       <header className={styles.back}>
@@ -39,34 +70,43 @@ const CreateGroup = () => {
         />
         <div className={styles.user}>
           <h4>用户</h4>
-          {/* <ul>
-            {JSON.parse(listData).map((item, index) => {
+          <ul>
+            {listData.map((item, index) => {
               return (
-                <li
-                  key={index}
-                  style={{
-                    backgroundColor: `${item?.isTop ? '#eee' : '#fff'}`
-                  }}
-                  className={styles.item}
-                  onClick={() => {
-                    navigate(`/message/detail/${item.account}`, { state: { name: item.name } })
-                  }}
-                >
-                  <div className={styles.list_item}>
-                    <img src={item?.avatar} alt='' />
-                    <span>{item?.name}</span>
+                <li key={index} className={styles.item}>
+                  <div
+                    onClick={() => {
+                      item.isCheck = !item.isCheck
+                      console.log('listData', listData)
+                      setListData([...listData])
+                    }}
+                  >
+                    {item.isCheck ? (
+                      <div className={styles.circle}>
+                        <img src={checkImg} className={styles.check} />
+                      </div>
+                    ) : (
+                      <div className={styles.circle} />
+                    )}
                   </div>
+                  <img
+                    src={item?.avatar}
+                    onClick={() => {
+                      navigate(`/friendDetail`, {
+                        state: { name: item.name, avatar: item.avatar, signature: item.signature }
+                      })
+                    }}
+                    className={styles.avatar}
+                  />
+                  <span>{item?.name}</span>
                 </li>
               )
             })}
-          </ul> */}
+          </ul>
         </div>
-        <div
-          className={styles.create}
-          onClick={() => {
-            navigate('/message')
-          }}
-        >{`创建${1}`}</div>
+        <div className={styles.create} onClick={() => create()}>
+          {`创建${listData.filter(item => item.isCheck).length || ''}`}
+        </div>
       </div>
     </div>
   )

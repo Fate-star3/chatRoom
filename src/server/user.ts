@@ -33,10 +33,11 @@ export const getUserInfo = (account: string) => {
 export const getAllUserInfo = (account?: string) => {
   return request.get<IUserInfo[]>(`/user/search?account=${account}`)
 }
-
+/**
+ * 编辑用户个人信息
+ * @param body
+ * @returns
+ */
 export const updateUserInfo = (body: IUserInfo) => {
-  const options = {
-    data: body
-  }
-  return request.post('/user/update', options)
+  return request.post('/user/update', body)
 }

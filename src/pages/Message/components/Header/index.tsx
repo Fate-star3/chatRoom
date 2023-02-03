@@ -17,11 +17,9 @@ import { IUserInfo } from '@/server/type/user'
 
 interface IHeader {
   userInfo: IUserInfo
-  listData: IUserInfo[]
-  setListData: (value: any) => void
 }
 const Header: React.FC<IHeader> = props => {
-  const { userInfo, listData, setListData } = props
+  const { userInfo } = props
   const navigate = useNavigate()
   const backToUserDetail = () => {
     navigate('/userDetail')
@@ -31,10 +29,7 @@ const Header: React.FC<IHeader> = props => {
       key: 'group',
       icon: <AddCircleOutline />,
       text: '创建群聊',
-      onClick: () =>
-        navigate('/createGroup', {
-          state: { listData: JSON.stringify(listData), setListData }
-        })
+      onClick: () => navigate('/createGroup')
     },
     { key: '', icon: <UserAddOutline />, text: '加好友/群', onClick: () => navigate('/search') },
     { key: 'scan', icon: <ScanningOutline />, text: '扫一扫', disabled: true }

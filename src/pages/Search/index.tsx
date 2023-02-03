@@ -12,6 +12,18 @@ const Search = () => {
   const [searchValue, setSearchValue] = useState<string>('')
   const [listData, setListData] = useState<IUserInfo[]>([])
   useEffect(() => {
+    // 本地存储搜索内容
+
+    if (localStorage.getItem('search') && !searchValue) {
+      setSearchValue(localStorage.getItem('search'))
+    }
+    if (!searchValue) {
+      setListData([])
+    } else {
+      localStorage.setItem('search', searchValue)
+    }
+  }, [searchValue])
+  const search = () => {
     if (searchValue) {
       asyncFetch(getAllUserInfo(searchValue), {
         onSuccess(result) {
@@ -20,14 +32,9 @@ const Search = () => {
         }
       })
     } else {
-      setListData([])
     }
-  }, [searchValue])
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setSearchValue(value)
   }
+
   const sendMessage = (account, name) => {
     navigate(`/message/detail/${account}`, { state: { name } })
   }
@@ -38,12 +45,18 @@ const Search = () => {
           type='text'
           placeholder='请输入'
           value={searchValue}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            handleChange(e)
-          }}
+          onChange={e => setSearchValue(e.target.value)}
         />
-        <i className={styles.search_icon} />
-        <span onClick={() => navigate(-1)}>取消</span>
+        <i className={styles.search_icon} onClick={() => search()} />
+        <span
+          onClick={() => {
+            setSearchValue('')
+            localStorage.removeItem('search')
+            navigate(-1)
+          }}
+        >
+          取消
+        </span>
       </div>
       {listData.length && (
         <div className={styles.search_container}>

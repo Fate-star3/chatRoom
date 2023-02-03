@@ -24,7 +24,7 @@ const FriendDeatil = () => {
           <div
             className={styles.back_icon}
             onClick={() => {
-              navigate(`/message`)
+              navigate(-1)
             }}
           />
           <div className={styles.more} />

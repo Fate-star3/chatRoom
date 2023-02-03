@@ -62,7 +62,12 @@ const MessageDetail = () => {
             }}
           />
           <div className={styles.username}>{state.name}</div>
-          <div className={styles.more} />
+          <div
+            className={styles.more}
+            onClick={() => {
+              state.type === 'group' && navigate('/groupDetail')
+            }}
+          />
         </div>
       </header>
       <ul className={styles.messages} id='messages' />

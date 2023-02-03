@@ -14,6 +14,7 @@ const UserDetail = lazy(() => import('@/pages/UserDetail'))
 const CreateGroup = lazy(() => import('@/pages/CreateGroup'))
 const FriendDetail = lazy(() => import('@/pages/FriendDetail'))
 const AddFriend = lazy(() => import('@/pages/AddFriend'))
+const GroupDetail = lazy(() => import('@/pages/GroupDetail'))
 
 // Routes 不能和react-router-dom 一样
 // 使用lazy动态加载组件时候报错如下
@@ -34,6 +35,7 @@ const RoutesConfig = () => {
         <Route path='/createGroup' element={<CreateGroup />} />
         <Route path='/friendDetail' element={<FriendDetail />} />
         <Route path='/addFriend' element={<AddFriend />} />
+        <Route path='/groupDetail' element={<GroupDetail />} />
 
         <Route path='*' element={<Navigate to='/' />} />
       </Routes>

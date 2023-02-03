@@ -12,5 +12,7 @@ export interface IUserInfo {
   status?: boolean // 登录状态
   email?: string // 邮箱
   identity?: string // 用户身份
-  isTop?: boolean // 是否置顶
+  isTop?: boolean // 在消息列表用户是否置顶
+  isCheck?: boolean // 创建群聊时用户是否选中
+  type: string // 类别
 }

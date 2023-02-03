@@ -69,13 +69,18 @@
 
         .right {
           display: flex;
+          width: 300px;
           align-items: center;
 
           .msg {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
             padding-left: 10px;
+            justify-content: center;
+            margin-right: 50px;
 
             .span {
-              padding-right: 50px;
               font-size: 18px;
 
               &:nth-child(2) {
@@ -88,7 +93,6 @@
           .btn_send {
             width: 86px;
             height: 28px;
-            margin-right: 20px;
             font-size: 14px;
             color: #000;
             background: #ffe431;
