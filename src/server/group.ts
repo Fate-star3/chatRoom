@@ -17,3 +17,10 @@ export const createGroup = (group: Partial<IGroupInfo>) => {
 export const getAllGroup = () => {
   return request.get<IGroupInfo[]>('/group/allGroupInfo')
 }
+/**
+ * 搜索群聊信息
+ * @returns
+ */
+export const searchGroupInfo = (query: string) => {
+  return request.get<IGroupInfo[]>(`/group/searchGroup?account=${query}`)
+}

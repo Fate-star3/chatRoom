@@ -1,6 +1,6 @@
 import { SwipeAction } from 'antd-mobile'
 import { Action } from 'antd-mobile/es/components/swipe-action'
-import { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './index.module.scss'
@@ -9,17 +9,18 @@ import { useModel } from '@/store'
 import { getDate } from '@/utils/date-format'
 
 const MessageList = () => {
-  const { listData, setListData, groupData, setGroupData } = useModel('userList')
+  const { userInfo } = useModel('user')
+  const { memberData, setMemberData } = useModel('userList')
+  // const [memberData, setMemberData] = useState<IUserInfo[]>(userInfo.message)
   const navigate = useNavigate()
   useEffect(() => {
-    localStorage.removeItem('list')
-    if (localStorage.getItem('group')) {
-      console.log(listData, '----------------')
-
-      setListData(listData.slice(0, listData.length).concat(groupData as any))
-    }
+    const tempData = memberData.slice()
+    tempData.forEach(item => {
+      item.isTop = false
+      item.isCheck = false
+    })
+    setMemberData(tempData)
   }, [])
-
   const rightActions: Action[] = [
     {
       key: 'top',
@@ -49,7 +50,7 @@ const MessageList = () => {
   return (
     <div className={styles.list}>
       <ul className={styles.wrap}>
-        {listData.map((item, index) => {
+        {memberData.map((item, index) => {
           return (
             <SwipeAction
               key={index}
@@ -58,22 +59,21 @@ const MessageList = () => {
               onAction={(action: Action) => {
                 const { key } = action
                 if (key === 'delete') {
-                  setListData(pre => pre.filter(element => element.account !== item.account))
+                  setMemberData(pre => pre.filter(element => element.account !== item.account))
                 }
                 if (key === 'top') {
-                  const tempData = listData.slice()
+                  const tempData = memberData.slice()
                   const deleteData = tempData.splice(index, 1)
                   item.isTop = true
-                  setListData([...deleteData, ...tempData])
+                  setMemberData([...deleteData, ...tempData])
                 }
                 if (key === 'failtop') {
                   item.isTop = false
-                  const tempData = listData.slice().filter(item => item.isTop)
-                  const topData = listData.slice().filter(item => !item.isTop)
+                  const tempData = memberData.slice().filter(item => item.isTop)
+                  const topData = memberData.slice().filter(item => !item.isTop)
 
-                  setListData([...tempData, ...topData])
+                  setMemberData([...tempData, ...topData])
                 }
-                // console.log(action, listData)
               }}
             >
               <li
@@ -101,57 +101,6 @@ const MessageList = () => {
             </SwipeAction>
           )
         })}
-        {/* {groupData.map((item, index) => {
-          return (
-            <SwipeAction
-              key={index}
-              closeOnTouchOutside
-              rightActions={item?.isTop ? rightActionsTop : rightActions}
-              onAction={(action: Action) => {
-                const { key } = action
-                if (key === 'delete') {
-                  setGroupData(pre => pre.filter(element => element.group_name !== item.group_name))
-                }
-                if (key === 'top') {
-                  const tempData = groupData.slice()
-                  const deleteData = tempData.splice(index, 1)
-                  item.isTop = true
-                  setGroupData([...deleteData, ...tempData])
-                }
-                if (key === 'failtop') {
-                  item.isTop = false
-                  const tempData = groupData.slice().filter(item => item.isTop)
-                  const topData = groupData.slice().filter(item => !item.isTop)
-
-                  setGroupData([...tempData, ...topData])
-                }
-                // console.log(action, listData)
-              }}
-            >
-              <li
-                key={index}
-                style={{
-                  backgroundColor: `${item?.isTop ? '#eee' : '#fff'}`
-                }}
-                className={styles.item}
-                onClick={() => {
-                  navigate(`/message/detail/${item.group_name}`, {
-                    state: { name: item.group_name }
-                  })
-                }}
-              >
-                <div className={styles.list_item}>
-                  <img src={item?.group_avatar} alt='' />
-                  <div className={styles.circle}>1</div>
-                  <div className={styles.right}>
-                    <span>{item?.group_name}</span>
-                  </div>
-                  <div className={styles.time}>{getDate(item?.date)}</div>
-                </div>
-              </li>
-            </SwipeAction>
-          )
-        })} */}
       </ul>
     </div>
   )

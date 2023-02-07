@@ -8,12 +8,13 @@ import groupImg from '@/assets/images/group.png'
 import styles from './index.module.scss'
 
 import { createGroup } from '@/server/group'
+import { IUserInfo } from '@/server/type/user'
 import { useModel } from '@/store'
 import { asyncFetch } from '@/utils/tools'
 
 const CreateGroup = () => {
   const navigate = useNavigate()
-  const { listData, setListData } = useModel('userList')
+  const { listData, memberData, setMemberData, setListData } = useModel('userList')
   const [groupName, setGroupName] = useState<string>('')
   useEffect(() => {
     console.log('清除缓存')
@@ -34,6 +35,7 @@ const CreateGroup = () => {
       }),
       {
         onSuccess(result?) {
+          setMemberData(pre => pre.concat(result as IUserInfo))
           console.log(result)
         },
         onFinish() {

@@ -54,6 +54,7 @@
       }
 
       .list_item {
+        position: relative;
         display: flex;
         width: 375px;
         height: 64px;
@@ -82,15 +83,18 @@
 
             .span {
               font-size: 18px;
+            }
 
-              &:nth-child(2) {
-                font-size: 12px;
-                color: gray;
-              }
+            .span_gray {
+              font-size: 12px;
+              color: gray;
             }
           }
 
           .btn_send {
+            position: absolute;
+            top: 15px;
+            right: 20px;
             width: 86px;
             height: 28px;
             font-size: 14px;
@@ -100,9 +104,11 @@
           }
 
           .btn_send_f {
+            position: absolute;
+            top: 15px;
+            right: 20px;
             width: 86px;
             height: 28px;
-            margin-right: 20px;
             font-size: 14px;
             color: #4aaaff;
             background: rgba(74, 170, 255, 10%);
@@ -113,6 +119,8 @@
     }
 
     .group {
+      margin-top: 20px;
+
       h2 {
         padding-left: 16px;
         font-size: 26px;
@@ -120,6 +128,7 @@
       }
 
       .list_item {
+        position: relative;
         display: flex;
         width: 375px;
         height: 64px;
@@ -135,31 +144,49 @@
 
         .right {
           display: flex;
+          width: 300px;
           align-items: center;
 
           .msg {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
             padding-left: 10px;
+            justify-content: center;
+            margin-right: 50px;
 
-            /* stylelint-disable-next-line no-descending-specificity */
             .span {
-              padding-right: 100px;
               font-size: 18px;
+            }
 
-              &:nth-child(2) {
-                font-size: 12px;
-                color: gray;
-              }
+            .span_gray {
+              font-size: 12px;
+              color: gray;
             }
           }
 
           .btn_send {
-            width: 80px;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            width: 86px;
             height: 28px;
-            margin-right: 20px;
             font-size: 14px;
             color: #000;
             background: #ffe431;
-            border-radius: 8px;
+            border-radius: 10px;
+          }
+
+          .btn_send_f {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            width: 86px;
+            height: 28px;
+            font-size: 14px;
+            color: #4aaaff;
+            background: rgba(74, 170, 255, 10%);
+            border-radius: 10px;
           }
         }
       }

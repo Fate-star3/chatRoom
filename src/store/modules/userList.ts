@@ -11,6 +11,9 @@ export default () => {
   const [groupData, _setGroupData] = useState<Partial<IGroupInfo>[]>(
     JSON.parse(localStorage.getItem('group')) || []
   )
+  const [memberData, _setMemberData] = useState<IUserInfo[]>(
+    JSON.parse(localStorage.getItem('member')) || []
+  )
 
   const setListData: React.Dispatch<React.SetStateAction<IUserInfo[]>> = useMemoizedFn(value => {
     _setListData(value)
@@ -20,6 +23,16 @@ export default () => {
       _setGroupData(value)
     }
   )
+  const setMemberData: React.Dispatch<React.SetStateAction<IUserInfo[]>> = useMemoizedFn(value => {
+    _setMemberData(value)
+    // console.log(value, typeof value)
+    if (typeof value === 'function') {
+      const data = value(memberData)
+      localStorage.setItem('member', JSON.stringify(data))
+    } else {
+      localStorage.setItem('member', JSON.stringify(value))
+    }
+  })
 
-  return { listData, setListData, groupData, setGroupData }
+  return { listData, setListData, groupData, setGroupData, memberData, setMemberData }
 }

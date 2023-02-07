@@ -5,7 +5,7 @@ import styles from './index.module.scss'
 const FriendDeatil = () => {
   const navigate = useNavigate()
   const {
-    state: { name, avatar, signature }
+    state: { name, avatar, signature, account }
   } = useLocation()
 
   const addFriend = () => {
@@ -13,7 +13,8 @@ const FriendDeatil = () => {
       state: {
         name,
         avatar,
-        signature
+        signature,
+        account
       }
     })
   }

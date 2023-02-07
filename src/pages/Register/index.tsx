@@ -63,7 +63,9 @@ const Register = () => {
               date: data.date,
               signature: data.signature,
               sex: data.sex,
-              birthday: data.birthday
+              birthday: data.birthday,
+              message: data.message,
+              type: data.type
             })
             Toast.show({
               content: '注册成功！',
@@ -107,6 +109,7 @@ const Register = () => {
                 onChange={e => {
                   setAccount(e.target.value)
                 }}
+                maxLength={8}
               />
             </li>
             <li className={styles.item}>

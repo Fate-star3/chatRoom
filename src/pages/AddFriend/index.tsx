@@ -4,11 +4,14 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 import styles from './index.module.scss'
 
+import { useModel } from '@/store'
+
 const AddFriend = () => {
   const navigate = useNavigate()
+  const { listData, setMemberData } = useModel('userList')
   const [inputValue, setInputValue] = useState<string>('')
   const {
-    state: { name, avatar }
+    state: { name, avatar, account }
   } = useLocation()
   const sendFriendMessage = () => {
     if (!inputValue) {
@@ -18,6 +21,13 @@ const AddFriend = () => {
       content: '发送好友请求成功！',
       icon: 'success'
     })
+    console.log(listData.filter(item => item.account === account))
+
+    setMemberData(pre => pre.concat(listData.filter(item => item.account === account)))
+    // localStorage.setItem(
+    //   'member',
+    //   JSON.stringify(listData.filter(item => item.account === account))
+    // )
     navigate(-1)
   }
 

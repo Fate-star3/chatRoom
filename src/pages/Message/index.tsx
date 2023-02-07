@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import Header from './components/Header'
 import MessageList from './components/MessageList'
@@ -10,24 +10,20 @@ import { asyncFetch } from '@/utils/tools'
 
 const Message = () => {
   const { userInfo } = useModel('user')
+  // console.log('userInfo', userInfo)
+
   const { listData, setListData, groupData, setGroupData } = useModel('userList')
-  // 存储好友列表
+
+  // 存储好友列表  添加群聊成员
   useEffect(() => {
     asyncFetch(getAllUserInfo(''), {
       onSuccess(result) {
         console.log(result, 'list')
-        result.forEach(item => {
-          item.isTop = false
-          item.isCheck = false
-        })
         setListData(result.filter(item => item.account !== userInfo.account))
-        if (localStorage.getItem('list')) {
-          setListData(JSON.parse(localStorage.getItem('list')))
-        }
       }
     })
   }, [])
-  // 存储群聊列表
+  // 存储群聊列表 创建群聊模块
   useEffect(() => {
     asyncFetch(getAllGroup(), {
       onSuccess(result) {
@@ -35,6 +31,7 @@ const Message = () => {
           item.isTop = false
         })
         console.log(result, 'GROUP')
+
         setGroupData(result)
         if (localStorage.getItem('group')) {
           setGroupData(JSON.parse(localStorage.getItem('group')))
@@ -44,17 +41,18 @@ const Message = () => {
   }, [])
 
   useEffect(() => {
-    if (listData.length) {
-      localStorage.setItem('list', JSON.stringify(listData))
-      console.log('消息列表并保存到localStorage!')
-    }
-  }, [listData])
-  useEffect(() => {
     if (groupData.length) {
       localStorage.setItem('group', JSON.stringify(groupData))
       console.log('群聊列表并保存到localStorage!')
     }
   }, [groupData])
+  useEffect(() => {
+    if (listData.length) {
+      localStorage.setItem('list', JSON.stringify(listData))
+      console.log('好友列表并保存到localStorage!')
+    }
+  }, [listData])
+
   return (
     <>
       <Header userInfo={userInfo} />

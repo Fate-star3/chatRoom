@@ -14,5 +14,6 @@ export interface IUserInfo {
   identity?: string // 用户身份
   isTop?: boolean // 在消息列表用户是否置顶
   isCheck?: boolean // 创建群聊时用户是否选中
-  type: string // 类别
+  type?: string // 类别
+  message?: IUserInfo[] // 消息列表
 }
