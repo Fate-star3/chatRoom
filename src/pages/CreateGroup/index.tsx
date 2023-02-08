@@ -14,13 +14,13 @@ import { asyncFetch } from '@/utils/tools'
 
 const CreateGroup = () => {
   const navigate = useNavigate()
-  const { listData, memberData, setMemberData, setListData } = useModel('userList')
+  const { memberData, setMemberData } = useModel('userList')
   const [groupName, setGroupName] = useState<string>('')
   useEffect(() => {
     console.log('清除缓存')
-    listData.forEach(item => {
+    memberData.forEach(item => {
       item.isCheck = false
-      setListData(listData.slice())
+      setMemberData(memberData.slice())
     })
   }, [])
   // 创建 群聊
@@ -31,7 +31,7 @@ const CreateGroup = () => {
     asyncFetch(
       createGroup({
         name: groupName || '',
-        member: listData.filter(item => item.isCheck) || []
+        member: memberData.filter(item => item.isCheck) || []
       }),
       {
         onSuccess(result?) {
@@ -73,14 +73,14 @@ const CreateGroup = () => {
         <div className={styles.user}>
           <h4>用户</h4>
           <ul>
-            {listData.map((item, index) => {
+            {memberData.map((item, index) => {
               return (
                 <li key={index} className={styles.item}>
                   <div
                     onClick={() => {
                       item.isCheck = !item.isCheck
-                      console.log('listData', listData)
-                      setListData([...listData])
+                      console.log('memberData', memberData)
+                      setMemberData([...memberData])
                     }}
                   >
                     {item.isCheck ? (
@@ -107,7 +107,7 @@ const CreateGroup = () => {
           </ul>
         </div>
         <div className={styles.create} onClick={() => create()}>
-          {`创建${listData.filter(item => item.isCheck).length || ''}`}
+          {`创建${memberData.filter(item => item.isCheck).length || ''}`}
         </div>
       </div>
     </div>

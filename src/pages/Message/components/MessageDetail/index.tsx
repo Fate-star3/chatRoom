@@ -58,14 +58,25 @@ const MessageDetail = () => {
           <div
             className={styles.back_icon}
             onClick={() => {
-              navigate(`/message`)
+              navigate(-1)
             }}
           />
           <div className={styles.username}>{state.name}</div>
           <div
             className={styles.more}
             onClick={() => {
-              state.type === 'group' && navigate('/groupDetail')
+              if (state.type === 'group') {
+                navigate('/groupDetail')
+              } else {
+                navigate('/friendDetail', {
+                  state: {
+                    name: state.name,
+                    avatar: state.avatar,
+                    signature: state.signature,
+                    account: state.account
+                  }
+                })
+              }
             }}
           />
         </div>

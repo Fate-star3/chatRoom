@@ -84,7 +84,13 @@ const MessageList = () => {
                 className={styles.item}
                 onClick={() => {
                   navigate(`/message/detail/${item.account}`, {
-                    state: { name: item.name, type: item.type }
+                    state: {
+                      name: item.name,
+                      type: item.type,
+                      avatar: item.avatar,
+                      signature: item.signature,
+                      account: item.account
+                    }
                   })
                 }}
               >

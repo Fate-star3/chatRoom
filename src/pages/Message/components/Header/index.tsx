@@ -42,12 +42,6 @@ const Header: React.FC<IHeader> = props => {
         </div>
         {/* <div className={styles.middle} /> */}
         <div className={styles.right}>
-          <div
-            className={styles.search}
-            onClick={() => {
-              navigate('/search')
-            }}
-          />
           <Popover.Menu actions={actions} placement='bottom-end' trigger='click' destroyOnHide>
             <div className={styles.add} />
           </Popover.Menu>

@@ -19,23 +19,10 @@
 
     /* 添加& 是为了取消空格  在a元素本身上添加类名 而不是子代元素 */
     &.active {
-      color: #eef20d;
+      color: #548cda !important;
 
-      div:first-child {
+      div {
         transform: scale(0.83);
-        transform-origin: 50% 0;
-      }
-
-      div.icon_home {
-        background-image: url('https://p0.meituan.net/openhfiveimages/f7f4061b6d1e5a9a5a6144bedfb593432668.png');
-      }
-
-      div.icon_order {
-        background-image: url('https://p0.meituan.net/openhfiveimages/fa201e6feb336022931346cca218b8042604.png');
-      }
-
-      div.icon_mine {
-        background-image: url('https://p0.meituan.net/openhfiveimages/af323b0b129aaf7534b2d4e2847c1beb2070.png');
       }
     }
 

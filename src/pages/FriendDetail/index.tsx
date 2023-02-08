@@ -1,12 +1,20 @@
+import { Toast } from 'antd-mobile'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 import styles from './index.module.scss'
 
+import { useModel } from '@/store'
+
 const FriendDeatil = () => {
   const navigate = useNavigate()
+  const { memberData, setMemberData } = useModel('userList')
   const {
     state: { name, avatar, signature, account }
   } = useLocation()
+  console.log(
+    memberData.filter(item => item.account === account),
+    account
+  )
 
   const addFriend = () => {
     navigate('/addFriend', {
@@ -17,6 +25,11 @@ const FriendDeatil = () => {
         account
       }
     })
+  }
+  const deleteFriend = () => {
+    setMemberData(pre => pre.filter(item => item.account !== account))
+    Toast.show('删除成功')
+    navigate('/')
   }
   return (
     <div className={styles.container}>
@@ -40,9 +53,15 @@ const FriendDeatil = () => {
           <div className={styles.name}>{`昵称：${name}`}</div>
           <div className={styles.signature}>{signature}</div>
         </div>
-        <div className={styles.btn} onClick={() => addFriend()}>
-          加好友
-        </div>
+        {memberData.filter(item => item.account === account).length > 0 ? (
+          <div className={styles.btn_delete} onClick={() => deleteFriend()}>
+            删除好友
+          </div>
+        ) : (
+          <div className={styles.btn_add} onClick={() => addFriend()}>
+            加好友
+          </div>
+        )}
       </div>
     </div>
   )

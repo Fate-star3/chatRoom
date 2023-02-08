@@ -55,6 +55,7 @@ const Login = () => {
       {
         onSuccess(data) {
           console.log(userInfo, data, 'login')
+          setUserInfo(data)
           setCookie('usertoken', data?.token)
           setLoginStatus(true)
           Toast.show({

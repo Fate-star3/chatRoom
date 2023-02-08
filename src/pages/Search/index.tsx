@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './index.module.scss'
@@ -12,6 +12,7 @@ import { asyncFetch } from '@/utils/tools'
 const Search = () => {
   const navigate = useNavigate()
   const { memberData } = useModel('userList')
+  const { userInfo } = useModel('user')
   const [searchValue, setSearchValue] = useState<string>('')
   const [listData, setListData] = useState<IUserInfo[]>([])
   const [groupData, setGroupData] = useState<IUserInfo[]>([])
@@ -34,7 +35,7 @@ const Search = () => {
       asyncFetch(getAllUserInfo(searchValue), {
         onSuccess(result) {
           console.log(result, 'user')
-          setListData(result)
+          setListData(result.filter(item => item.account !== userInfo.account))
         }
       })
     }
@@ -71,8 +72,8 @@ const Search = () => {
           取消
         </span>
       </div>
-      {listData.length && (
-        <div className={styles.search_container}>
+      <div className={styles.search_container}>
+        {listData.length > 0 && (
           <div className={styles.user}>
             <h2>用户</h2>
             <ul className={styles.wrap}>
@@ -80,11 +81,23 @@ const Search = () => {
                 return (
                   <li key={index} className={styles.item}>
                     <div className={styles.list_item}>
-                      <img src={item?.avatar} alt='' />
+                      <img
+                        src={item?.avatar}
+                        alt=''
+                        onClick={() =>
+                          navigate('/friendDetail', {
+                            state: {
+                              name: item.name,
+                              avatar: item.avatar,
+                              signature: item.signature
+                            }
+                          })
+                        }
+                      />
                       <div className={styles.right}>
                         <div className={styles.msg}>
                           <span className={styles.span}>{item?.name}</span>
-                          <span className={styles.span}>{item?.account}</span>
+                          <span className={styles.span_gray}>{item?.account}</span>
                         </div>
                         {memberData.filter(ele => ele.account === item.account).length ? (
                           <button
@@ -119,6 +132,8 @@ const Search = () => {
               })}
             </ul>
           </div>
+        )}
+        {groupData.length > 0 && (
           <div className={styles.group}>
             <h2>群组</h2>
             <ul className={styles.wrap}>
@@ -126,7 +141,19 @@ const Search = () => {
                 return (
                   <li key={index} className={styles.item}>
                     <div className={styles.list_item}>
-                      <img src={item?.avatar} alt='' />
+                      <img
+                        src={item?.avatar}
+                        alt=''
+                        onClick={() =>
+                          navigate('/groupDetail', {
+                            state: {
+                              name: item.name,
+                              avatar: item.avatar,
+                              signature: item.signature
+                            }
+                          })
+                        }
+                      />
                       <div className={styles.right}>
                         <div className={styles.msg}>
                           <span className={styles.span}>{item?.name}</span>
@@ -165,8 +192,8 @@ const Search = () => {
               })}
             </ul>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }
