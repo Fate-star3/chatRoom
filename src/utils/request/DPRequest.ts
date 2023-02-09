@@ -115,7 +115,7 @@ export default class DPRequest {
   }
 
   get<T>(url: string, data?: IRequestParams, config?: HttpRequestConfig) {
-    url += serializeObject(formatParams(data))
+    url += serializeObject(formatParams(data) as any)
     return this.request<T>({
       url,
       method: 'GET',
