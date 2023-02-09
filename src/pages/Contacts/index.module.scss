@@ -81,16 +81,16 @@
         right: 2px;
         width: 16px;
         height: 16px;
-        font-size: 14px;
-        line-height: 18px;
+        font-size: 12px;
+        line-height: 16px;
         color: #fff;
         text-align: center;
         background: #ff5d5b;
-        border-radius: 9px;
+        border-radius: 50%;
       }
 
       .left {
-        font-size: 16px;
+        font-size: 14px;
       }
 
       .right {
@@ -99,7 +99,7 @@
         padding-right: 20px;
 
         span {
-          font-size: 16px;
+          font-size: 14px;
         }
       }
     }
@@ -127,7 +127,7 @@
       }
 
       .left {
-        font-size: 16px;
+        font-size: 14px;
       }
 
       .right {
@@ -136,7 +136,7 @@
         padding-right: 20px;
 
         span {
-          font-size: 16px;
+          font-size: 14px;
         }
       }
     }
@@ -168,7 +168,7 @@
 
           .right {
             span {
-              font-size: 18px;
+              font-size: 14px;
               font-weight: 400;
               letter-spacing: -0.62px;
               color: #272832;
@@ -178,7 +178,7 @@
               max-width: 200px;
               padding-top: 5px;
               overflow: hidden;
-              font-size: 14px;
+              font-size: 12px;
               font-weight: 400;
               letter-spacing: -0.48px;
               color: rgba(39, 40, 50, 60%);

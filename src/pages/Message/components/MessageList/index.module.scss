@@ -1,6 +1,6 @@
 .list {
   padding-bottom: 64px;
-  margin-top: 44px;
+  margin-top: 54px;
   background-color: #fff;
 
   .wrap {
@@ -24,21 +24,21 @@
 
         .circle {
           position: absolute;
-          top: 0;
+          top: 5px;
           left: 50px;
           width: 16px;
           height: 16px;
           font-size: 14px;
-          line-height: 18px;
+          line-height: 16px;
           color: #fff;
           text-align: center;
           background: #ff5d5b;
-          border-radius: 9px;
+          border-radius: 50%;
         }
 
         .right {
           span {
-            font-size: 18px;
+            font-size: 14px;
             font-weight: 400;
             letter-spacing: -0.62px;
             color: #272832;
@@ -48,7 +48,7 @@
             max-width: 200px;
             padding-top: 5px;
             overflow: hidden;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 400;
             letter-spacing: -0.48px;
             color: rgba(39, 40, 50, 60%);

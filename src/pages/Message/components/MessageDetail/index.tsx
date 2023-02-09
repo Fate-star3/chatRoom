@@ -108,7 +108,7 @@ const MessageDetail = () => {
                 backgroundColor: '#07C160',
                 borderRadius: '5px'
               }}
-              className='submit'
+              className={styles.submit}
               onClick={e => {
                 e.preventDefault()
                 sendMessage()

@@ -178,6 +178,8 @@ const UserDetail = () => {
           className={styles.textArea}
           placeholder='点击任意屏幕保存'
           value={nameValue}
+          autoSize={{ minRows: 6, maxRows: 10 }}
+          style={{ padding: '5px', fontSize: '14px' }}
           onChange={value => {
             setNameValue(value)
           }}
@@ -200,6 +202,8 @@ const UserDetail = () => {
           maxLength={30}
           className={styles.textArea}
           placeholder='点击任意屏幕保存'
+          autoSize={{ minRows: 6, maxRows: 10 }}
+          style={{ padding: '5px', fontSize: '14px' }}
           value={signatureValue}
           onChange={value => {
             setSignatureValue(value)
