@@ -50,7 +50,7 @@
     .user {
       h2 {
         padding-left: 16px;
-        font-size: 20px;
+        font-size: 18px;
         font-weight: bolder;
       }
 
@@ -83,7 +83,7 @@
             margin-right: 50px;
 
             .span {
-              font-size: 16px;
+              font-size: 14px;
             }
 
             .span_gray {
@@ -96,24 +96,28 @@
             position: absolute;
             top: 15px;
             right: 20px;
-            width: 86px;
+            width: 66px;
             height: 28px;
-            font-size: 14px;
+            font-size: 12px;
+            line-height: 28px;
             color: #000;
+            text-align: center;
             background: #ffe431;
-            border-radius: 10px;
+            border-radius: 8px;
           }
 
           .btn_send_f {
             position: absolute;
             top: 15px;
             right: 20px;
-            width: 86px;
+            width: 66px;
             height: 28px;
-            font-size: 14px;
+            font-size: 12px;
+            line-height: 28px;
             color: #4aaaff;
+            text-align: center;
             background: rgba(74, 170, 255, 10%);
-            border-radius: 10px;
+            border-radius: 8px;
           }
         }
       }
@@ -124,7 +128,7 @@
 
       h2 {
         padding-left: 16px;
-        font-size: 20px;
+        font-size: 18px;
         font-weight: bolder;
       }
 
@@ -157,7 +161,7 @@
             margin-right: 50px;
 
             .span {
-              font-size: 16px;
+              font-size: 14px;
             }
 
             .span_gray {
@@ -170,24 +174,28 @@
             position: absolute;
             top: 15px;
             right: 20px;
-            width: 86px;
+            width: 66px;
             height: 28px;
-            font-size: 14px;
+            font-size: 12px;
+            line-height: 28px;
             color: #000;
+            text-align: center;
             background: #ffe431;
-            border-radius: 10px;
+            border-radius: 8px;
           }
 
           .btn_send_f {
             position: absolute;
             top: 15px;
             right: 20px;
-            width: 86px;
+            width: 66px;
             height: 28px;
-            font-size: 14px;
+            font-size: 12px;
+            line-height: 28px;
             color: #4aaaff;
+            text-align: center;
             background: rgba(74, 170, 255, 10%);
-            border-radius: 10px;
+            border-radius: 8px;
           }
         }
       }

@@ -98,16 +98,6 @@ const MessageDetail = () => {
           {value ? (
             <Button
               type='submit'
-              style={{
-                width: '60px',
-                height: '34px',
-                fontSize: '14px',
-                margin: '10px 10px 0 0',
-                transition: 'all 1s ease-out',
-                color: '#fff',
-                backgroundColor: '#07C160',
-                borderRadius: '5px'
-              }}
               className={styles.submit}
               onClick={e => {
                 e.preventDefault()

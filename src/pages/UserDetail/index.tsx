@@ -78,7 +78,7 @@ const UserDetail = () => {
           console.log(imageDataURL)
 
           document.body.removeChild(canvas)
-          setUserInfo({ ...userInfo, avatar: imageDataURL })
+          setUserInfo({ ...userInfo, avatar: e.target.result })
         },
         false
       )
