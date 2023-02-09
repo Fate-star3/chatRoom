@@ -13,7 +13,7 @@ const MessageDetail = () => {
   const navigate = useNavigate()
   const { state } = useLocation()
   console.log(useLocation())
-  const socket = useMemo(() => io('http://127.0.0.1:8000/'), [])
+  const socket = io(process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8000' : '/socket')
   const messages = document.getElementById('messages') as HTMLElement
   const input = document.getElementById('input') as HTMLInputElement
 

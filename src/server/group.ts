@@ -8,19 +8,19 @@ import request from '@/utils/request'
  * @returns
  */
 export const createGroup = (group: Partial<IGroupInfo>) => {
-  return request.post('/group/create', group)
+  return request.post('/api/group/create', group)
 }
 /**
  * 获取群聊信息
  * @returns
  */
 export const getAllGroup = () => {
-  return request.get<IGroupInfo[]>('/group/allGroupInfo')
+  return request.get<IGroupInfo[]>('/api/group/allGroupInfo')
 }
 /**
  * 搜索群聊信息
  * @returns
  */
 export const searchGroupInfo = (query: string) => {
-  return request.get<IGroupInfo[]>(`/group/searchGroup?account=${query}`)
+  return request.get<IGroupInfo[]>(`/api/group/searchGroup?account=${query}`)
 }
