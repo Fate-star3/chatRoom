@@ -3,6 +3,7 @@ import { resolve } from 'path'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
+const env = process.env.ENV
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
@@ -24,6 +25,10 @@ export default defineConfig({
         javascriptEnabled: true // 支持内联 JavaScript
       }
     }
+  },
+  define: {
+    'process.env.ENV': JSON.stringify(process.env.ENV),
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
   },
   server: {
     port: 3000,

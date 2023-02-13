@@ -12,6 +12,8 @@ const MessageDetail = () => {
   const [value, setValue] = useState<string>('')
   const navigate = useNavigate()
   const { state } = useLocation()
+  console.log(process.env.NODE_ENV, process.env.ENV)
+
   console.log(useLocation(), process.env.NODE_ENV !== 'development')
   const socket = io(
     process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8000' : 'http://47.97.80.211:8000'

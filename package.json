@@ -10,6 +10,7 @@
     "build:dev": "tsc && cross-env ENV=dev vite build",
     "build:pre": "tsc && cross-env ENV=pre vite build",
     "build:prod": "tsc && cross-env ENV=prod vite build",
+    "test": "cross-env ENV=prod vite",
     "lint": "eslint src --no-fix",
     "lint:style": "stylelint \"src/**/*.scss\" --custom-syntax postcss-scss",
     "lint:style:fix": "stylelint \"src/**/*.scss\" --fix --custom-syntax postcss-scss",
@@ -20,6 +21,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
     "@typescript-eslint/parser": "^5.46.0",
+    "ali-oss": "^6.17.1",
     "antd-mobile-icons": "^0.3.0",
     "axios": "^1.2.0",
     "dayjs": "^1.11.7",

@@ -10,6 +10,7 @@ import styles from './index.module.scss'
 import Modal from '@/components/Modal'
 import { updateUserInfo } from '@/server/user'
 import { getModel } from '@/store'
+import { client as oss } from '@/utils/oss'
 import { removeCookie } from '@/utils/storage'
 import { asyncFetch } from '@/utils/tools'
 
@@ -43,6 +44,24 @@ const UserDetail = () => {
       }
     })
   }
+  async function putObject(data: File | Buffer | Blob) {
+    try {
+      // 填写Object完整路径。Object完整路径中不能包含Bucket名称。
+      // 您可以通过自定义文件名（例如exampleobject.txt）或文件完整路径（例如exampledir/exampleobject.txt）的形式实现将数据上传到当前Bucket或Bucket中的指定目录。
+      // data对象可以自定义为file对象、Blob数据或者OSS Buffer。
+      const result = await oss.put('images/avatar.png', data, {
+        headers: {
+          'Content-Type': 'image/jpg',
+          'Content-Disposition': 'inline',
+          'x-oss-forbid-overwrite': 'false'
+        }
+      })
+      console.log(result)
+      setUserInfo({ ...userInfo, avatar: result.url })
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   // 更换头像
   const updateAvatar = () => {
@@ -54,38 +73,40 @@ const UserDetail = () => {
     inputFile.addEventListener('change', () => {
       const file = inputFile.files[0]
       const reader = new FileReader()
+      putObject(file)
+      // reader.addEventListener(
+      //   'load',
+      //   e => {
+      //     const canvas = document.createElement('canvas')
+      //     const ctx = canvas.getContext('2d')
+      //     // canvas.style.display = 'none'
+      //     document.body.appendChild(canvas)
+      //     canvas.width = 60
+      //     canvas.height = 60
+      //     const img = new Image()
+      //     img.src = e.target.result as string
+      //     img.onload = () => {
+      //       // canvas对图片进行缩放
+      //       // 绘制图片
+      //       ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+      //     }
+      //     // 清除画布
+      //     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      reader.addEventListener(
-        'load',
-        e => {
-          const canvas = document.createElement('canvas')
-          const ctx = canvas.getContext('2d')
-          // canvas.style.display = 'none'
-          document.body.appendChild(canvas)
-          canvas.width = 60
-          canvas.height = 60
-          const img = new Image()
-          img.src = e.target.result as string
-          img.onload = () => {
-            // canvas对图片进行缩放
-            // 绘制图片
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-          }
-          // 清除画布
-          ctx.clearRect(0, 0, canvas.width, canvas.height)
+      //     const imageDataURL = canvas.toDataURL(file.type || 'image/png')
+      //     console.log(imageDataURL)
 
-          const imageDataURL = canvas.toDataURL(file.type || 'image/png')
-          console.log(imageDataURL)
+      //     document.body.removeChild(canvas)
+      //     console.log(e.target.result)
 
-          document.body.removeChild(canvas)
-          setUserInfo({ ...userInfo, avatar: e.target.result })
-        },
-        false
-      )
+      //     setUserInfo({ ...userInfo, avatar: e.target.result })
+      //   },
+      //   false
+      // )
 
-      if (file) {
-        reader.readAsDataURL(file)
-      }
+      // if (file) {
+      //   reader.readAsBinaryString(file)
+      // }
     })
   }
   return (
