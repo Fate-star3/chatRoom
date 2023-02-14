@@ -41,3 +41,7 @@ export const getAllUserInfo = (account?: string) => {
 export const updateUserInfo = (body: IUserInfo) => {
   return request.post('/api/user/update', body)
 }
+
+export const deleteUserInfo = (account: { account: string }) => {
+  return request.post('/api/user/delete', account)
+}

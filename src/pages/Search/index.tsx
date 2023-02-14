@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import styles from './index.module.scss'
 
 import { searchGroupInfo } from '@/server/group'
+import { IGroupInfo } from '@/server/type/group'
 import { IUserInfo } from '@/server/type/user'
 import { getAllUserInfo } from '@/server/user'
 import { useModel } from '@/store'
@@ -11,11 +12,10 @@ import { asyncFetch } from '@/utils/tools'
 
 const Search = () => {
   const navigate = useNavigate()
-  const { memberData } = useModel('userList')
   const { userInfo } = useModel('user')
   const [searchValue, setSearchValue] = useState<string>('')
   const [listData, setListData] = useState<IUserInfo[]>([])
-  const [groupData, setGroupData] = useState<IUserInfo[]>([])
+  const [groupData, setGroupData] = useState<IGroupInfo[]>([])
   useEffect(() => {
     if (!searchValue) {
       setListData([])
@@ -89,7 +89,8 @@ const Search = () => {
                             state: {
                               name: item.name,
                               avatar: item.avatar,
-                              signature: item.signature
+                              signature: item.signature,
+                              account: item.account
                             }
                           })
                         }
@@ -99,7 +100,7 @@ const Search = () => {
                           <span className={styles.span}>{item?.name}</span>
                           <span className={styles.span_gray}>{item?.account}</span>
                         </div>
-                        {memberData.filter(ele => ele.account === item.account).length ? (
+                        {userInfo.friend.filter(ele => ele.account === item.account).length ? (
                           <button
                             type='button'
                             className={styles.btn_send}
@@ -149,7 +150,7 @@ const Search = () => {
                             state: {
                               name: item.name,
                               avatar: item.avatar,
-                              signature: item.signature
+                              announcement: item.announcement
                             }
                           })
                         }
@@ -159,7 +160,7 @@ const Search = () => {
                           <span className={styles.span}>{item?.name}</span>
                           <span className={styles.span_gray}>{item?.account}</span>
                         </div>
-                        {memberData.filter(ele => ele.account === item.account).length ? (
+                        {userInfo.group.filter(ele => ele.account === item.account).length ? (
                           <button
                             type='button'
                             className={styles.btn_send}
@@ -176,8 +177,10 @@ const Search = () => {
                                 state: {
                                   name: item?.name,
                                   avatar: item?.avatar,
-                                  signature: item?.signature,
-                                  account: item.account
+                                  announcement: item?.announcement,
+                                  account: item.account,
+                                  date: item.date,
+                                  member: item.member
                                 }
                               })
                             }}

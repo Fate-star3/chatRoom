@@ -1,6 +1,5 @@
 import { SwipeAction } from 'antd-mobile'
 import { Action } from 'antd-mobile/es/components/swipe-action'
-import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './index.module.scss'
@@ -9,18 +8,9 @@ import { useModel } from '@/store'
 import { getDate } from '@/utils/date-format'
 
 const MessageList = () => {
-  const { userInfo } = useModel('user')
-  const { memberData, setMemberData } = useModel('userList')
-  // const [memberData, setMemberData] = useState<IUserInfo[]>(userInfo.message)
+  const { userInfo, setUserInfo } = useModel('user')
   const navigate = useNavigate()
-  useEffect(() => {
-    const tempData = memberData.slice()
-    tempData.forEach(item => {
-      item.isTop = false
-      item.isCheck = false
-    })
-    setMemberData(tempData)
-  }, [])
+
   const rightActions: Action[] = [
     {
       key: 'top',
@@ -50,7 +40,7 @@ const MessageList = () => {
   return (
     <div className={styles.list}>
       <ul className={styles.wrap}>
-        {memberData.map((item, index) => {
+        {userInfo?.message.map((item, index) => {
           return (
             <SwipeAction
               key={index}
@@ -59,20 +49,23 @@ const MessageList = () => {
               onAction={(action: Action) => {
                 const { key } = action
                 if (key === 'delete') {
-                  setMemberData(pre => pre.filter(element => element.account !== item.account))
+                  setUserInfo({
+                    ...userInfo,
+                    message: userInfo.message.filter(element => element.account !== item.account)
+                  })
                 }
                 if (key === 'top') {
-                  const tempData = memberData.slice()
+                  const tempData = userInfo.message.slice()
                   const deleteData = tempData.splice(index, 1)
                   item.isTop = true
-                  setMemberData([...deleteData, ...tempData])
+                  setUserInfo({ ...userInfo, message: [...deleteData, ...tempData] })
                 }
                 if (key === 'failtop') {
                   item.isTop = false
-                  const tempData = memberData.slice().filter(item => item.isTop)
-                  const topData = memberData.slice().filter(item => !item.isTop)
+                  const tempData = userInfo.message.slice().filter(item => item.isTop)
+                  const topData = userInfo.message.slice().filter(item => !item.isTop)
 
-                  setMemberData([...tempData, ...topData])
+                  setUserInfo({ ...userInfo, message: [...tempData, ...topData] })
                 }
               }}
             >

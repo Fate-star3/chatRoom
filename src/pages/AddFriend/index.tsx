@@ -1,3 +1,4 @@
+import { message } from 'antd'
 import { Toast } from 'antd-mobile'
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -8,7 +9,8 @@ import { useModel } from '@/store'
 
 const AddFriend = () => {
   const navigate = useNavigate()
-  const { listData, setMemberData } = useModel('userList')
+  const { userInfo, setUserInfo } = useModel('user')
+  const { listData } = useModel('userList')
   const [inputValue, setInputValue] = useState<string>('')
   const {
     state: { name, avatar, account }
@@ -17,17 +19,23 @@ const AddFriend = () => {
     if (!inputValue) {
       return Toast.show('请输入加好友信息')
     }
+    if (userInfo.newFriend.filter(item => item.account === account).length !== 0) {
+      return message.error('重复添加！')
+    }
     Toast.show({
       content: '发送好友请求成功！',
       icon: 'success'
     })
-    console.log(listData.filter(item => item.account === account))
-
-    setMemberData(pre => pre.concat(listData.filter(item => item.account === account)))
-    // localStorage.setItem(
-    //   'member',
-    //   JSON.stringify(listData.filter(item => item.account === account))
-    // )
+    listData.forEach(item => {
+      if (item.account === account) {
+        item.leaveMessage = inputValue
+      }
+    })
+    setUserInfo({
+      ...userInfo,
+      newFriend: listData.filter(item => item.account === account),
+      message: userInfo.message.concat(listData.filter(item => item.account === account))
+    })
     navigate(-1)
   }
 

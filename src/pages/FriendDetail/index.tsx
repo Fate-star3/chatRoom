@@ -7,13 +7,14 @@ import { useModel } from '@/store'
 
 const FriendDeatil = () => {
   const navigate = useNavigate()
-  const { memberData, setMemberData } = useModel('userList')
+  const { userInfo, setUserInfo } = useModel('user')
   const {
     state: { name, avatar, signature, account }
   } = useLocation()
   console.log(
-    memberData.filter(item => item.account === account),
-    account
+    userInfo.message.filter(item => item.account === account),
+    account,
+    userInfo.account
   )
 
   const addFriend = () => {
@@ -27,7 +28,11 @@ const FriendDeatil = () => {
     })
   }
   const deleteFriend = () => {
-    setMemberData(pre => pre.filter(item => item.account !== account))
+    setUserInfo({
+      ...userInfo,
+      message: userInfo.message.filter(item => item.account !== account),
+      friend: userInfo.friend.filter(item => item.account !== account)
+    })
     Toast.show('删除成功')
     navigate('/')
   }
@@ -53,14 +58,18 @@ const FriendDeatil = () => {
           <div className={styles.name}>{`昵称：${name}`}</div>
           <div className={styles.signature}>{signature}</div>
         </div>
-        {memberData.filter(item => item.account === account).length > 0 ? (
-          <div className={styles.btn_delete} onClick={() => deleteFriend()}>
-            删除好友
-          </div>
-        ) : (
-          <div className={styles.btn_add} onClick={() => addFriend()}>
-            加好友
-          </div>
+        {account !== userInfo.account && (
+          <>
+            {userInfo.friend.filter(item => item.account === account).length > 0 ? (
+              <div className={styles.btn_delete} onClick={() => deleteFriend()}>
+                删除好友
+              </div>
+            ) : (
+              <div className={styles.btn_add} onClick={() => addFriend()}>
+                加好友
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

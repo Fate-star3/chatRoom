@@ -10,19 +10,13 @@ import styles from './index.module.scss'
 import { createGroup } from '@/server/group'
 import { IUserInfo } from '@/server/type/user'
 import { useModel } from '@/store'
-import { asyncFetch } from '@/utils/tools'
+import { asyncFetch, getDisplayTime } from '@/utils/tools'
 
 const CreateGroup = () => {
   const navigate = useNavigate()
-  const { memberData, setMemberData } = useModel('userList')
+  const { userInfo, setUserInfo } = useModel('user')
   const [groupName, setGroupName] = useState<string>('')
-  useEffect(() => {
-    console.log('清除缓存')
-    memberData.forEach(item => {
-      item.isCheck = false
-      setMemberData(memberData.slice())
-    })
-  }, [])
+
   // 创建 群聊
   const create = () => {
     if (!groupName) {
@@ -31,11 +25,12 @@ const CreateGroup = () => {
     asyncFetch(
       createGroup({
         name: groupName || '',
-        member: memberData.filter(item => item.isCheck) || []
+        member: userInfo.friend.filter(item => item.isCheck) || [],
+        date: getDisplayTime(+new Date())
       }),
       {
         onSuccess(result?) {
-          setMemberData(pre => pre.concat(result as IUserInfo))
+          setUserInfo({ ...userInfo, message: userInfo.message.concat(result as IUserInfo) })
           console.log(result)
         },
         onFinish() {
@@ -73,14 +68,13 @@ const CreateGroup = () => {
         <div className={styles.user}>
           <h4>用户</h4>
           <ul>
-            {memberData.map((item, index) => {
+            {userInfo.message.map((item, index) => {
               return (
                 <li key={index} className={styles.item}>
                   <div
                     onClick={() => {
                       item.isCheck = !item.isCheck
-                      console.log('memberData', memberData)
-                      setMemberData([...memberData])
+                      setUserInfo({ ...userInfo, message: [...userInfo.message] })
                     }}
                   >
                     {item.isCheck ? (
@@ -95,7 +89,12 @@ const CreateGroup = () => {
                     src={item?.avatar}
                     onClick={() => {
                       navigate(`/friendDetail`, {
-                        state: { name: item.name, avatar: item.avatar, signature: item.signature }
+                        state: {
+                          name: item.name,
+                          avatar: item.avatar,
+                          signature: item.signature,
+                          account: item.account
+                        }
                       })
                     }}
                     className={styles.avatar}
@@ -107,7 +106,7 @@ const CreateGroup = () => {
           </ul>
         </div>
         <div className={styles.create} onClick={() => create()}>
-          {`创建${memberData.filter(item => item.isCheck).length || ''}`}
+          {`创建${userInfo.message.filter(item => item.isCheck).length || ''}`}
         </div>
       </div>
     </div>

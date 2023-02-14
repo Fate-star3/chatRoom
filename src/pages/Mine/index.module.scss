@@ -1,0 +1,77 @@
+.container {
+  height: 100vh;
+  background: #f3f4f6;
+
+  .header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100px;
+    background-color: #fff;
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      margin-left: 20px;
+      border-radius: 10px;
+    }
+
+    .wrap {
+      display: flex;
+      margin-left: 10px;
+      font-size: 14px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .icon {
+      position: absolute;
+      right: 15px;
+      font-size: 13px;
+
+      img {
+        width: 10px;
+        height: 10px;
+      }
+    }
+  }
+
+  .content {
+    margin-top: 10px;
+    background-color: #fff;
+
+    .server {
+      display: flex;
+      align-items: center;
+      height: 40px;
+      margin-left: 10px;
+
+      span {
+        margin-left: 10px;
+      }
+
+      img {
+        width: 10px;
+        height: 10px;
+        margin-left: 250px;
+      }
+    }
+
+    .setting {
+      display: flex;
+      align-items: center;
+      height: 40px;
+      margin-left: 10px;
+
+      span {
+        margin-left: 10px;
+      }
+
+      img {
+        width: 10px;
+        height: 10px;
+        margin-left: 280px;
+      }
+    }
+  }
+}

@@ -39,9 +39,8 @@ const Header: React.FC<IHeader> = props => {
       <div className={styles.wrap}>
         <div className={styles.left} onClick={() => backToUserDetail()}>
           <img src={userInfo?.avatar} />
-          <span>{userInfo.name}</span>
+          <span>{userInfo?.name}</span>
         </div>
-        {/* <div className={styles.middle} /> */}
         <div className={styles.right}>
           <Popover.Menu actions={actions} placement='bottom-end' trigger='click' destroyOnHide>
             <div className={styles.add} />

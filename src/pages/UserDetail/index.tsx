@@ -1,5 +1,6 @@
-import { Picker, CascadePicker, TextArea, Popup } from 'antd-mobile'
-import { useEffect, useState } from 'react'
+import { Picker, CascadePicker, TextArea, Popup, Dialog } from 'antd-mobile'
+import { Action } from 'antd-mobile/es/components/dialog'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import next from '@/assets/images/next.png'
@@ -8,6 +9,7 @@ import { birthdayColumnsData } from './constants'
 import styles from './index.module.scss'
 
 import Modal from '@/components/Modal'
+import { IUserInfo } from '@/server/type/user'
 import { updateUserInfo } from '@/server/user'
 import { getModel } from '@/store'
 import { client as oss } from '@/utils/oss'
@@ -19,28 +21,25 @@ const UserDetail = () => {
   const navigate = useNavigate()
   console.log(userInfo)
 
-  // 退出登录
-  const handleLogout = () => {
-    removeCookie('usertoken')
-    navigate('/login')
-  }
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   // 名称
   const [nameVisible, setNameVisible] = useState<boolean>(false)
-  const [nameValue, setNameValue] = useState<string>(userInfo.name)
+  const [nameValue, setNameValue] = useState<string>(userInfo?.name)
   // 签名
   const [signatureVisible, setSignatureVisible] = useState<boolean>(false)
-  const [signatureValue, setSignatureValue] = useState<string>(userInfo.signature)
+  const [signatureValue, setSignatureValue] = useState<string>(userInfo?.signature)
   // 性别
   const [sexVisible, setSexVisible] = useState<boolean>(false)
   const [sexValue, setSexValue] = useState<(string | null)[]>(['男'])
   // 生日
   const [birthdayVisible, setBirthdayVisible] = useState<boolean>(false)
   const [birthdayValue, setBirthdayValue] = useState<(string | null)[]>([])
-  const HandleUpdateUserInfo = data => {
+  const [logouteVisible, setLogoutVisible] = useState<boolean>(false)
+  const HandleUpdateUserInfo = (data: IUserInfo) => {
     asyncFetch(updateUserInfo(data), {
       onSuccess(result) {
         console.log(result)
+        setUserInfo(result as any)
       }
     })
   }
@@ -72,42 +71,19 @@ const UserDetail = () => {
 
     inputFile.addEventListener('change', () => {
       const file = inputFile.files[0]
-      const reader = new FileReader()
       putObject(file)
-      // reader.addEventListener(
-      //   'load',
-      //   e => {
-      //     const canvas = document.createElement('canvas')
-      //     const ctx = canvas.getContext('2d')
-      //     // canvas.style.display = 'none'
-      //     document.body.appendChild(canvas)
-      //     canvas.width = 60
-      //     canvas.height = 60
-      //     const img = new Image()
-      //     img.src = e.target.result as string
-      //     img.onload = () => {
-      //       // canvas对图片进行缩放
-      //       // 绘制图片
-      //       ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-      //     }
-      //     // 清除画布
-      //     ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      //     const imageDataURL = canvas.toDataURL(file.type || 'image/png')
-      //     console.log(imageDataURL)
-
-      //     document.body.removeChild(canvas)
-      //     console.log(e.target.result)
-
-      //     setUserInfo({ ...userInfo, avatar: e.target.result })
-      //   },
-      //   false
-      // )
-
-      // if (file) {
-      //   reader.readAsBinaryString(file)
-      // }
     })
+  }
+  // 登出
+  const logout = (action: Action) => {
+    HandleUpdateUserInfo(userInfo)
+
+    if (action.key === 'delete') {
+      removeCookie('usertoken')
+      navigate('/login')
+    } else {
+      setLogoutVisible(false)
+    }
   }
   return (
     <div className={styles.container}>
@@ -177,7 +153,7 @@ const UserDetail = () => {
         >
           保存返回
         </span>
-        <span className={styles.logout} onClick={handleLogout}>
+        <span className={styles.logout} onClick={() => setLogoutVisible(true)}>
           退出登录
         </span>
       </footer>
@@ -260,6 +236,25 @@ const UserDetail = () => {
           setBirthdayValue(v)
           setUserInfo({ ...userInfo, birthday: v.join('-') })
         }}
+      />
+      <Dialog
+        visible={logouteVisible}
+        content='是否退出登录？'
+        actions={[
+          [
+            {
+              key: 'cancel',
+              text: '取消'
+            },
+            {
+              key: 'delete',
+              text: '确定',
+              bold: true,
+              danger: true
+            }
+          ]
+        ]}
+        onAction={(action: Action) => logout(action)}
       />
     </div>
   )

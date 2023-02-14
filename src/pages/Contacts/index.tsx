@@ -11,8 +11,7 @@ import { useModel } from '@/store'
 
 const Contacts = () => {
   const navigate = useNavigate()
-  const { memberData, groupData } = useModel('userList')
-  const { userInfo } = useModel('user')
+  const { userInfo, setUserInfo } = useModel('user')
 
   const swiperRef = useRef<SwiperRef>(null)
   const [activeIndex, setActiveIndex] = useState<number>(0)
@@ -43,13 +42,15 @@ const Contacts = () => {
         <div className={styles.search_icon} />
         <div className={styles.friend}>
           <span className={styles.left}> 新朋友</span>
-          <div className={styles.circle}>{memberData.length - userInfo.message.length}</div>
+          {userInfo?.newFriend.length > 0 && (
+            <div className={styles.circle}>{userInfo?.newFriend.length}</div>
+          )}
           <div className={styles.right}>
             <img
               src={next}
               className={styles.next}
               onClick={() => {
-                navigate('/friendVerification')
+                navigate('/friendVerification', { state: { type: '新朋友' } })
               }}
             />
           </div>
@@ -57,13 +58,15 @@ const Contacts = () => {
 
         <div className={styles.group}>
           <span className={styles.left}>群通知</span>
-          <div className={styles.circle}>1</div>
+          {userInfo?.newGroup.length > 0 && (
+            <div className={styles.circle}>{userInfo?.newGroup.length}</div>
+          )}
           <div className={styles.right}>
             <img
               src={next}
               className={styles.next}
               onClick={() => {
-                navigate('/friendVerification')
+                navigate('/friendVerification', { state: { type: '群通知' } })
               }}
             />
           </div>
@@ -94,14 +97,21 @@ const Contacts = () => {
         >
           <Swiper.Item>
             <div className={styles.content}>
-              {memberData.map((item, index) => {
+              {userInfo?.friend.map((item, index) => {
                 return (
                   <li
                     key={index}
                     className={styles.item}
                     onClick={() => {
+                      userInfo.message.filter(ele => ele.account === item.account).length === 0 &&
+                        setUserInfo({ ...userInfo, message: userInfo.message.concat(item) })
                       navigate(`/message/detail/${item.account}`, {
-                        state: { name: item.name, type: item.type }
+                        state: {
+                          name: item.name,
+                          type: item.type,
+                          account: item.account,
+                          avatar: item.avatar
+                        }
                       })
                     }}
                   >
@@ -119,14 +129,21 @@ const Contacts = () => {
           </Swiper.Item>
           <Swiper.Item>
             <div className={styles.content}>
-              {groupData.map((item, index) => {
+              {userInfo?.group.map((item, index) => {
                 return (
                   <li
                     key={index}
                     className={styles.item}
                     onClick={() => {
+                      userInfo.message.filter(ele => ele.account === item.account).length === 0 &&
+                        setUserInfo({ ...userInfo, message: userInfo.message.concat(item) })
                       navigate(`/message/detail/${item.account}`, {
-                        state: { name: item.name, type: item.type }
+                        state: {
+                          name: item.name,
+                          type: item.type,
+                          account: item.account,
+                          avatar: item.avatar
+                        }
                       })
                     }}
                   >

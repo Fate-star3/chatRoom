@@ -1,3 +1,5 @@
+import { IGroupInfo } from './group'
+
 export interface IUserInfo {
   token?: string // token令牌
   id?: number // 用户ID
@@ -16,4 +18,9 @@ export interface IUserInfo {
   isCheck?: boolean // 创建群聊时用户是否选中
   type?: string // 类别
   message?: IUserInfo[] // 消息列表
+  leaveMessage?: string // 好友申请留言
+  friend?: IUserInfo[] // 好友列表
+  group?: IGroupInfo[] // 群聊列表
+  newFriend?: IUserInfo[] // 新盆友
+  newGroup?: IGroupInfo[] // 新群聊
 }

@@ -1,4 +1,5 @@
 import { Button } from 'antd-mobile'
+import { UserAddOutline } from 'antd-mobile-icons'
 import { memo, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { io } from 'socket.io-client'
@@ -7,14 +8,14 @@ import Message from './components/Message'
 import styles from './index.module.scss'
 
 import Toast from '@/components/Toast'
+import { useModel } from '@/store'
 
 const MessageDetail = () => {
+  const { userInfo } = useModel('user')
   const [value, setValue] = useState<string>('')
   const navigate = useNavigate()
   const { state } = useLocation()
-  console.log(process.env.NODE_ENV, process.env.ENV)
 
-  console.log(useLocation(), process.env.NODE_ENV !== 'development')
   const socket = io(
     process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8000' : 'http://47.97.80.211:8000'
   )
@@ -85,6 +86,20 @@ const MessageDetail = () => {
           />
         </div>
       </header>
+      {userInfo.friend.filter(item => item.account === state.account).length === 0 &&
+        userInfo.group.filter(item => item.account === state.account).length === 0 && (
+          <div className={styles.warning}>
+            <div className={styles.left}>
+              <UserAddOutline />
+              <span>加入黑名单</span>
+            </div>
+
+            <div className={styles.right} onClick={() => navigate('/search')}>
+              <UserAddOutline />
+              <span>加为好友</span>
+            </div>
+          </div>
+        )}
       <ul className={styles.messages} id='messages' />
       <div className={styles.form}>
         <div className={styles.container}>
