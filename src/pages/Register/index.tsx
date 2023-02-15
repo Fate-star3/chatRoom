@@ -1,3 +1,4 @@
+import { message } from 'antd'
 import { Button, Input, Toast } from 'antd-mobile'
 import { LeftOutline } from 'antd-mobile-icons'
 import { useState } from 'react'
@@ -50,12 +51,8 @@ const Register = () => {
               message: data.message,
               type: data.type
             })
-            Toast.show({
-              content: '注册成功！',
-              icon: 'success',
-              afterClose: () => {
-                navigate('/login')
-              }
+            message.success('注册成功！', 1, () => {
+              navigate('/login')
             })
 
             console.log(data, 'data')

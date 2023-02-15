@@ -1,8 +1,8 @@
 import { message } from 'antd'
-import { Button, Dialog, Input, Toast } from 'antd-mobile'
+import { Button, Dialog, Input } from 'antd-mobile'
 // import { decode, verify } from 'jsonwebtoken'
 import { Action } from 'antd-mobile/es/components/dialog'
-import { useEffect, useState, useRef } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './index.module.scss'
@@ -38,7 +38,8 @@ const Login = () => {
     asyncFetch(
       LoginUserInfo({
         account,
-        password
+        password,
+        flag
       }),
       {
         onSuccess(data) {
@@ -46,7 +47,7 @@ const Login = () => {
           if (data.status && flag) {
             return setvisible(true)
           }
-          setUserInfo({ ...data, status: true })
+          setUserInfo({ ...data, status: true, token: data?.token })
           setCookie('usertoken', data?.token)
           setLoginStatus(true)
 

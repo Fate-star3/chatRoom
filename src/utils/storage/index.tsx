@@ -72,6 +72,7 @@ const getCookieName = (name: string) => {
  * @param days
  */
 export const setCookie = (name: string, value: string, days = 30) => {
+  console.warn('setCookie', name)
   // 单独校验 token 的长度
   // if (name === Cookie.Token && value?.length < 64) {
   //   return
@@ -91,6 +92,8 @@ export const setCookie = (name: string, value: string, days = 30) => {
  * @param name
  */
 export const removeCookie = (name: string) => {
+  console.warn('removeCookie', name)
+
   const cookieName = getCookieName(name)
   document.cookie = `${cookieName}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=${Cookie.Path}`
 }

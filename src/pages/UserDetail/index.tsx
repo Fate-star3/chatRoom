@@ -76,8 +76,7 @@ const UserDetail = () => {
   }
   // 登出
   const logout = (action: Action) => {
-    HandleUpdateUserInfo(userInfo)
-
+    asyncFetch(updateUserInfo({ ...userInfo, status: false }))
     if (action.key === 'delete') {
       removeCookie('usertoken')
       removeCookie('userinfo')
