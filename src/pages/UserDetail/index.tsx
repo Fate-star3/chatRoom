@@ -80,6 +80,7 @@ const UserDetail = () => {
 
     if (action.key === 'delete') {
       removeCookie('usertoken')
+      removeCookie('userinfo')
       navigate('/login')
     } else {
       setLogoutVisible(false)

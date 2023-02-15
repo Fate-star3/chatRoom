@@ -1,5 +1,7 @@
-import { Toast } from 'antd-mobile'
+import { message } from 'antd'
+import { Button, Dialog, Input, Toast } from 'antd-mobile'
 // import { decode, verify } from 'jsonwebtoken'
+import { Action } from 'antd-mobile/es/components/dialog'
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -17,34 +19,20 @@ const Login = () => {
   const [password, setPassword] = useState<string>(
     getCookie('userinfo') && userInfo?.password.length <= 20 ? userInfo?.password : ''
   )
-  const accountRef = useRef<HTMLDivElement | null>(null)
-  const passwordRef = useRef<HTMLDivElement>(null)
+  const [visible, setvisible] = useState<boolean>(false)
 
-  useEffect(() => {
-    const current = accountRef.current as HTMLElement
-    const current1 = passwordRef.current as HTMLElement
-
-    if (formatParams(account)) {
-      current.style.display = 'block'
-    } else {
-      current.style.display = 'none'
+  const send = action => {
+    if (action.key === 'delete') {
+      handleLogin(false)
     }
-    if (formatParams(password)) {
-      current1.style.display = 'block'
-    } else {
-      current1.style.display = 'none'
-    }
-  }, [account, password])
-
+    setvisible(false)
+  }
   /**
    * 处理登录的逻辑
    */
-  const handleLogin = () => {
+  const handleLogin = (flag = true) => {
     if (!formatParams(account) || !formatParams(password)) {
-      Toast.show({
-        content: '请输入信息',
-        icon: 'fail'
-      })
+      message.error('请输入信息')
     }
     // 处理接口
     asyncFetch(
@@ -55,16 +43,15 @@ const Login = () => {
       {
         onSuccess(data) {
           console.log(userInfo, data, 'login')
-          setUserInfo(data)
+          if (data.status && flag) {
+            return setvisible(true)
+          }
+          setUserInfo({ ...data, status: true })
           setCookie('usertoken', data?.token)
           setLoginStatus(true)
 
-          Toast.show({
-            content: '登录成功',
-            icon: 'success',
-            afterClose: () => {
-              navigate('/message')
-            }
+          message.success('登录成功', 1, () => {
+            navigate('/message')
           })
         }
       }
@@ -77,60 +64,48 @@ const Login = () => {
         <ul className={styles.list}>
           <form>
             <li className={styles.item}>
-              <div
-                className={styles.del_touch}
-                ref={accountRef}
-                onClick={() => {
-                  setAccount('')
-                }}
-              >
-                <span className={styles.del_u} />
-              </div>
-              <input
+              <Input
                 className={styles.inputstyle}
                 placeholder='请输入你的chatRoom账号'
                 value={account}
-                onChange={e => {
-                  setAccount(e.target.value)
+                onChange={value => {
+                  setAccount(value)
                 }}
+                clearable
               />
             </li>
             <li className={styles.item}>
-              <div
-                className={styles.del_touch}
-                ref={passwordRef}
-                onClick={() => {
-                  setPassword('')
-                }}
-              >
-                <span className={styles.del_u} />
-              </div>
-              <input
+              <Input
                 className={styles.inputstyle}
                 maxLength={16}
                 type='password'
                 value={password}
-                onChange={e => {
-                  setPassword(e.target.value)
+                onChange={value => {
+                  setPassword(value)
                 }}
                 placeholder='请输入你的chatRoom密码'
-                autoComplete='off'
+                clearable
               />
             </li>
           </form>
         </ul>
-        <div
+
+        <Button
           className={styles.btn_login}
           onClick={() => {
             handleLogin()
           }}
         >
           登录
-        </div>
-        <div className={styles.btn_login_v2}>免登录</div>
+        </Button>
+        <Button className={styles.btn_login_v2} onClick={() => message.info('该功能未开发')}>
+          免登录
+        </Button>
       </div>
       <div className={styles.feedback}>
-        <span className={styles.forgetpwd}>找回密码</span>
+        <span className={styles.forgetpwd} onClick={() => message.info('该功能未开发')}>
+          找回密码
+        </span>
         <span className={styles.split} />
         <span
           onClick={() => {
@@ -141,6 +116,25 @@ const Login = () => {
           新用户注册
         </span>
       </div>
+      <Dialog
+        visible={visible}
+        content='该账号已有用户登录，是否继续登录？'
+        actions={[
+          [
+            {
+              key: 'cancel',
+              text: '取消'
+            },
+            {
+              key: 'delete',
+              text: '确定',
+              bold: true,
+              danger: true
+            }
+          ]
+        ]}
+        onAction={(action: Action) => send(action)}
+      />
     </div>
   )
 }

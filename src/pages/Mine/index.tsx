@@ -17,23 +17,19 @@ const Mine = () => {
   const { userInfo, setLoginStatus } = useModel('user')
   const navigate = useNavigate()
   const [cancleVisible, setCancleVisible] = useState<boolean>(false)
-  const cancelAccount = action => {
+  const cancelAccount = (action: Action) => {
     console.log(action)
     if (action.key === 'delete') {
       asyncFetch(deleteUserInfo({ account: userInfo.account }), {
         onSuccess(res) {
-          message.success('注销成功！', 1)
           setLoginStatus(false)
-          navigate('/login')
-          console.log(res)
-        },
-        onFinish() {
-          setCancleVisible(false)
+          message.success('注销成功！', 1, () => {
+            navigate('/login')
+          })
         }
       })
-    } else {
-      setCancleVisible(false)
     }
+    setCancleVisible(false)
   }
   return (
     <div className={styles.container}>

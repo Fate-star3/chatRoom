@@ -34,7 +34,7 @@ const FriendVerification = () => {
       </header>
       <div className={styles.content}>
         {type === '新朋友' &&
-          userInfo.newFriend.map((item, index) => {
+          userInfo?.newFriend.map((item, index) => {
             return (
               <div className={styles.list_item} key={index}>
                 <img
@@ -67,7 +67,7 @@ const FriendVerification = () => {
                         setUserInfo({
                           ...userInfo,
                           friend: userInfo.friend.concat(item),
-                          newFriend: userInfo.newFriend.filter(ele => ele.account !== item.account)
+                          newFriend: userInfo?.newFriend.filter(ele => ele.account !== item.account)
                         })
                         setVisible(true)
                         message.success('添加好友成功！')

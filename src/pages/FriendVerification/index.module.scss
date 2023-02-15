@@ -13,6 +13,7 @@
     background-color: #fff;
 
     .wrap {
+      position: relative;
       display: flex;
       align-items: center;
 
@@ -25,15 +26,18 @@
       }
 
       .username {
-        margin-left: 120px;
-        font-size: 16px;
+        position: absolute;
+        left: 50%;
+        font-size: 14px;
         font-weight: 400;
         letter-spacing: -0.69px;
         color: #272832;
+        transform: translateX(-50%);
       }
 
       .more {
-        margin: 0 12px 0 120px;
+        position: absolute;
+        right: 10px;
         font-size: 14px;
       }
     }
@@ -81,9 +85,9 @@
 
       .btn {
         width: 60px;
-        height: 30px;
+        height: 33px;
         margin-right: 10px;
-        font-size: 14px;
+        font-size: 12px;
       }
     }
   }

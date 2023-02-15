@@ -62,11 +62,11 @@ const FriendDeatil = () => {
           <>
             {userInfo.friend.filter(item => item.account === account).length > 0 ? (
               <div className={styles.btn_delete} onClick={() => deleteFriend()}>
-                删除好友
+                <span>删除好友</span>
               </div>
             ) : (
               <div className={styles.btn_add} onClick={() => addFriend()}>
-                加好友
+                <span>加好友</span>
               </div>
             )}
           </>

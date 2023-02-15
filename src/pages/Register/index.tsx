@@ -1,6 +1,6 @@
-import { Toast } from 'antd-mobile'
+import { Button, Input, Toast } from 'antd-mobile'
 import { LeftOutline } from 'antd-mobile-icons'
-import { useEffect, useState, useRef } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './index.module.scss'
@@ -14,23 +14,6 @@ const Register = () => {
   const navigate = useNavigate()
   const [account, setAccount] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const accountRef = useRef<HTMLDivElement | null>(null)
-  const passwordRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const current = accountRef.current as HTMLElement
-    const current1 = passwordRef.current as HTMLElement
-    if (formatParams(account)) {
-      current.style.display = 'block'
-    } else {
-      current.style.display = 'none'
-    }
-    if (formatParams(password)) {
-      current1.style.display = 'block'
-    } else {
-      current1.style.display = 'none'
-    }
-  }, [account, password])
 
   /**
    * 处理注册的逻辑
@@ -91,59 +74,41 @@ const Register = () => {
       <div className={styles.logo} />
       <div className={styles.content}>
         <ul className={styles.list}>
-          <form>
-            <li className={styles.item}>
-              <div
-                className={styles.del_touch}
-                ref={accountRef}
-                onClick={() => {
-                  setAccount('')
-                }}
-              >
-                <span className={styles.del_u} />
-              </div>
-              <input
-                className={styles.inputstyle}
-                placeholder='请输入你的chatRoom账号'
-                value={account}
-                onChange={e => {
-                  setAccount(e.target.value)
-                }}
-                maxLength={8}
-              />
-            </li>
-            <li className={styles.item}>
-              <div
-                className={styles.del_touch}
-                ref={passwordRef}
-                onClick={() => {
-                  setPassword('')
-                }}
-              >
-                <span className={styles.del_u} />
-              </div>
-              <input
-                className={styles.inputstyle}
-                maxLength={16}
-                type='password'
-                value={password}
-                onChange={e => {
-                  setPassword(e.target.value)
-                }}
-                placeholder='请输入你的chatRoom密码'
-                autoComplete='off'
-              />
-            </li>
-          </form>
+          <li className={styles.item}>
+            <Input
+              className={styles.inputstyle}
+              placeholder='请输入你的chatRoom账号'
+              value={account}
+              onChange={value => {
+                setAccount(value)
+              }}
+              maxLength={8}
+              clearable
+            />
+          </li>
+          <li className={styles.item}>
+            <Input
+              className={styles.inputstyle}
+              maxLength={16}
+              type='password'
+              value={password}
+              onChange={value => {
+                setPassword(value)
+              }}
+              placeholder='请输入你的chatRoom密码'
+              clearable
+            />
+          </li>
         </ul>
-        <div
+
+        <Button
           className={styles.btn_regitser}
           onClick={() => {
             handleRegitser()
           }}
         >
           注册
-        </div>
+        </Button>
       </div>
     </div>
   )
