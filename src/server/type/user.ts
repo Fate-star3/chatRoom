@@ -23,5 +23,5 @@ export interface IUserInfo {
   group?: IGroupInfo[] // 群聊列表
   newFriend?: IUserInfo[] // 新盆友
   newGroup?: IGroupInfo[] // 新群聊,
-  flag: boolean
+  flag?: boolean
 }
