@@ -1,12 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import { Popover } from 'antd-mobile'
-import {
-  AddCircleOutline,
-  HandPayCircleOutline,
-  ScanningOutline,
-  TransportQRcodeOutline,
-  UserAddOutline
-} from 'antd-mobile-icons'
+import { AddCircleOutline, ScanningOutline, UserAddOutline } from 'antd-mobile-icons'
 import { Action } from 'antd-mobile/es/components/popover'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'

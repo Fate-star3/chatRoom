@@ -136,7 +136,7 @@ const Contacts = () => {
                     className={styles.item}
                     onClick={() => {
                       userInfo.message.filter(ele => ele.account === item.account).length === 0 &&
-                        setUserInfo({ ...userInfo, message: userInfo.message.concat(item) })
+                        setUserInfo({ ...userInfo, message: userInfo.message.concat(item as any) })
                       navigate(`/message/detail/${item.account}`, {
                         state: {
                           name: item.name,
