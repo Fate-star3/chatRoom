@@ -1,5 +1,5 @@
-import { message } from 'antd'
-import { Button, Input, Toast } from 'antd-mobile'
+import { Form, message, Input } from 'antd'
+import { Button } from 'antd-mobile'
 import { LeftOutline } from 'antd-mobile-icons'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -24,10 +24,7 @@ const Register = () => {
 
     // 校对
     if (!formatParams(account) || !formatParams(password)) {
-      Toast.show({
-        content: '请输入信息！',
-        icon: 'fail'
-      })
+      message.warning('请输入信息！')
     } else {
       // 处理接口
       asyncFetch(
@@ -39,17 +36,7 @@ const Register = () => {
           onSuccess(data) {
             setUserInfo({
               account,
-              password,
-              name: data.name,
-              email: data.email,
-              avatar: data.avatar,
-              identity: data.identity,
-              date: data.date,
-              signature: data.signature,
-              sex: data.sex,
-              birthday: data.birthday,
-              message: data.message,
-              type: data.type
+              password
             })
             message.success('注册成功！', 1, () => {
               navigate('/login')
@@ -70,33 +57,35 @@ const Register = () => {
       />
       <div className={styles.logo} />
       <div className={styles.content}>
-        <ul className={styles.list}>
-          <li className={styles.item}>
+        <Form className={styles.list}>
+          <Form.Item className={styles.item}>
             <Input
               className={styles.inputstyle}
               placeholder='请输入你的chatRoom账号'
               value={account}
-              onChange={value => {
-                setAccount(value)
+              onChange={e => {
+                setAccount(e.target.value)
               }}
               maxLength={8}
-              clearable
+              allowClear
+              autoComplete='off'
             />
-          </li>
-          <li className={styles.item}>
+          </Form.Item>
+          <Form.Item className={styles.item}>
             <Input
               className={styles.inputstyle}
               maxLength={16}
               type='password'
               value={password}
-              onChange={value => {
-                setPassword(value)
+              onChange={e => {
+                setPassword(e.target.value)
               }}
               placeholder='请输入你的chatRoom密码'
-              clearable
+              allowClear
+              autoComplete='off'
             />
-          </li>
-        </ul>
+          </Form.Item>
+        </Form>
 
         <Button
           className={styles.btn_regitser}

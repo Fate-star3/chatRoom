@@ -93,7 +93,7 @@ export const setCookie = (name: string, value: string, days = 30) => {
  */
 export const removeCookie = (name: string) => {
   console.warn('removeCookie', name)
-
+  // 删除一个现存 Cookie 的唯一方法，是设置它的expires属性为一个过去的日期
   const cookieName = getCookieName(name)
   document.cookie = `${cookieName}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=${Cookie.Path}`
 }

@@ -1,3 +1,4 @@
+import { message } from 'antd'
 import { Button } from 'antd-mobile'
 import { UserAddOutline } from 'antd-mobile-icons'
 import { memo, useEffect, useState } from 'react'
@@ -7,7 +8,6 @@ import { io } from 'socket.io-client'
 import Message from './components/Message'
 import styles from './index.module.scss'
 
-import Toast from '@/components/Toast'
 import { useModel } from '@/store'
 
 const MessageDetail = () => {
@@ -26,7 +26,7 @@ const MessageDetail = () => {
     if (input.value) {
       socket.timeout(3000).emit('chat message', input.value, (err, args) => {
         if (err) {
-          Toast.show(err)
+          message.error(err)
         }
         console.log(args)
       })

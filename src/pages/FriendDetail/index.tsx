@@ -1,4 +1,4 @@
-import { Toast } from 'antd-mobile'
+import { message } from 'antd'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 import styles from './index.module.scss'
@@ -33,8 +33,9 @@ const FriendDeatil = () => {
       message: userInfo.message.filter(item => item.account !== account),
       friend: userInfo.friend.filter(item => item.account !== account)
     })
-    Toast.show('删除成功')
-    navigate('/')
+    message.success('删除成功', 1, () => {
+      navigate('/')
+    })
   }
   return (
     <div className={styles.container}>

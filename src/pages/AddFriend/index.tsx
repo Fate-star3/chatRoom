@@ -1,5 +1,4 @@
 import { message } from 'antd'
-import { Toast } from 'antd-mobile'
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -17,26 +16,24 @@ const AddFriend = () => {
   } = useLocation()
   const sendFriendMessage = () => {
     if (!inputValue) {
-      return Toast.show('请输入加好友信息')
+      return message.error('请输入加好友信息')
     }
     if (userInfo.newFriend.filter(item => item.account === account).length !== 0) {
       return message.error('重复添加！')
     }
-    Toast.show({
-      content: '发送好友请求成功！',
-      icon: 'success'
+    message.success('发送好友请求成功！', 1, () => {
+      listData.forEach(item => {
+        if (item.account === account) {
+          item.leaveMessage = inputValue
+        }
+      })
+      setUserInfo({
+        ...userInfo,
+        newFriend: listData.filter(item => item.account === account),
+        message: userInfo.message.concat(listData.filter(item => item.account === account))
+      })
+      navigate(-1)
     })
-    listData.forEach(item => {
-      if (item.account === account) {
-        item.leaveMessage = inputValue
-      }
-    })
-    setUserInfo({
-      ...userInfo,
-      newFriend: listData.filter(item => item.account === account),
-      message: userInfo.message.concat(listData.filter(item => item.account === account))
-    })
-    navigate(-1)
   }
 
   return (

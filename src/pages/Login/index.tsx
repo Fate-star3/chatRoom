@@ -1,5 +1,5 @@
-import { message } from 'antd'
-import { Button, Dialog, Input } from 'antd-mobile'
+import { Form, message, Input } from 'antd'
+import { Button, Dialog } from 'antd-mobile'
 // import { decode, verify } from 'jsonwebtoken'
 import { Action } from 'antd-mobile/es/components/dialog'
 import { useState } from 'react'
@@ -62,35 +62,34 @@ const Login = () => {
     <div className={styles.login}>
       <div className={styles.logo} />
       <div className={styles.content}>
-        <ul className={styles.list}>
-          <form>
-            <li className={styles.item}>
-              <Input
-                className={styles.inputstyle}
-                placeholder='请输入你的chatRoom账号'
-                value={account}
-                onChange={value => {
-                  setAccount(value)
-                }}
-                clearable
-              />
-            </li>
-            <li className={styles.item}>
-              <Input
-                className={styles.inputstyle}
-                maxLength={16}
-                type='password'
-                value={password}
-                onChange={value => {
-                  setPassword(value)
-                }}
-                placeholder='请输入你的chatRoom密码'
-                clearable
-              />
-            </li>
-          </form>
-        </ul>
-
+        <Form className={styles.list}>
+          <Form.Item className={styles.item}>
+            <Input
+              className={styles.inputstyle}
+              placeholder='请输入你的chatRoom账号'
+              value={account}
+              onChange={e => {
+                setAccount(e.target.value)
+              }}
+              allowClear
+              autoComplete='off'
+            />
+          </Form.Item>
+          <Form.Item className={styles.item}>
+            <Input
+              className={styles.inputstyle}
+              maxLength={16}
+              type='password'
+              value={password}
+              onChange={e => {
+                setPassword(e.target.value)
+              }}
+              placeholder='请输入你的chatRoom密码'
+              allowClear
+              autoComplete='off'
+            />
+          </Form.Item>
+        </Form>
         <Button
           className={styles.btn_login}
           onClick={() => {

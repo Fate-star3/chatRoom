@@ -25,6 +25,7 @@
 
       .item {
         position: relative;
+        margin: 0;
 
         &:first-of-type {
           border-bottom: 0.5px solid #e6e6e6;
@@ -37,6 +38,10 @@
           line-height: 55px;
           color: #000;
           background-color: #fff !important;
+          border: 0;
+          outline: 0;
+          box-shadow: none;
+          border-inline-color: transpart;
         }
       }
     }

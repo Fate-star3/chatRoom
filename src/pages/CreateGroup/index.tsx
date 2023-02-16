@@ -1,5 +1,5 @@
-import { Toast } from 'antd-mobile'
-import { useEffect, useState } from 'react'
+import { message } from 'antd'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import checkImg from '@/assets/images/Group 2@2x.png'
@@ -20,7 +20,7 @@ const CreateGroup = () => {
   // 创建 群聊
   const create = () => {
     if (!groupName) {
-      return Toast.show('请输入群聊名称')
+      return message.warning('请输入群聊名称')
     }
     asyncFetch(
       createGroup({
