@@ -21,7 +21,7 @@ const Mine = () => {
     console.log(action)
     if (action.key === 'delete') {
       asyncFetch(deleteUserInfo({ account: userInfo.account }), {
-        onSuccess(res) {
+        onFinish() {
           setLoginStatus(false)
           message.success('注销成功！', 1, () => {
             navigate('/login')
@@ -39,12 +39,7 @@ const Mine = () => {
           className={styles.avatar}
           onClick={() =>
             navigate('/friendDetail', {
-              state: {
-                name: userInfo.name,
-                avatar: userInfo.avatar,
-                signature: userInfo.signature,
-                account: userInfo.account
-              }
+              state: userInfo
             })
           }
         />

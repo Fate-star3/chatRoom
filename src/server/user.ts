@@ -41,7 +41,19 @@ export const getAllUserInfo = (account?: string) => {
 export const updateUserInfo = (body: IUserInfo) => {
   return request.post('/api/user/update', body)
 }
-
+/**
+ * 注销
+ * @param account
+ * @returns
+ */
 export const deleteUserInfo = (account: { account: string }) => {
   return request.post('/api/user/delete', account)
+}
+/**
+ *  获取用户的好友列表
+ * @param account
+ * @returns
+ */
+export const getNewFriend = (account: string) => {
+  return request.get(`/api/user/newFriend?account=${account}`)
 }

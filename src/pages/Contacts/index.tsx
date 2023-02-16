@@ -1,13 +1,15 @@
 import { Tabs, Swiper, SwiperRef } from 'antd-mobile'
 import { UserAddOutline } from 'antd-mobile-icons'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import next from '@/assets/images/next.png'
 
 import styles from './index.module.scss'
 
+import { getUserInfo } from '@/server/user'
 import { useModel } from '@/store'
+import { asyncFetch } from '@/utils/tools'
 
 const Contacts = () => {
   const navigate = useNavigate()
@@ -19,6 +21,18 @@ const Contacts = () => {
     { key: 'friend', title: '好友' },
     { key: 'group', title: '群聊' }
   ]
+
+  useEffect(() => {
+    asyncFetch(getUserInfo(userInfo?.account), {
+      onSuccess(result) {
+        console.log(result, '获取最新用户数据')
+        // 如果有新好友的话
+        if (result.newFriend.length) {
+          setUserInfo(result)
+        }
+      }
+    })
+  }, [])
   return (
     <div className={styles.container}>
       <header className={styles.back}>
@@ -103,15 +117,10 @@ const Contacts = () => {
                     key={index}
                     className={styles.item}
                     onClick={() => {
-                      userInfo.message.filter(ele => ele.account === item.account).length === 0 &&
+                      userInfo.message.filter(ele => ele?.account === item?.account).length === 0 &&
                         setUserInfo({ ...userInfo, message: userInfo.message.concat(item) })
-                      navigate(`/message/detail/${item.account}`, {
-                        state: {
-                          name: item.name,
-                          type: item.type,
-                          account: item.account,
-                          avatar: item.avatar
-                        }
+                      navigate(`/message/detail/${item?.account}`, {
+                        state: item
                       })
                     }}
                   >
@@ -135,15 +144,10 @@ const Contacts = () => {
                     key={index}
                     className={styles.item}
                     onClick={() => {
-                      userInfo.message.filter(ele => ele.account === item.account).length === 0 &&
+                      userInfo.message.filter(ele => ele?.account === item?.account).length === 0 &&
                         setUserInfo({ ...userInfo, message: userInfo.message.concat(item as any) })
-                      navigate(`/message/detail/${item.account}`, {
-                        state: {
-                          name: item.name,
-                          type: item.type,
-                          account: item.account,
-                          avatar: item.avatar
-                        }
+                      navigate(`/message/detail/${item?.account}`, {
+                        state: item
                       })
                     }}
                   >

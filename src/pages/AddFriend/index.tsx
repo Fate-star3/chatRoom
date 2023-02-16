@@ -4,16 +4,17 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 import styles from './index.module.scss'
 
+import { updateUserInfo } from '@/server/user'
 import { useModel } from '@/store'
+import { asyncFetch } from '@/utils/tools'
 
 const AddFriend = () => {
   const navigate = useNavigate()
   const { userInfo, setUserInfo } = useModel('user')
-  const { listData } = useModel('userList')
   const [inputValue, setInputValue] = useState<string>('')
-  const {
-    state: { name, avatar, account }
-  } = useLocation()
+  const { state } = useLocation()
+  const { name, avatar, account } = state
+
   const sendFriendMessage = () => {
     if (!inputValue) {
       return message.error('请输入加好友信息')
@@ -21,19 +22,27 @@ const AddFriend = () => {
     if (userInfo.newFriend.filter(item => item.account === account).length !== 0) {
       return message.error('重复添加！')
     }
-    message.success('发送好友请求成功！', 1, () => {
-      listData.forEach(item => {
-        if (item.account === account) {
-          item.leaveMessage = inputValue
+    asyncFetch(
+      updateUserInfo({
+        ...state,
+        newFriend: state.newFriend.concat(userInfo),
+        leaveMessage: inputValue
+      }),
+      {
+        onSuccess(res) {
+          console.log(res)
+        },
+        onFinish() {
+          message.success('发送好友请求成功！', 1, () => {
+            setUserInfo({
+              ...userInfo,
+              message: userInfo.message.concat(state)
+            })
+            navigate(-1)
+          })
         }
-      })
-      setUserInfo({
-        ...userInfo,
-        newFriend: listData.filter(item => item.account === account),
-        message: userInfo.message.concat(listData.filter(item => item.account === account))
-      })
-      navigate(-1)
-    })
+      }
+    )
   }
 
   return (

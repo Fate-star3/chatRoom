@@ -89,12 +89,7 @@ const CreateGroup = () => {
                     src={item?.avatar}
                     onClick={() => {
                       navigate(`/friendDetail`, {
-                        state: {
-                          name: item.name,
-                          avatar: item.avatar,
-                          signature: item.signature,
-                          account: item.account
-                        }
+                        state: item
                       })
                     }}
                     className={styles.avatar}

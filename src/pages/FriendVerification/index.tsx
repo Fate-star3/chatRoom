@@ -1,19 +1,59 @@
 import { message } from 'antd'
 import { Button } from 'antd-mobile'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import styles from './index.module.scss'
 
+import { IUserInfo } from '@/server/type/user'
+import { updateUserInfo } from '@/server/user'
 import { useModel } from '@/store'
+import { asyncFetch } from '@/utils/tools'
 
 const FriendVerification = () => {
-  const {
-    state: { type }
-  } = useLocation()
+  const { state } = useLocation()
+  const { type } = state
   const navigate = useNavigate()
   const { userInfo, setUserInfo } = useModel('user')
   const [visible, setVisible] = useState<boolean>(false)
+  const [newFriend, setNewFriend] = useState<IUserInfo[]>([])
+  console.log(userInfo?.newFriend)
+
+  useEffect(() => {
+    if (userInfo?.newFriend.length) {
+      setNewFriend(userInfo?.newFriend)
+    }
+  }, [newFriend])
+  // 同意加好友
+  const confirm = (item: IUserInfo) => {
+    asyncFetch(
+      // 更改用户本身的信息
+      updateUserInfo({
+        ...userInfo,
+        friend: userInfo.friend.concat(item),
+        newFriend: userInfo?.newFriend.filter(ele => ele.account !== item.account)
+      })
+    )
+    // 更改好友的信息
+    asyncFetch(
+      updateUserInfo({
+        ...item,
+        friend: item.friend.concat(userInfo),
+        newFriend: item?.newFriend.filter(ele => ele.account !== userInfo.account),
+        message: item?.message.concat(userInfo)
+      })
+    )
+    setVisible(true)
+    message.success('添加好友成功！', 2, () => {
+      setUserInfo({
+        ...userInfo,
+        friend: userInfo.friend.concat(item),
+        newFriend: userInfo?.newFriend.filter(ele => ele.account !== item.account),
+        message: userInfo.message.concat(item)
+      })
+      navigate(-1)
+    })
+  }
   return (
     <div className={styles.container}>
       <header className={styles.back}>
@@ -34,19 +74,15 @@ const FriendVerification = () => {
       </header>
       <div className={styles.content}>
         {type === '新朋友' &&
-          userInfo?.newFriend.map((item, index) => {
+          newFriend.length > 0 &&
+          newFriend.map((item, index) => {
             return (
               <div className={styles.list_item} key={index}>
                 <img
                   src={item?.avatar}
                   onClick={() =>
                     navigate('/friendDetail', {
-                      state: {
-                        name: item.name,
-                        avatar: item.avatar,
-                        signature: item.signature,
-                        account: item.account
-                      }
+                      state: item
                     })
                   }
                 />
@@ -63,15 +99,7 @@ const FriendVerification = () => {
                       type='button'
                       color='primary'
                       block
-                      onClick={() => {
-                        setUserInfo({
-                          ...userInfo,
-                          friend: userInfo.friend.concat(item),
-                          newFriend: userInfo?.newFriend.filter(ele => ele.account !== item.account)
-                        })
-                        setVisible(true)
-                        message.success('添加好友成功！')
-                      }}
+                      onClick={() => confirm(item)}
                     >
                       同意
                     </Button>
@@ -89,12 +117,7 @@ const FriendVerification = () => {
                   src={item?.avatar}
                   onClick={() =>
                     navigate('/friendDetail', {
-                      state: {
-                        name: item.name,
-                        avatar: item.avatar,
-                        announcement: item.announcement,
-                        account: item.account
-                      }
+                      state: item
                     })
                   }
                 />

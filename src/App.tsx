@@ -28,11 +28,11 @@ const App = () => {
     // console.log(token)
     // console.log(getCookie('usertoken'), getCookie('usertoken') !== token)
     if (token && getCookie('usertoken') && getCookie('usertoken') !== token) {
-      message.warning('该账号在别处登录！', 2, () => {
-        removeCookie('usertoken')
-        removeCookie('userinfo')
-        navigate('/login')
-      })
+      // message.warning('该账号在别处登录！', 2, () => {
+      //   removeCookie('usertoken')
+      //   removeCookie('userinfo')
+      //   navigate('/login')
+      // })
     }
   }
   useEffect(init, [pathname])
@@ -43,7 +43,7 @@ const App = () => {
         asyncFetch(getUserInfo(userInfo?.account), {
           onSuccess(res) {
             setToken(res.token)
-            console.log(res, '---')
+            // console.log(res, '---')
           }
         })
     }, 100)

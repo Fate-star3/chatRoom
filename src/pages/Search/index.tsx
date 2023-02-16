@@ -86,12 +86,7 @@ const Search = () => {
                         alt=''
                         onClick={() =>
                           navigate('/friendDetail', {
-                            state: {
-                              name: item.name,
-                              avatar: item.avatar,
-                              signature: item.signature,
-                              account: item.account
-                            }
+                            state: item
                           })
                         }
                       />
@@ -114,12 +109,7 @@ const Search = () => {
                             className={styles.btn_send_f}
                             onClick={() => {
                               navigate('/friendDetail', {
-                                state: {
-                                  name: item?.name,
-                                  avatar: item?.avatar,
-                                  signature: item?.signature,
-                                  account: item.account
-                                }
+                                state: item
                               })
                             }}
                           >
@@ -147,11 +137,7 @@ const Search = () => {
                         alt=''
                         onClick={() =>
                           navigate('/groupDetail', {
-                            state: {
-                              name: item.name,
-                              avatar: item.avatar,
-                              announcement: item.announcement
-                            }
+                            state: item
                           })
                         }
                       />
@@ -174,14 +160,7 @@ const Search = () => {
                             className={styles.btn_send_f}
                             onClick={() => {
                               navigate('/addGroup', {
-                                state: {
-                                  name: item?.name,
-                                  avatar: item?.avatar,
-                                  announcement: item?.announcement,
-                                  account: item.account,
-                                  date: item.date,
-                                  member: item.member
-                                }
+                                state: item
                               })
                             }}
                           >

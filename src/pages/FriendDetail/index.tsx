@@ -8,23 +8,13 @@ import { useModel } from '@/store'
 const FriendDeatil = () => {
   const navigate = useNavigate()
   const { userInfo, setUserInfo } = useModel('user')
-  const {
-    state: { name, avatar, signature, account }
-  } = useLocation()
-  console.log(
-    userInfo.message.filter(item => item.account === account),
-    account,
-    userInfo.account
-  )
+  const { state } = useLocation()
+  const { account, avatar, name, signature } = state
+  console.log(state)
 
   const addFriend = () => {
     navigate('/addFriend', {
-      state: {
-        name,
-        avatar,
-        signature,
-        account
-      }
+      state
     })
   }
   const deleteFriend = () => {
@@ -51,10 +41,10 @@ const FriendDeatil = () => {
         </div>
       </header>
       <div className={styles.content}>
-        <img src={avatar} alt='' className={styles.bg} />
+        <img src={avatar} className={styles.bg} />
         <div className={styles.wrap}>
           <div className={styles.avatar}>
-            <img src={avatar} alt='' />
+            <img src={avatar} />
           </div>
           <div className={styles.name}>{`昵称：${name}`}</div>
           <div className={styles.signature}>{signature}</div>

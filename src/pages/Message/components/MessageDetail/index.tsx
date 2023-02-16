@@ -15,6 +15,7 @@ const MessageDetail = () => {
   const [value, setValue] = useState<string>('')
   const navigate = useNavigate()
   const { state } = useLocation()
+  console.log(state)
 
   const socket = io(
     process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8000' : 'http://47.97.80.211:8000'
@@ -74,12 +75,7 @@ const MessageDetail = () => {
                 navigate('/groupDetail')
               } else {
                 navigate('/friendDetail', {
-                  state: {
-                    name: state.name,
-                    avatar: state.avatar,
-                    signature: state.signature,
-                    account: state.account
-                  }
+                  state
                 })
               }
             }}
@@ -94,7 +90,7 @@ const MessageDetail = () => {
               <span>加入黑名单</span>
             </div>
 
-            <div className={styles.right} onClick={() => navigate('/search')}>
+            <div className={styles.right} onClick={() => navigate('/addFriend', { state })}>
               <UserAddOutline />
               <span>加为好友</span>
             </div>
