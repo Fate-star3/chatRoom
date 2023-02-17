@@ -357,3 +357,25 @@ export function clipboard(content: string, onSuccess?: Function) {
     }
   })
 }
+/**
+ *  防抖
+ * @param fn
+ * @param delay
+ * @returns
+ */
+// export const debounce = (fn: () => void, delay: number) => {
+//   let timer = null
+//   // eslint-disable-next-line func-names
+//   return function () {
+//     const context = this as any
+//     // eslint-disable-next-line prefer-rest-params
+//     const args = arguments
+//     if (timer) {
+//       clearTimeout(timer)
+//       timer = null
+//     }
+//     timer = setTimeout(() => {
+//       return fn.apply(context, args)
+//     }, delay)
+//   }
+// }

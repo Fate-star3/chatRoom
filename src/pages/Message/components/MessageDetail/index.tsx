@@ -5,17 +5,26 @@ import { memo, useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { io } from 'socket.io-client'
 
+import face from '@/assets/images/表情@2x.png'
+
 import Message from './components/Message'
 import styles from './index.module.scss'
 
 import { useModel } from '@/store'
+import { decodeText } from '@/utils/decodeText'
+import { faceUrl, bigEmojiList, emojiMap, emojiName, emojiUrl } from '@/utils/emojiMap'
 
 const MessageDetail = () => {
   const { userInfo } = useModel('user')
   const [value, setValue] = useState<string>('')
+  // 图片功能是否可见
+  const [faceVisible, setFaceVisible] = useState<boolean>(false)
+  // 图片tab切换
+  const [tabsVisible, setTabsVisible] = useState<number>(0)
+  // 发单张图片
+  const [singleImage, setSingleImage] = useState<string>('')
   const navigate = useNavigate()
   const { state } = useLocation()
-  console.log(state)
 
   const socket = io(
     process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8000' : 'http://47.97.80.211:8000'
@@ -31,11 +40,11 @@ const MessageDetail = () => {
         }
         console.log(args)
       })
-      const item = document.createElement('li')
-
-      item.innerHTML = input.value
-      messages.appendChild(item)
+      // messages.appendChild((<Message content={input.value} avatar='' />) as any)
       window.scrollTo(0, 0)
+
+      console.log(decodeText({ text: value }))
+
       setValue('')
     }
   }
@@ -43,11 +52,16 @@ const MessageDetail = () => {
   //   console.log(args, 'global')
   // })
   useEffect(() => {
+    if (value.length >= 75) {
+      message.warning('消息字数已达上限')
+      setValue(pre => pre.slice(0, 75))
+    }
     document.addEventListener('keydown', e => {
       if (e.keyCode === 13) {
         sendMessage()
       }
     })
+
     return () => {
       document.removeEventListener('keydown', e => {
         if (e.keyCode === 13) {
@@ -96,18 +110,25 @@ const MessageDetail = () => {
             </div>
           </div>
         )}
-      <ul className={styles.messages} id='messages' />
+      <ul className={styles.messages} id='messages'>
+        <Message
+          content={decodeText({ text: value })}
+          avatar='https://avatars.githubusercontent.com/u/55596269?s=96&v=4'
+          singleImage={singleImage}
+        />
+      </ul>
       <div className={styles.form}>
         <div className={styles.container}>
           <div className={styles.voice} />
-          <input
+          <textarea
             className={styles.input}
             id='input'
-            type='text'
             value={value}
             onChange={e => setValue(e.target.value)}
           />
-          <div className={styles.expression} />
+
+          <div className={styles.expression} onClick={() => setFaceVisible(!faceVisible)} />
+
           {value ? (
             <Button
               type='submit'
@@ -123,6 +144,97 @@ const MessageDetail = () => {
             <div className={styles.func} />
           )}
         </div>
+        {faceVisible && (
+          <main className={styles.face_main}>
+            {tabsVisible === 0 && (
+              <ul className={styles.face_list}>
+                {emojiName.map((item, index) => {
+                  return (
+                    <li
+                      key={index}
+                      className={styles.item}
+                      onClick={() => {
+                        setValue(pre => pre + item)
+                      }}
+                    >
+                      <img
+                        src={`${emojiUrl + emojiMap[item]}`}
+                        alt=''
+                        className={styles.face_img}
+                      />
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
+            {tabsVisible === 1 && (
+              <ul className={styles.face_list}>
+                {bigEmojiList[tabsVisible - 1].list.map((item, index) => {
+                  return (
+                    <li
+                      key={index}
+                      className={styles.item}
+                      onClick={() => {
+                        setSingleImage(`${faceUrl + item}@2x.png`)
+                      }}
+                    >
+                      <img src={`${faceUrl + item}@2x.png`} alt='' />
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
+            {tabsVisible === 2 && (
+              <ul className={styles.face_list}>
+                {bigEmojiList[tabsVisible - 1].list.map((item, index) => {
+                  return (
+                    <li
+                      key={index}
+                      className={styles.item}
+                      onClick={() => {
+                        setSingleImage(`${faceUrl + item}@2x.png`)
+                      }}
+                    >
+                      <img src={`${faceUrl + item}@2x.png`} alt='' />
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
+            {tabsVisible === 3 && (
+              <ul className={styles.face_list}>
+                {bigEmojiList[tabsVisible - 1].list.map((item, index) => {
+                  return (
+                    <li
+                      key={index}
+                      className={styles.item}
+                      onClick={() => {
+                        setSingleImage(`${faceUrl + item}@2x.png`)
+                      }}
+                    >
+                      <img src={`${faceUrl + item}@2x.png`} alt='' />
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
+
+            <ul className={styles.face_tab}>
+              {[
+                face,
+                'https://web.sdk.qcloud.com/im/assets/face-elem/yz00@2x.png',
+                'https://web.sdk.qcloud.com/im/assets/face-elem/ys00@2x.png',
+                'https://web.sdk.qcloud.com/im/assets/face-elem/gcs00@2x.png'
+              ].map((item, index) => {
+                return (
+                  <li key={index} className={styles.item} onClick={() => setTabsVisible(index)}>
+                    <img src={item} alt='' />
+                  </li>
+                )
+              })}
+            </ul>
+          </main>
+        )}
       </div>
     </div>
   )

@@ -1,15 +1,17 @@
 .detail {
+  overflow: hidden;
   background-color: #f4f4f4;
 
   .back {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 9999;
-    width: 100%;
+    z-index: 99;
+    width: 100vw;
     height: 44px;
-    box-shadow: 0 0.5px 0 0 rgba(0, 0, 0, 10%);
     overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 0.5px 0 0 rgba(0, 0, 0, 10%);
 
     .wrap {
       display: flex;
@@ -61,7 +63,9 @@
   }
 
   .messages {
-    margin-top: 50px;
+    padding-top: 20px;
+    margin-top: 44px;
+    background-color: #fff;
   }
 
   .form {
@@ -70,19 +74,23 @@
     left: 0;
     display: flex;
     width: 100%;
-    height: 50px;
+    min-height: 50px;
+    overflow: hidden;
     background: #f4f4f4;
-    backdrop-filter: blur(10px);
-    box-shadow: inset 0 0.5px 0 0 rgba(0, 0, 0, 10%);
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
 
     .container {
       display: flex;
       width: 100%;
+      min-height: 50px;
+      align-items: center;
 
       .voice {
         width: 24px;
         height: 24px;
-        margin: 12px 10px 0 16px;
+        margin: 0 10px 0 16px;
         background: url('@/assets/images/语音@2x.png') no-repeat;
         background-size: 100%;
       }
@@ -90,7 +98,7 @@
       .expression {
         width: 24px;
         height: 24px;
-        margin: 12px 10px 0;
+        margin: 0 10px;
         background: url('@/assets/images/表情@2x.png') no-repeat;
         background-size: 100%;
       }
@@ -98,29 +106,82 @@
       .func {
         width: 24px;
         height: 24px;
-        margin: 12px 10px 0;
+        margin: 0 10px;
         background: url('@/assets/images/添加@2x.png') no-repeat;
         background-size: 100%;
       }
 
-      input {
+      .input {
         height: 30px;
+        max-height: 200px;
+        min-width: 220px;
         padding-left: 5px;
-        margin-top: 10px;
+        overflow-y: auto;
         font-size: 14px;
         background: #fff;
         border-radius: 5px;
+        resize: none;
+      }
+    }
+
+    .face_main {
+      position: relative;
+      display: flex;
+      width: 375px;
+      height: 250px;
+      padding: 10px;
+      flex-direction: column;
+      background: #fff !important;
+
+      .face_list {
+        display: flex;
+        padding-bottom: 60px;
+        overflow-y: auto;
         flex: 1;
+        flex-wrap: wrap;
+
+        .item {
+          padding: 5px;
+          cursor: pointer;
+
+          .face_img {
+            width: 30px;
+            height: 30px;
+          }
+
+          img {
+            width: 60px;
+            height: 60px;
+          }
+        }
       }
 
-      .input:focus {
-        outline: none;
+      .face_tab {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 99;
+        display: flex;
+        width: 100%;
+        height: 36px;
+        padding-left: 10px;
+        overflow: hidden;
+        align-items: center;
+        background-color: #fff;
+
+        .item {
+          padding: 0 10px;
+
+          img {
+            width: 30px;
+          }
+        }
       }
     }
 
     .submit {
       height: 30px;
-      margin: 10px 10px 0 0;
+      margin: 0 10px 0 0;
       font-size: 10px;
       color: #fff;
       background-color: #07c160;
