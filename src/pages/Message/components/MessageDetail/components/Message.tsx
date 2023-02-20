@@ -6,12 +6,14 @@ interface IMessageProps {
   avatar: string
   content?: any
   singleImage?: string
+  className?: string
 }
 const Message: React.FC<IMessageProps> = props => {
-  const { avatar, content, singleImage } = props
+  const { avatar, content, singleImage, className } = props
 
   return (
-    <div className={styles.message}>
+    <div className={styles[className]}>
+      {className === 'message_friend' && <img src={avatar} alt='' className={styles.avatar} />}
       <div className={styles.content}>
         {content &&
           content.map((item: { name: string; text: any; src: string }, index: React.Key) => {
@@ -24,7 +26,7 @@ const Message: React.FC<IMessageProps> = props => {
           })}
         {singleImage && <img src={singleImage} className={styles.singleImage} />}
       </div>
-      <img src={avatar} alt='' className={styles.avatar} />
+      {className === 'message' && <img src={avatar} alt='' className={styles.avatar} />}
     </div>
   )
 }

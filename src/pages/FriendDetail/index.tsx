@@ -13,6 +13,9 @@ const FriendDeatil = () => {
   console.log(state)
 
   const addFriend = () => {
+    if (userInfo.friend.filter(item => item.account === state.account).length) {
+      return message.warning('重复添加好友！')
+    }
     navigate('/addFriend', {
       state
     })
@@ -47,6 +50,7 @@ const FriendDeatil = () => {
             <img src={avatar} />
           </div>
           <div className={styles.name}>{`昵称：${name}`}</div>
+          <div className={styles.name}>{`账号：${account}`}</div>
           <div className={styles.signature}>{signature}</div>
         </div>
         {account !== userInfo.account && (

@@ -25,8 +25,7 @@ const AddFriend = () => {
     asyncFetch(
       updateUserInfo({
         ...state,
-        newFriend: state.newFriend.concat(userInfo),
-        leaveMessage: inputValue
+        newFriend: state.newFriend.concat({ ...userInfo, leaveMessage: inputValue })
       }),
       {
         onSuccess(res) {
@@ -36,7 +35,8 @@ const AddFriend = () => {
           message.success('发送好友请求成功！', 1, () => {
             setUserInfo({
               ...userInfo,
-              message: userInfo.message.concat(state)
+              message: userInfo.message.concat(state),
+              leaveMessage: inputValue
             })
             navigate(-1)
           })

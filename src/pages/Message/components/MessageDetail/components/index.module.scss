@@ -1,8 +1,9 @@
 .message {
   display: flex;
   padding-right: 10px;
+  margin-bottom: 15px;
   background-color: #fff;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-end;
 
   .content {
@@ -32,8 +33,49 @@
   }
 
   .avatar {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+  }
+}
+
+.message_friend {
+  display: flex;
+  padding-right: 10px;
+  margin-bottom: 15px;
+  background-color: #fff;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  .content {
+    max-width: 180px;
+    max-height: 150px;
+    padding: 10px;
+    margin-right: 10px;
+    font-size: 14px;
+    letter-spacing: 0;
+    color: #000;
+    text-align: left;
+    word-break: break-all;
+    word-wrap: break-word;
+    vertical-align: middle;
+    background: #dceafd;
+    border-radius: 0 10px 10px;
+
+    img {
+      width: 15px;
+      height: 15px;
+    }
+
+    .singleImage {
+      width: 60px;
+      height: 60px;
+    }
+  }
+
+  .avatar {
+    width: 35px;
+    height: 35px;
     border-radius: 5px;
   }
 }

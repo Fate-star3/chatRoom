@@ -79,7 +79,7 @@ const UserDetail = () => {
     asyncFetch(updateUserInfo({ ...userInfo, status: false }))
     if (action.key === 'delete') {
       removeCookie('usertoken')
-      removeCookie('userinfo')
+      // removeCookie('userinfo')
       navigate('/login')
     } else {
       setLogoutVisible(false)

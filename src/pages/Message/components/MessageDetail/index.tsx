@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import { Button } from 'antd-mobile'
 import { UserAddOutline } from 'antd-mobile-icons'
-import { memo, useEffect, useState } from 'react'
+import { memo, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { io } from 'socket.io-client'
 
@@ -14,6 +14,12 @@ import { useModel } from '@/store'
 import { decodeText } from '@/utils/decodeText'
 import { faceUrl, bigEmojiList, emojiMap, emojiName, emojiUrl } from '@/utils/emojiMap'
 
+interface IChatList {
+  avatar: string
+  text: string
+  singleImage?: string
+  className?: string
+}
 const MessageDetail = () => {
   const { userInfo } = useModel('user')
   const [value, setValue] = useState<string>('')
@@ -23,34 +29,53 @@ const MessageDetail = () => {
   const [tabsVisible, setTabsVisible] = useState<number>(0)
   // 发单张图片
   const [singleImage, setSingleImage] = useState<string>('')
+  // 存储消息的队列
+  const [chatList, setChatList] = useState<IChatList[]>([])
   const navigate = useNavigate()
   const { state } = useLocation()
 
-  const socket = io(
-    process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8000' : 'http://47.97.80.211:8000'
+  const socket = useMemo(
+    () =>
+      io(
+        process.env.NODE_ENV === 'development'
+          ? 'http://127.0.0.1:8000'
+          : 'http://47.97.80.211:8000'
+      ),
+    []
   )
-  const messages = document.getElementById('messages') as HTMLElement
-  const input = document.getElementById('input') as HTMLInputElement
 
   const sendMessage = () => {
-    if (input.value) {
-      socket.timeout(3000).emit('chat message', input.value, (err, args) => {
+    if (value) {
+      socket.timeout(3000).emit('chat message', value, (err, args) => {
         if (err) {
           message.error(err)
         }
         console.log(args)
       })
-      // messages.appendChild((<Message content={input.value} avatar='' />) as any)
-      window.scrollTo(0, 0)
-
-      console.log(decodeText({ text: value }))
-
+      setChatList(pre =>
+        pre.concat({
+          avatar: userInfo.avatar,
+          text: value,
+          singleImage,
+          className: 'message'
+        })
+      )
       setValue('')
     }
   }
-  // socket.on('global message', args => {
-  //   console.log(args, 'global')
-  // })
+  useEffect(() => {
+    socket.on('global message', (data, callback) => {
+      console.log(data, 'global')
+      setChatList(pre =>
+        pre.concat({
+          avatar: state.avatar,
+          text: data,
+          singleImage,
+          className: 'message_friend'
+        })
+      )
+    })
+  }, [])
   useEffect(() => {
     if (value.length >= 75) {
       message.warning('消息字数已达上限')
@@ -61,12 +86,18 @@ const MessageDetail = () => {
         sendMessage()
       }
     })
+    document.addEventListener('scroll', () => {
+      setFaceVisible(false)
+    })
 
     return () => {
       document.removeEventListener('keydown', e => {
         if (e.keyCode === 13) {
           sendMessage()
         }
+      })
+      document.addEventListener('scroll', () => {
+        setFaceVisible(false)
       })
     }
   }, [value])
@@ -111,11 +142,17 @@ const MessageDetail = () => {
           </div>
         )}
       <ul className={styles.messages} id='messages'>
-        <Message
-          content={decodeText({ text: value })}
-          avatar='https://avatars.githubusercontent.com/u/55596269?s=96&v=4'
-          singleImage={singleImage}
-        />
+        {chatList.map((item, index) => {
+          return (
+            <Message
+              className={item.className}
+              key={index}
+              content={decodeText({ text: item.text })}
+              avatar={item.avatar}
+              singleImage={item.singleImage}
+            />
+          )
+        })}
       </ul>
       <div className={styles.form}>
         <div className={styles.container}>
