@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import { Button } from 'antd-mobile'
 import { UserAddOutline } from 'antd-mobile-icons'
-import { memo, useEffect, useMemo, useState } from 'react'
+import { ChangeEvent, memo, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { io } from 'socket.io-client'
 
@@ -22,17 +22,23 @@ interface IChatList {
 }
 const MessageDetail = () => {
   const { userInfo } = useModel('user')
+  const navigate = useNavigate()
+  const { state } = useLocation()
   const [value, setValue] = useState<string>('')
   // 图片功能是否可见
   const [faceVisible, setFaceVisible] = useState<boolean>(false)
+  // 更多功能是否可见
+  const [moreVisible, setMoreVisible] = useState<boolean>(false)
   // 图片tab切换
   const [tabsVisible, setTabsVisible] = useState<number>(0)
   // 发单张图片
   const [singleImage, setSingleImage] = useState<string>('')
   // 存储消息的队列
-  const [chatList, setChatList] = useState<IChatList[]>([])
-  const navigate = useNavigate()
-  const { state } = useLocation()
+  const [chatList, setChatList] = useState<IChatList[]>(
+    JSON.parse(localStorage.getItem(`${state.account}chatList`)) || []
+  )
+
+  // console.log(state)
 
   const socket = useMemo(
     () =>
@@ -45,38 +51,73 @@ const MessageDetail = () => {
   )
 
   const sendMessage = () => {
-    if (value) {
+    if (value || singleImage) {
       socket.timeout(3000).emit('chat message', value, (err, args) => {
         if (err) {
           message.error(err)
         }
         console.log(args)
       })
-      setChatList(pre =>
-        pre.concat({
-          avatar: userInfo.avatar,
-          text: value,
-          singleImage,
-          className: 'message'
-        })
-      )
-      setValue('')
+      console.log(value, singleImage)
+
+      if (value && singleImage) {
+        setChatList(pre =>
+          pre.concat({
+            avatar: userInfo.avatar,
+            text: '',
+            singleImage,
+            className: 'message'
+          })
+        )
+      } else {
+        setChatList(pre =>
+          pre.concat({
+            avatar: userInfo.avatar,
+            text: value,
+            singleImage,
+            className: 'message'
+          })
+        )
+        setValue('')
+      }
     }
   }
   useEffect(() => {
     socket.on('global message', (data, callback) => {
       console.log(data, 'global')
       callback && callback()
-      setChatList(pre =>
-        pre.concat({
-          avatar: state.avatar,
-          text: data,
-          singleImage,
-          className: 'message_friend'
-        })
-      )
+      if (value && singleImage) {
+        setChatList(pre =>
+          pre.concat({
+            avatar: state.avatar,
+            text: '',
+            singleImage,
+            className: 'message_friend'
+          })
+        )
+      } else {
+        setChatList(pre =>
+          pre.concat({
+            avatar: state.avatar,
+            text: data,
+            singleImage,
+            className: 'message_friend'
+          })
+        )
+      }
     })
+    document.addEventListener('scroll', () => {
+      setFaceVisible(false)
+      setMoreVisible(false)
+    })
+    return () => {
+      document.addEventListener('scroll', () => {
+        setFaceVisible(false)
+        setMoreVisible(false)
+      })
+    }
   }, [])
+
   useEffect(() => {
     if (value.length >= 75) {
       message.warning('消息字数已达上限')
@@ -87,9 +128,6 @@ const MessageDetail = () => {
         sendMessage()
       }
     })
-    document.addEventListener('scroll', () => {
-      setFaceVisible(false)
-    })
 
     return () => {
       document.removeEventListener('keydown', e => {
@@ -97,12 +135,31 @@ const MessageDetail = () => {
           sendMessage()
         }
       })
-      document.addEventListener('scroll', () => {
-        setFaceVisible(false)
-      })
     }
   }, [value])
 
+  useEffect(() => {
+    chatList.length > 0 &&
+      localStorage.setItem(`${state.account}chatList`, JSON.stringify(chatList))
+  }, [chatList])
+
+  // 发送图片
+  const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files[0]
+
+    const reader = new FileReader()
+
+    reader.addEventListener('load', e => {
+      console.log('img')
+
+      setSingleImage(e.target.result as string)
+      sendMessage()
+    })
+    if (file) {
+      reader.readAsDataURL(file)
+    }
+    console.log(file)
+  }
   return (
     <div className={styles.detail}>
       <header className={styles.back}>
@@ -118,7 +175,9 @@ const MessageDetail = () => {
             className={styles.more}
             onClick={() => {
               if (state.type === 'group') {
-                navigate('/groupDetail')
+                navigate('/groupDetail', {
+                  state
+                })
               } else {
                 navigate('/friendDetail', {
                   state
@@ -128,8 +187,8 @@ const MessageDetail = () => {
           />
         </div>
       </header>
-      {userInfo.friend.filter(item => item.account === state.account).length === 0 &&
-        userInfo.group.filter(item => item.account === state.account).length === 0 && (
+      {userInfo.group.filter(item => item.account === state.account).length !== 0 ||
+        (userInfo.friend.filter(item => item.account === state.account).length === 0 && (
           <div className={styles.warning}>
             <div className={styles.left}>
               <UserAddOutline />
@@ -141,8 +200,21 @@ const MessageDetail = () => {
               <span>加为好友</span>
             </div>
           </div>
-        )}
-      <ul className={styles.messages} id='messages'>
+        ))}
+      <ul
+        className={styles.messages}
+        id='messages'
+        style={{
+          marginTop: `${
+            userInfo.friend.filter(item => item.account === state.account).length === 0
+              ? '66px'
+              : ''
+          }`
+        }}
+        onClick={() => {
+          setFaceVisible(false)
+        }}
+      >
         {chatList.map((item, index) => {
           return (
             <Message
@@ -165,7 +237,13 @@ const MessageDetail = () => {
             onChange={e => setValue(e.target.value)}
           />
 
-          <div className={styles.expression} onClick={() => setFaceVisible(!faceVisible)} />
+          <div
+            className={styles.expression}
+            onClick={() => {
+              setMoreVisible(false)
+              setFaceVisible(!faceVisible)
+            }}
+          />
 
           {value ? (
             <Button
@@ -179,7 +257,13 @@ const MessageDetail = () => {
               发送
             </Button>
           ) : (
-            <div className={styles.func} />
+            <div
+              className={styles.func}
+              onClick={() => {
+                setMoreVisible(!moreVisible)
+                setFaceVisible(false)
+              }}
+            />
           )}
         </div>
         {faceVisible && (
@@ -214,6 +298,7 @@ const MessageDetail = () => {
                       className={styles.item}
                       onClick={() => {
                         setSingleImage(`${faceUrl + item}@2x.png`)
+                        sendMessage()
                       }}
                     >
                       <img src={`${faceUrl + item}@2x.png`} alt='' />
@@ -231,6 +316,7 @@ const MessageDetail = () => {
                       className={styles.item}
                       onClick={() => {
                         setSingleImage(`${faceUrl + item}@2x.png`)
+                        sendMessage()
                       }}
                     >
                       <img src={`${faceUrl + item}@2x.png`} alt='' />
@@ -248,6 +334,7 @@ const MessageDetail = () => {
                       className={styles.item}
                       onClick={() => {
                         setSingleImage(`${faceUrl + item}@2x.png`)
+                        sendMessage()
                       }}
                     >
                       <img src={`${faceUrl + item}@2x.png`} alt='' />
@@ -271,6 +358,46 @@ const MessageDetail = () => {
                 )
               })}
             </ul>
+          </main>
+        )}
+        {moreVisible && (
+          <main className={styles.more_main}>
+            <span className={styles.icon_img}>
+              <input
+                title='图片'
+                type='file'
+                data-type='image'
+                accept='image/*'
+                className={styles.input}
+                onChange={e => handleImage(e)}
+              />
+              <span>图片</span>
+            </span>
+
+            <span className={styles.icon_video}>
+              <input
+                title='视频'
+                type='file'
+                data-type='video'
+                accept='video/*'
+                className={styles.input}
+              />
+              <span>视频</span>
+            </span>
+            <span className={styles.icon_file}>
+              <input
+                title='文件'
+                type='file'
+                data-type='file'
+                accept='*'
+                className={styles.input}
+              />
+              <span>文件</span>
+            </span>
+            <div className={styles.icon_msg}>
+              <span className={styles.input} />
+              <span>消息</span>
+            </div>
           </main>
         )}
       </div>

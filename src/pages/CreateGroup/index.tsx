@@ -8,7 +8,9 @@ import groupImg from '@/assets/images/group.png'
 import styles from './index.module.scss'
 
 import { createGroup } from '@/server/group'
+import { IGroupInfo } from '@/server/type/group'
 import { IUserInfo } from '@/server/type/user'
+import { updateAllUserInfo } from '@/server/user'
 import { useModel } from '@/store'
 import { asyncFetch, getDisplayTime } from '@/utils/tools'
 
@@ -30,7 +32,11 @@ const CreateGroup = () => {
       }),
       {
         onSuccess(result?) {
-          setUserInfo({ ...userInfo, message: userInfo.message.concat(result as IUserInfo) })
+          setUserInfo({
+            ...userInfo,
+            message: userInfo.message.concat(result as IUserInfo),
+            group: userInfo.group.concat(result as IGroupInfo)
+          })
           console.log(result)
         },
         onFinish() {
@@ -38,6 +44,16 @@ const CreateGroup = () => {
         }
       }
     )
+    asyncFetch(updateAllUserInfo({ isCheck: false }), {
+      onSuccess(result?) {
+        const tempData = userInfo.friend.slice()
+        tempData.forEach(item => {
+          item.isCheck = false
+        })
+        setUserInfo({ ...userInfo, friend: tempData })
+        console.log(result)
+      }
+    })
   }
   return (
     <div className={styles.container}>
@@ -68,7 +84,7 @@ const CreateGroup = () => {
         <div className={styles.user}>
           <h4>用户</h4>
           <ul>
-            {userInfo.message.map((item, index) => {
+            {userInfo.friend.map((item, index) => {
               return (
                 <li key={index} className={styles.item}>
                   <div

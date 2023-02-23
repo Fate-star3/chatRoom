@@ -16,7 +16,7 @@ const AddGroup = () => {
   const [groupData, setGroupData] = useState<Partial<IGroupInfo>[]>([])
   const { userInfo, setUserInfo } = useModel('user')
   const [inputValue, setInputValue] = useState<string>('')
-  console.log(state)
+  // console.log(state)
 
   useEffect(() => {
     asyncFetch(searchGroupInfo(''), {

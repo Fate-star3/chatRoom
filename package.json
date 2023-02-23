@@ -24,6 +24,7 @@
     "ali-oss": "^6.17.1",
     "antd-mobile-icons": "^0.3.0",
     "axios": "^1.2.0",
+    "cropperjs": "^1.5.13",
     "dayjs": "^1.11.7",
     "jsonwebtoken": "^8.5.1",
     "lint-staged": "^13.0.3",

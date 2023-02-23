@@ -27,8 +27,8 @@ const Footer = () => {
       })
   }
   useEffect(() => {
-    console.log(token)
-    console.log(getCookie('usertoken'), getCookie('usertoken') !== token)
+    // console.log(token)
+    // console.log(getCookie('usertoken'), getCookie('usertoken') !== token)
     // 如果账号在别处登录，重新获取用户的token，与本地的相比，不一致则说明用户在别处登录，这里的需要登出
     if (token && getCookie('usertoken') && getCookie('usertoken') !== token) {
       message.warning('该账号在别处登录！', 2, () => {

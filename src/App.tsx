@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import Footer from '@/components/Footer'
@@ -8,8 +8,7 @@ import { useModel } from '@/store'
 const App = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const { loginStatus, userInfo } = useModel('user')
-  const [token, setToken] = useState('')
+  const { loginStatus } = useModel('user')
 
   /** 初始化重定向 */
   const init = () => {

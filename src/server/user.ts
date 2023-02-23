@@ -42,6 +42,14 @@ export const updateUserInfo = (body: IUserInfo) => {
   return request.post('/api/user/update', body)
 }
 /**
+ * 编辑全部用户信息
+ * @param body
+ * @returns
+ */
+export const updateAllUserInfo = (body: Partial<IUserInfo>) => {
+  return request.post('/api/user/updateAll', body)
+}
+/**
  * 注销
  * @param account
  * @returns
