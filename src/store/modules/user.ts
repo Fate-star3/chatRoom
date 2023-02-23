@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { useMemoizedFn } from '@/hooks'
 import { IUserInfo } from '@/server/type/user'
-import { getCookie, setCookie } from '@/utils/storage'
+import { getCookie } from '@/utils/storage'
 
 export default () => {
   const [userInfo, _setUserInfo] = useState<IUserInfo>(JSON.parse(localStorage.getItem('userinfo')))

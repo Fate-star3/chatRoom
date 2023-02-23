@@ -11,7 +11,7 @@ import { useModel } from '@/store'
 import { formatParams, asyncFetch } from '@/utils/tools'
 
 const Register = () => {
-  const { userInfo, setUserInfo } = useModel('user')
+  const { setUserInfo } = useModel('user')
   const navigate = useNavigate()
   const [account, setAccount] = useState<string>('')
   const [password, setPassword] = useState<string>('')

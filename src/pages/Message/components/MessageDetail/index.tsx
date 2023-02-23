@@ -66,6 +66,7 @@ const MessageDetail = () => {
   useEffect(() => {
     socket.on('global message', (data, callback) => {
       console.log(data, 'global')
+      callback && callback()
       setChatList(pre =>
         pre.concat({
           avatar: state.avatar,

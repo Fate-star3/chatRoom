@@ -16,7 +16,7 @@ export default {
       return false
     }
     const toastEl = document.getElementById('toast-content')
-    toastEl!.innerHTML = content
+    toastEl.innerHTML = content
     container.setAttribute('style', 'display: block')
     if (duration === 'always') {
       return

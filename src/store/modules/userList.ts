@@ -1,7 +1,7 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 
-import { useMemoizedFn } from '@/hooks'
-import { IUserInfo } from '@/server/type/user'
+// import { useMemoizedFn } from '@/hooks'
+// import { IUserInfo } from '@/server/type/user'
 
 export default () => {
   //   const [listData, _setListData] = useState<IUserInfo[]>(

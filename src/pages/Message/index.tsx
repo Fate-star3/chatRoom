@@ -4,7 +4,7 @@ import MessageList from './components/MessageList'
 import { useModel } from '@/store'
 
 const Message = () => {
-  const { userInfo, setUserInfo } = useModel('user')
+  const { userInfo } = useModel('user')
 
   return (
     <>

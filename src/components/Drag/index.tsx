@@ -8,27 +8,27 @@ interface Data {
   age: string
   msg: string
 }
-const Item = (props: { data: Data[] }) => {
-  const { data } = props
-  return (
-    <div className={styles.container}>
-      <div className={styles.title}>
-        <span>Name</span>
-        <span>Age</span>
-        <span>Message</span>
-      </div>
-      {data.map((item, index) => {
-        return (
-          <li className={styles.item} key={index}>
-            <span>{item.name}</span>
-            <span>{item.age}</span>
-            <span>{item.msg}</span>
-          </li>
-        )
-      })}
-    </div>
-  )
-}
+// const Item = (props: { data: Data[] }) => {
+//   const { data } = props
+//   return (
+//     <div className={styles.container}>
+//       <div className={styles.title}>
+//         <span>Name</span>
+//         <span>Age</span>
+//         <span>Message</span>
+//       </div>
+//       {data.map((item, index) => {
+//         return (
+//           <li className={styles.item} key={index}>
+//             <span>{item.name}</span>
+//             <span>{item.age}</span>
+//             <span>{item.msg}</span>
+//           </li>
+//         )
+//       })}
+//     </div>
+//   )
+// }
 
 let startIndex: number
 let endIndex: number
@@ -48,12 +48,12 @@ const Drop = (props: {
   const swap = (arr: any[], start: number, end: number) => {
     ;[arr[start], arr[end]] = [arr[end], arr[start]]
   }
-  const reorder = (arr: any[], start: number, end: number) => {
-    const result = Array.from(arr)
-    const [removed] = result.splice(start, 1)
-    result.splice(end, 0, removed)
-    return result
-  }
+  // const reorder = (arr: any[], start: number, end: number) => {
+  //   const result = Array.from(arr)
+  //   const [removed] = result.splice(start, 1)
+  //   result.splice(end, 0, removed)
+  //   return result
+  // }
 
   const handleDragStart = (e: React.DragEvent<HTMLLIElement>, index: number) => {
     startIndex = index
@@ -61,25 +61,25 @@ const Drop = (props: {
 
     e.currentTarget.classList.add('curr')
   }
-  const handleDragEnter = (e: React.DragEvent<HTMLLIElement>, index: number) => {
-    e.preventDefault()
-    endIndex = index
-    console.log('onDragEnter')
-    swap(data, startIndex, endIndex)
-    console.log(data, startIndex, endIndex)
-    onDropSuccess(data)
-  }
+  // const handleDragEnter = (e: React.DragEvent<HTMLLIElement>, index: number) => {
+  //   e.preventDefault()
+  //   endIndex = index
+  //   console.log('onDragEnter')
+  //   swap(data, startIndex, endIndex)
+  //   console.log(data, startIndex, endIndex)
+  //   onDropSuccess(data)
+  // }
   const handleDragEnd = (e: { preventDefault: any; currentTarget: any }) => {
     e.preventDefault()
     e.currentTarget.classList.remove('curr')
   }
-  const handleDragLeave = (e: React.DragEvent<HTMLLIElement>, index: number) => {
-    e.preventDefault()
-    endIndex = index
-    console.log('handleDragLeave')
-    swap(data, startIndex, endIndex)
-    onDropSuccess(data)
-  }
+  // const handleDragLeave = (e: React.DragEvent<HTMLLIElement>, index: number) => {
+  //   e.preventDefault()
+  //   endIndex = index
+  //   console.log('handleDragLeave')
+  //   swap(data, startIndex, endIndex)
+  //   onDropSuccess(data)
+  // }
   const handleDrop = (e: React.DragEvent<HTMLLIElement>, index: number) => {
     e.preventDefault()
     endIndex = index

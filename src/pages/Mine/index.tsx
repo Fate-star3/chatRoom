@@ -80,7 +80,7 @@ const Mine = () => {
             }
           ]
         ]}
-        onAction={(action: Action, index: number) => cancelAccount(action)}
+        onAction={(action: Action) => cancelAccount(action)}
       />
     </div>
   )

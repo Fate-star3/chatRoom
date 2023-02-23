@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 import styles from './index.module.scss'
 
-import { LoginUserInfo } from '@/server/user'
+import { LoginUserInfo, updateUserInfo } from '@/server/user'
 import { useModel } from '@/store'
 import { getCookie, setCookie } from '@/utils/storage'
 import { formatParams, asyncFetch } from '@/utils/tools'
@@ -38,8 +38,7 @@ const Login = () => {
     asyncFetch(
       LoginUserInfo({
         account,
-        password,
-        flag
+        password
       }),
       {
         onSuccess(data) {
@@ -47,13 +46,16 @@ const Login = () => {
           if (data.status && flag) {
             return setvisible(true)
           }
+          asyncFetch(updateUserInfo({ ...data, status: true }), {
+            onFinish() {
+              message.success('登录成功', 1, () => {
+                navigate('/message')
+              })
+            }
+          })
           setUserInfo({ ...data, status: true, token: data?.token })
           setCookie('usertoken', data?.token)
           setLoginStatus(true)
-
-          message.success('登录成功', 1, () => {
-            navigate('/message')
-          })
         }
       }
     )
