@@ -5,7 +5,7 @@ import { getStsToken } from '@/server/common'
 
 // 在客户端使用临时访问凭证初始化OSS客户端，用于临时授权访问OSS资源。
 
-const result = await getStsToken()
+const result = getStsToken() as any
 // 设置客户端请求访问凭证的地址。
 console.log(result, 'token')
 const client = new OSS({
