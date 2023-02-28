@@ -9,16 +9,12 @@ import { birthdayColumnsData } from './constants'
 import styles from './index.module.scss'
 
 import OwnModal from '@/components/Modal'
-import { IUserInfo } from '@/server/type/user'
-import { updateUserInfo } from '@/server/user'
 import { getModel } from '@/store'
 import { client as oss } from '@/utils/oss'
-import { asyncFetch } from '@/utils/tools'
 
 const UserDetail = () => {
   const { userInfo, setUserInfo } = getModel('user')
   const navigate = useNavigate()
-  // console.log(userInfo)
 
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   // 名称
@@ -34,18 +30,7 @@ const UserDetail = () => {
   const [birthdayVisible, setBirthdayVisible] = useState<boolean>(false)
   const [birthdayValue, setBirthdayValue] = useState<(string | null)[]>([])
 
-  // // 控制图片裁剪
-  // const [imageClip, setImageClip] = useState<boolean>(false)
-  // // 裁剪的图片URL
-  // const [imageUrl, setImageUrl] = useState<string | File>('')
-  const HandleUpdateUserInfo = (data: IUserInfo) => {
-    asyncFetch(updateUserInfo(data), {
-      onSuccess(result) {
-        console.log(result)
-        setUserInfo(result as any)
-      }
-    })
-  }
+  const [avatar, setAvatar] = useState<string>('')
 
   // 将图片上传到oss
   async function putObject(data: File | Buffer | Blob) {
@@ -56,18 +41,16 @@ const UserDetail = () => {
 
       const result = await oss.put('images/avatar.png', data, {
         headers: {
-          'Content-Type': 'image/jpg',
-          'Content-Disposition': 'inline',
-          'x-oss-forbid-overwrite': 'false'
+          'Content-Type': 'image/jpg'
         }
       })
-      console.log(result)
+      console.log(result, result.url)
+      setAvatar(result.url)
       setUserInfo({ ...userInfo, avatar: result.url })
-      message.success('更换头像成功！', 1, () => {
-        // HandleUpdateUserInfo(userInfo)
-      })
+
+      message.success('更换头像成功！', 1)
     } catch (e) {
-      console.log(e)
+      console.warn(e)
     }
   }
 
@@ -103,7 +86,7 @@ const UserDetail = () => {
             <span className={styles.left}>头像</span>
             <div className={styles.right}>
               <img
-                src={userInfo?.avatar}
+                src={avatar || userInfo?.avatar}
                 className={styles.img}
                 onClick={() => setModalVisible(true)}
               />
@@ -149,9 +132,7 @@ const UserDetail = () => {
             setUserInfo({ ...userInfo, name: nameValue })
             setNameVisible(false)
             if (userInfo.name !== nameValue) {
-              message.success('更换昵称成功！', 1, () => {
-                // HandleUpdateUserInfo({ ...userInfo, name: nameValue })
-              })
+              message.success('更换昵称成功！', 1)
             }
           }}
           bodyStyle={{
@@ -179,9 +160,7 @@ const UserDetail = () => {
             setUserInfo({ ...userInfo, signature: signatureValue })
             setSignatureVisible(false)
             if (userInfo.signature !== signatureValue) {
-              message.success('更新签名成功！', 1, () => {
-                // HandleUpdateUserInfo({ ...userInfo, signature: signatureValue })
-              })
+              message.success('更新签名成功！', 1)
             }
           }}
           bodyStyle={{
@@ -219,7 +198,6 @@ const UserDetail = () => {
           onConfirm={v => {
             setSexValue(v)
             setUserInfo({ ...userInfo, sex: v[0] })
-            // HandleUpdateUserInfo({ ...userInfo, sex: v[0] })
           }}
         />
         <CascadePicker
@@ -232,21 +210,9 @@ const UserDetail = () => {
           onConfirm={v => {
             setBirthdayValue(v)
             setUserInfo({ ...userInfo, birthday: v.join('-') })
-
-            // HandleUpdateUserInfo({ ...userInfo, birthday: v.join('-') })
           }}
         />
       </div>
-      {/* <Modal open={imageClip} onCancel={() => setImageClip(false)}>
-        <div className={styles.modal_content}>
-          <div className={styles.modal_header}>
-            <h5 className={styles.modal_title}>裁剪图片</h5>
-          </div>
-          <div className={styles.modal_body} id='cropImgBody'>
-            <img id='cropImg' className={styles.model_pic} />
-          </div>
-        </div>
-      </Modal> */}
     </>
   )
 }

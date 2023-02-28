@@ -10,7 +10,7 @@ interface IMessageProps {
 }
 const Message: React.FC<IMessageProps> = props => {
   const { avatar, content, singleImage, className } = props
-  console.log(content)
+  // console.log(content)
 
   return (
     <div className={styles[className]}>

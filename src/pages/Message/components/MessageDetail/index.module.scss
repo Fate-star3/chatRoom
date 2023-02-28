@@ -113,12 +113,13 @@
 
       .input {
         height: 30px;
-        flex: 1;
         padding-left: 5px;
+        margin: 10px 0;
         overflow-y: auto;
         font-size: 14px;
         background: #fff;
         border-radius: 5px;
+        flex: 1;
         resize: none;
       }
     }
@@ -184,6 +185,7 @@
       width: 375px;
       height: 150px;
       padding: 10px;
+      font-size: 12px;
       background: #fff !important;
       justify-content: space-around;
 

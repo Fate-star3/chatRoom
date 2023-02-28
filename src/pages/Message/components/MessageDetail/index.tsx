@@ -196,8 +196,8 @@ const MessageDetail = () => {
           />
         </div>
       </header>
-      {userInfo.group.filter(item => item.account === state.account).length === 0 ||
-        (userInfo.friend.filter(item => item.account === state.account).length === 0 && (
+      {state.type === 'user' &&
+        userInfo.friend.filter(item => item.account === state.account).length === 0 && (
           <div className={styles.warning}>
             <div className={styles.left}>
               <UserAddOutline />
@@ -209,7 +209,7 @@ const MessageDetail = () => {
               <span>加为好友</span>
             </div>
           </div>
-        ))}
+        )}
       <ul
         className={styles.messages}
         id='messages'
@@ -245,8 +245,7 @@ const MessageDetail = () => {
             id='input'
             value={value}
             onChange={e => setValue(e.target.value)}
-            autoSize
-            maxLength={50}
+            autoSize={{ minRows: 1, maxRows: 3 }}
           />
 
           <div
