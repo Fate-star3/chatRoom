@@ -30,6 +30,9 @@ export default defineConfig({
     'process.env.ENV': JSON.stringify(process.env.ENV),
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
   },
+  build: {
+    sourcemap: true
+  },
   server: {
     port: 3000,
     host: '0.0.0.0',

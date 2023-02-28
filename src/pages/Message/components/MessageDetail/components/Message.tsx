@@ -10,13 +10,14 @@ interface IMessageProps {
 }
 const Message: React.FC<IMessageProps> = props => {
   const { avatar, content, singleImage, className } = props
+  console.log(content)
 
   return (
     <div className={styles[className]}>
       {className === 'message_friend' && <img src={avatar} alt='' className={styles.avatar} />}
-      <div className={styles.content}>
-        {content &&
-          content.map((item: { name: string; text: any; src: string }, index: React.Key) => {
+      {content && (
+        <div className={styles.content}>
+          {content.map((item: { name: string; text: any; src: string }, index: React.Key) => {
             return (
               <span key={index}>
                 {item.name === 'text' && item.text}
@@ -24,8 +25,9 @@ const Message: React.FC<IMessageProps> = props => {
               </span>
             )
           })}
-        {singleImage && <img src={singleImage} className={styles.singleImage} />}
-      </div>
+          {singleImage && <img src={singleImage} className={styles.singleImage} />}
+        </div>
+      )}
       {className === 'message' && <img src={avatar} alt='' className={styles.avatar} />}
     </div>
   )

@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import { removeCookie } from './utils/storage'
+
 import Footer from '@/components/Footer'
 import RoutesConfig from '@/routes'
 import { useModel } from '@/store'
@@ -19,6 +21,11 @@ const App = () => {
     } else {
       navigate('/login')
     }
+    // if (JSON.parse(localStorage.getItem('userinfo'))) {
+    //   localStorage.removeItem('userinfo')
+    //   removeCookie('usertoken')
+    //   navigate('/login')
+    // }
   }
   useEffect(init, [pathname])
 

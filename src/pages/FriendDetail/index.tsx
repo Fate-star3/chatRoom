@@ -3,7 +3,9 @@ import { useNavigate, useLocation } from 'react-router-dom'
 
 import styles from './index.module.scss'
 
+import { updateUserInfo } from '@/server/user'
 import { useModel } from '@/store'
+import { asyncFetch } from '@/utils/tools'
 
 const FriendDeatil = () => {
   const navigate = useNavigate()
@@ -21,6 +23,12 @@ const FriendDeatil = () => {
     })
   }
   const deleteFriend = () => {
+    asyncFetch(
+      updateUserInfo({
+        ...userInfo,
+        friend: userInfo.friend.filter(item => item.account !== account)
+      })
+    )
     setUserInfo({
       ...userInfo,
       message: userInfo.message.filter(item => item.account !== account),

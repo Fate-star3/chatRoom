@@ -48,8 +48,7 @@ const FriendVerification = () => {
       setUserInfo({
         ...userInfo,
         friend: userInfo.friend.concat(item),
-        newFriend: userInfo?.newFriend.filter(ele => ele.account !== item.account),
-        message: userInfo.message.concat(item)
+        newFriend: userInfo?.newFriend.filter(ele => ele.account !== item.account)
       })
       navigate(-1)
     })

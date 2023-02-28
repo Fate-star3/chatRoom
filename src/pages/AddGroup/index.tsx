@@ -7,6 +7,7 @@ import styles from './index.module.scss'
 
 import { searchGroupInfo } from '@/server/group'
 import { IGroupInfo } from '@/server/type/group'
+import { updateUserInfo } from '@/server/user'
 import { useModel } from '@/store'
 import { asyncFetch } from '@/utils/tools'
 
@@ -16,7 +17,7 @@ const AddGroup = () => {
   const [groupData, setGroupData] = useState<Partial<IGroupInfo>[]>([])
   const { userInfo, setUserInfo } = useModel('user')
   const [inputValue, setInputValue] = useState<string>('')
-  // console.log(state)
+  console.log(state)
 
   useEffect(() => {
     asyncFetch(searchGroupInfo(''), {
@@ -38,7 +39,7 @@ const AddGroup = () => {
         item.leaveMessage = inputValue
       }
     })
-
+    // state.member.asyncFetch(updateUserInfo({}))
     setUserInfo({
       ...userInfo,
       newGroup: userInfo.newGroup.concat(

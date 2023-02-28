@@ -1,7 +1,7 @@
-import { message } from 'antd'
+import { Input, message } from 'antd'
 import { Button } from 'antd-mobile'
 import { UserAddOutline } from 'antd-mobile-icons'
-import { ChangeEvent, memo, useEffect, useMemo, useState } from 'react'
+import { ChangeEvent, memo, SetStateAction, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { io } from 'socket.io-client'
 
@@ -16,7 +16,7 @@ import { faceUrl, bigEmojiList, emojiMap, emojiName, emojiUrl } from '@/utils/em
 
 interface IChatList {
   avatar: string
-  text: string
+  text?: string
   singleImage?: string
   className?: string
 }
@@ -24,6 +24,7 @@ const MessageDetail = () => {
   const { userInfo } = useModel('user')
   const navigate = useNavigate()
   const { state } = useLocation()
+  // 输入框的值
   const [value, setValue] = useState<string>('')
   // 图片功能是否可见
   const [faceVisible, setFaceVisible] = useState<boolean>(false)
@@ -50,17 +51,34 @@ const MessageDetail = () => {
     []
   )
 
-  const sendMessage = () => {
-    if (value || singleImage) {
-      socket.timeout(3000).emit('chat message', value, (err, args) => {
-        if (err) {
-          message.error(err)
-        }
-        console.log(args)
-      })
-      console.log(value, singleImage)
+  const sendMessage = (image?: SetStateAction<string>) => {
+    console.log('发送消息')
+    if (image) {
+      setSingleImage(image)
+    } else {
+      setChatList(pre =>
+        pre.concat({
+          avatar: userInfo.avatar,
+          text: value,
+          singleImage,
+          className: 'message'
+        })
+      )
+      setValue('')
+    }
 
-      if (value && singleImage) {
+    console.log(value, singleImage)
+  }
+  useEffect(() => {
+    if (singleImage) {
+      // socket.timeout(3000).emit('chat message', value, (err, args) => {
+      //   if (err) {
+      //     message.error(err)
+      //   }
+      //   console.log(args)
+      // })
+      // 存在输入框有文字，又想发送表情的时候
+      if (value) {
         setChatList(pre =>
           pre.concat({
             avatar: userInfo.avatar,
@@ -73,15 +91,16 @@ const MessageDetail = () => {
         setChatList(pre =>
           pre.concat({
             avatar: userInfo.avatar,
-            text: value,
+            text: '',
             singleImage,
             className: 'message'
           })
         )
-        setValue('')
       }
+      // 发送成功后清除
+      setSingleImage('')
     }
-  }
+  }, [singleImage, value])
   useEffect(() => {
     socket.on('global message', (data, callback) => {
       console.log(data, 'global')
@@ -106,23 +125,9 @@ const MessageDetail = () => {
         )
       }
     })
-    document.addEventListener('scroll', () => {
-      setFaceVisible(false)
-      setMoreVisible(false)
-    })
-    return () => {
-      document.addEventListener('scroll', () => {
-        setFaceVisible(false)
-        setMoreVisible(false)
-      })
-    }
   }, [])
 
   useEffect(() => {
-    if (value.length >= 75) {
-      message.warning('消息字数已达上限')
-      setValue(pre => pre.slice(0, 75))
-    }
     document.addEventListener('keydown', e => {
       if (e.keyCode === 13) {
         sendMessage()
@@ -143,6 +148,11 @@ const MessageDetail = () => {
       localStorage.setItem(`${state.account}chatList`, JSON.stringify(chatList))
   }, [chatList])
 
+  // 用户刚进入聊天界面或点击表情按钮，聊天信息会自动定位到底部
+  useEffect(() => {
+    document.getElementById('messages').scrollIntoView(false)
+  }, [faceVisible, moreVisible, chatList])
+
   // 发送图片
   const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files[0]
@@ -152,8 +162,7 @@ const MessageDetail = () => {
     reader.addEventListener('load', e => {
       console.log('img')
 
-      setSingleImage(e.target.result as string)
-      sendMessage()
+      sendMessage(e.target.result as string)
     })
     if (file) {
       reader.readAsDataURL(file)
@@ -187,7 +196,7 @@ const MessageDetail = () => {
           />
         </div>
       </header>
-      {userInfo.group.filter(item => item.account === state.account).length !== 0 ||
+      {userInfo.group.filter(item => item.account === state.account).length === 0 ||
         (userInfo.friend.filter(item => item.account === state.account).length === 0 && (
           <div className={styles.warning}>
             <div className={styles.left}>
@@ -209,7 +218,8 @@ const MessageDetail = () => {
             userInfo.friend.filter(item => item.account === state.account).length === 0
               ? '66px'
               : ''
-          }`
+          }`,
+          paddingBottom: `${faceVisible || moreVisible ? '330px' : '49px'}`
         }}
         onClick={() => {
           setFaceVisible(false)
@@ -230,11 +240,13 @@ const MessageDetail = () => {
       <div className={styles.form}>
         <div className={styles.container}>
           <div className={styles.voice} />
-          <textarea
+          <Input.TextArea
             className={styles.input}
             id='input'
             value={value}
             onChange={e => setValue(e.target.value)}
+            autoSize
+            maxLength={50}
           />
 
           <div
@@ -297,8 +309,7 @@ const MessageDetail = () => {
                       key={index}
                       className={styles.item}
                       onClick={() => {
-                        setSingleImage(`${faceUrl + item}@2x.png`)
-                        sendMessage()
+                        sendMessage(`${faceUrl + item}@2x.png`)
                       }}
                     >
                       <img src={`${faceUrl + item}@2x.png`} alt='' />
@@ -315,8 +326,7 @@ const MessageDetail = () => {
                       key={index}
                       className={styles.item}
                       onClick={() => {
-                        setSingleImage(`${faceUrl + item}@2x.png`)
-                        sendMessage()
+                        sendMessage(`${faceUrl + item}@2x.png`)
                       }}
                     >
                       <img src={`${faceUrl + item}@2x.png`} alt='' />
@@ -333,8 +343,7 @@ const MessageDetail = () => {
                       key={index}
                       className={styles.item}
                       onClick={() => {
-                        setSingleImage(`${faceUrl + item}@2x.png`)
-                        sendMessage()
+                        sendMessage(`${faceUrl + item}@2x.png`)
                       }}
                     >
                       <img src={`${faceUrl + item}@2x.png`} alt='' />

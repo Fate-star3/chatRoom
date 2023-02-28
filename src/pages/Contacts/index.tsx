@@ -7,7 +7,8 @@ import next from '@/assets/images/next.png'
 
 import styles from './index.module.scss'
 
-import { getUserInfo } from '@/server/user'
+import { IUserInfo } from '@/server/type/user'
+import { getNewFriend, getUserInfo } from '@/server/user'
 import { useModel } from '@/store'
 import { asyncFetch } from '@/utils/tools'
 
@@ -21,11 +22,18 @@ const Contacts = () => {
     { key: 'friend', title: '好友' },
     { key: 'group', title: '群聊' }
   ]
-
+  useEffect(() => {
+    asyncFetch(getNewFriend(userInfo.account), {
+      onSuccess(result?) {
+        setUserInfo({ ...userInfo, friend: result as IUserInfo[] })
+        console.log(result)
+      }
+    })
+  }, [])
   useEffect(() => {
     asyncFetch(getUserInfo(userInfo?.account), {
       onSuccess(result) {
-        console.log(result, '获取最新用户数据')
+        console.log(result, '获取数据库最新用户数据')
         // 如果有新好友的话
         if (result.newFriend.length) {
           setUserInfo(result)
@@ -33,6 +41,7 @@ const Contacts = () => {
       }
     })
   }, [])
+
   return (
     <div className={styles.container}>
       <header className={styles.back}>

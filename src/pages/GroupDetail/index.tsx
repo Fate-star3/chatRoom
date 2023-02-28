@@ -63,9 +63,11 @@ const GroupDetail = () => {
           })}
         </div>
       </div>
-      <Button className={styles.btn} type='button' onClick={() => leaveGroup()}>
-        退出群聊
-      </Button>
+      {userInfo.group.filter(item => item.account === state.account).length > 0 && (
+        <Button className={styles.btn} type='button' onClick={() => leaveGroup()}>
+          退出群聊
+        </Button>
+      )}
     </div>
   )
 }

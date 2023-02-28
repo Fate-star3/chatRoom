@@ -88,24 +88,24 @@
       align-items: center;
 
       .voice {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         margin: 0 10px 0 16px;
         background: url('@/assets/images/语音@2x.png') no-repeat;
         background-size: 100%;
       }
 
       .expression {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         margin: 0 10px;
         background: url('@/assets/images/表情@2x.png') no-repeat;
-        background-size: 100%;
+        background-size: cover;
       }
 
       .func {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         margin: 0 10px;
         background: url('@/assets/images/添加@2x.png') no-repeat;
         background-size: 100%;
@@ -113,8 +113,7 @@
 
       .input {
         height: 30px;
-        max-height: 200px;
-        min-width: 220px;
+        flex: 1;
         padding-left: 5px;
         overflow-y: auto;
         font-size: 14px;
@@ -173,7 +172,7 @@
           padding: 0 10px;
 
           img {
-            width: 30px;
+            width: 25px;
           }
         }
       }

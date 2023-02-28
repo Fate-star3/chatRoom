@@ -10,6 +10,6 @@ type stsTokenRes = Record<
  */
 export const getStsToken = () => {
   return request.get<stsTokenRes>(
-    process.env.NODE_ENV === 'development' ? '/api/sts' : 'http://47.97.80.211:8000/sts'
+    process.env.NODE_ENV === 'development' ? '/api/sts' : 'http://47.97.80.211:8000/api/sts'
   )
 }
