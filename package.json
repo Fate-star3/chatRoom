@@ -19,6 +19,7 @@
     "pre-check": "lint-staged"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "@ant-design/icons": "^4.8.0",
     "@typescript-eslint/parser": "^5.46.0",
     "ali-oss": "^6.17.1",

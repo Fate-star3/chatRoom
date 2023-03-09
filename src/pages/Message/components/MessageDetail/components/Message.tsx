@@ -1,4 +1,5 @@
-import React from 'react'
+import { ImageViewer } from 'antd-mobile'
+import React, { useState } from 'react'
 
 import styles from './index.module.scss'
 
@@ -10,6 +11,7 @@ interface IMessageProps {
 }
 const Message: React.FC<IMessageProps> = props => {
   const { avatar, content, singleImage, className } = props
+  const [visible, setVisible] = useState(false)
   // console.log(content)
 
   return (
@@ -21,11 +23,23 @@ const Message: React.FC<IMessageProps> = props => {
             return (
               <span key={index}>
                 {item.name === 'text' && item.text}
-                {item.name === 'img' && <img src={item.src} />}
+                {item.name === 'img' && <img src={item.src} className={styles.face_pic} />}
               </span>
             )
           })}
-          {singleImage && <img src={singleImage} className={styles.singleImage} />}
+
+          {singleImage && (
+            <span onClick={() => setVisible(true)}>
+              <img src={singleImage} className={styles.singleImage} />
+              <ImageViewer
+                image={singleImage}
+                visible={visible}
+                onClose={() => {
+                  setVisible(false)
+                }}
+              />
+            </span>
+          )}
         </div>
       )}
       {className === 'message' && <img src={avatar} alt='' className={styles.avatar} />}

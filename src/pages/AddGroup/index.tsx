@@ -7,7 +7,6 @@ import styles from './index.module.scss'
 
 import { searchGroupInfo } from '@/server/group'
 import { IGroupInfo } from '@/server/type/group'
-import { updateUserInfo } from '@/server/user'
 import { useModel } from '@/store'
 import { asyncFetch } from '@/utils/tools'
 

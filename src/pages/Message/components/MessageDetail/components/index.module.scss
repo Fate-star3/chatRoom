@@ -18,11 +18,12 @@
     text-align: left;
     word-break: break-all;
     word-wrap: break-word;
+    white-space: pre-line;
     vertical-align: middle;
     background: #dceafd;
     border-radius: 10px 0 10px 10px;
 
-    img {
+    .face_pic {
       width: 20px;
       height: 20px;
     }
