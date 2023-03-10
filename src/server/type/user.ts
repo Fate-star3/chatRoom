@@ -17,7 +17,7 @@ export interface IUserInfo {
   isTop?: boolean // 在消息列表用户是否置顶
   isCheck?: boolean // 创建群聊时用户是否选中
   type?: string // 类别
-  message?: IUserInfo[] // 消息列表
+  message?: IMessage<Partial<IGroupInfo> & Partial<IUserInfo>>[] // 消息列表
   leaveMessage?: string // 好友申请留言
   friend?: IUserInfo[] // 好友列表
   group?: IGroupInfo[] // 群聊列表
@@ -25,4 +25,8 @@ export interface IUserInfo {
   newGroup?: IGroupInfo[] // 新群聊,
   flag?: boolean
   groupIdentity?: string // 用户在群聊的身份
+}
+
+type IMessage<T> = {
+  [K in keyof T]: T[K]
 }

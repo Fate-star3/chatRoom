@@ -24,3 +24,11 @@ export const getAllGroup = () => {
 export const searchGroupInfo = (query: string) => {
   return request.get<IGroupInfo[]>(`/api/group/searchGroup?account=${query}`)
 }
+/**
+ * 修改群聊信息
+ * @param params
+ * @returns
+ */
+export const updateGroupData = (params: IGroupInfo) => {
+  return request.post('/api/group/updateGroup', params)
+}

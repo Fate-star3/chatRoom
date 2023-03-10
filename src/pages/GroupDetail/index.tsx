@@ -13,10 +13,20 @@ const GroupDetail = () => {
   // console.log(state)
 
   const leaveGroup = () => {
+    const curr = userInfo.message.filter(ele => ele.account === state.account)[0]
+    const tempData = userInfo.message.slice()
+    tempData.splice(
+      userInfo.message.findIndex(ele => ele.account === state.account),
+      1,
+      {
+        ...curr,
+        member: curr.member.filter(item => item.account !== state.account)
+      }
+    )
     setUserInfo({
       ...userInfo,
       group: userInfo.group.filter(item => item.account !== state.account),
-      message: userInfo.message.filter(item => item.account !== state.account)
+      message: tempData.filter(item => item.account !== state.account)
     })
 
     message.success('退出群聊', 1, () => {
@@ -57,7 +67,7 @@ const GroupDetail = () => {
           {state.member.map((item, index) => {
             return (
               <div className={styles.item} key={index}>
-                <img src={item.avatar} alt='' />
+                <img src={item.avatar} alt='' className={styles.avatar} />
               </div>
             )
           })}

@@ -113,6 +113,12 @@
         height: 30px;
         margin-left: 10px;
         border-radius: 50%;
+
+        .avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 5px;
+        }
       }
     }
   }

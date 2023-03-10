@@ -1,18 +1,20 @@
-import { Input } from 'antd'
+import { Input, Modal } from 'antd'
 import { Button } from 'antd-mobile'
 import { UserAddOutline } from 'antd-mobile-icons'
 import { ChangeEvent, memo, SetStateAction, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { io } from 'socket.io-client'
 
 import face from '@/assets/images/表情@2x.png'
 
 import Message from './components/Message'
 import styles from './index.module.scss'
 
+import Map from '@/components/Map'
+import { socket } from '@/server/common'
 import { useModel } from '@/store'
 import { decodeText } from '@/utils/decodeText'
 import { faceUrl, bigEmojiList, emojiMap, emojiName, emojiUrl } from '@/utils/emojiMap'
+import { getDisplayTime } from '@/utils/tools'
 
 interface IChatList {
   avatar: string
@@ -21,9 +23,10 @@ interface IChatList {
   className?: string
 }
 const MessageDetail = () => {
-  const { userInfo } = useModel('user')
+  const { userInfo, setUserInfo } = useModel('user')
   const navigate = useNavigate()
   const { state } = useLocation()
+  const { type } = state
   // 输入框的值
   const [value, setValue] = useState<string>('')
   // 图片功能是否可见
@@ -38,28 +41,33 @@ const MessageDetail = () => {
   const [chatList, setChatList] = useState<IChatList[]>(
     JSON.parse(localStorage.getItem(`${state.account}chatList`)) || []
   )
+  const [mapVisible, setMapVisible] = useState<boolean>(false)
+  const [address, setAdddress] = useState<string>('')
+  console.log(state)
 
-  // console.log(state)
-
-  const socket = useMemo(
-    () =>
-      io(
-        process.env.NODE_ENV === 'development'
-          ? 'http://127.0.0.1:8000'
-          : 'http://47.97.80.211:8000'
-      ),
-    []
-  )
-
-  const sendMessage = (image?: SetStateAction<string>) => {
-    console.log('发送消息')
+  const sendMessage = (image?: SetStateAction<string>, address?: string) => {
+    if (type === 'user') {
+      const msg = {
+        val: value,
+        myId: userInfo.account,
+        friendId: state.account
+      }
+      socket.timeout(3000).emit('chat message', msg)
+    } else {
+      const msg = {
+        val: value,
+        myId: userInfo.account,
+        groupId: state.account
+      }
+      socket.timeout(3000).emit('group message', msg)
+    }
     if (image) {
       setSingleImage(image)
     } else {
       setChatList(pre =>
         pre.concat({
           avatar: userInfo.avatar,
-          text: value,
+          text: address || value,
           singleImage,
           className: 'message'
         })
@@ -67,16 +75,10 @@ const MessageDetail = () => {
       setValue('')
     }
 
-    console.log(value, singleImage)
+    // console.log(value, singleImage)
   }
   useEffect(() => {
     if (singleImage) {
-      // socket.timeout(3000).emit('chat message', value, (err, args) => {
-      //   if (err) {
-      //     message.error(err)
-      //   }
-      //   console.log(args)
-      // })
       // 存在输入框有文字，又想发送表情的时候
       if (value) {
         setChatList(pre =>
@@ -101,10 +103,10 @@ const MessageDetail = () => {
       setSingleImage('')
     }
   }, [singleImage, value])
+
   useEffect(() => {
-    socket.on('global message', (data, callback) => {
+    socket.on('group message', data => {
       console.log(data, 'global')
-      callback && callback()
       if (value && singleImage) {
         setChatList(pre =>
           pre.concat({
@@ -128,20 +130,29 @@ const MessageDetail = () => {
   }, [])
 
   useEffect(() => {
-    document.addEventListener('keydown', e => {
-      if (e.keyCode === 13) {
-        sendMessage()
+    socket.on('chat message', (data, callback) => {
+      console.log('接受的消息', data)
+      if (value && singleImage) {
+        setChatList(pre =>
+          pre.concat({
+            avatar: state.avatar,
+            text: '',
+            singleImage,
+            className: 'message_friend'
+          })
+        )
+      } else {
+        setChatList(pre =>
+          pre.concat({
+            avatar: state.avatar,
+            text: data,
+            singleImage,
+            className: 'message_friend'
+          })
+        )
       }
     })
-
-    return () => {
-      document.removeEventListener('keydown', e => {
-        if (e.keyCode === 13) {
-          sendMessage()
-        }
-      })
-    }
-  }, [value])
+  }, [])
 
   useEffect(() => {
     chatList.length > 0 &&
@@ -168,6 +179,16 @@ const MessageDetail = () => {
       reader.readAsDataURL(file)
     }
     console.log(file)
+  }
+
+  const handleOk = () => {
+    setMapVisible(false)
+    sendMessage('', `我的地址：${address}`)
+  }
+  // 地址定位后的回调
+  const complete = data => {
+    console.log(data)
+    setAdddress(data)
   }
   return (
     <div className={styles.detail}>
@@ -223,6 +244,7 @@ const MessageDetail = () => {
         }}
         onClick={() => {
           setFaceVisible(false)
+          setMoreVisible(false)
         }}
       >
         {chatList.map((item, index) => {
@@ -260,9 +282,22 @@ const MessageDetail = () => {
             <Button
               type='submit'
               className={styles.submit}
-              onClick={e => {
-                e.preventDefault()
+              onClick={() => {
                 sendMessage()
+                const messageData = userInfo.message
+                messageData.splice(
+                  userInfo.message.findIndex(item => item.account === state.account),
+                  1,
+                  {
+                    ...state,
+                    date: getDisplayTime(+new Date())
+                  }
+                )
+
+                setUserInfo({
+                  ...userInfo,
+                  message: messageData
+                })
               }}
             >
               发送
@@ -402,13 +437,24 @@ const MessageDetail = () => {
               />
               <span>文件</span>
             </span>
-            <div className={styles.icon_msg}>
+            <div className={styles.icon_msg} onClick={() => setMapVisible(true)}>
               <span className={styles.input} />
-              <span>消息</span>
+              <span>定位</span>
             </div>
           </main>
         )}
       </div>
+      <Modal
+        open={mapVisible}
+        destroyOnClose
+        onCancel={() => setMapVisible(false)}
+        title='定位'
+        onOk={handleOk}
+        okText='发送'
+        cancelText='取消'
+      >
+        <Map complete={complete} />
+      </Modal>
     </div>
   )
 }

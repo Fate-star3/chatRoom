@@ -26,7 +26,7 @@ const Contacts = () => {
     asyncFetch(getNewFriend(userInfo.account), {
       onSuccess(result?) {
         setUserInfo({ ...userInfo, friend: result as IUserInfo[] })
-        console.log(result)
+        console.log(result, '获取新好友')
       }
     })
   }, [])

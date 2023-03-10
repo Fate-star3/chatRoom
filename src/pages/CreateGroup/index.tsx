@@ -9,7 +9,6 @@ import styles from './index.module.scss'
 
 import { createGroup } from '@/server/group'
 import { IGroupInfo } from '@/server/type/group'
-import { IUserInfo } from '@/server/type/user'
 import { updateAllUserInfo } from '@/server/user'
 import { useModel } from '@/store'
 import { asyncFetch, getDisplayTime } from '@/utils/tools'
@@ -34,7 +33,7 @@ const CreateGroup = () => {
         onSuccess(result?) {
           setUserInfo({
             ...userInfo,
-            message: userInfo.message.concat(result as IUserInfo),
+            message: userInfo.message.concat(result as any),
             group: userInfo.group.concat(result as IGroupInfo)
           })
           console.log(result)

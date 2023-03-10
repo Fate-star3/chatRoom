@@ -5,6 +5,9 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 import styles from './index.module.scss'
 
+import { IGroupInfo } from '../../server/type/group'
+
+import { updateGroupData } from '@/server/group'
 import { IUserInfo } from '@/server/type/user'
 import { updateUserInfo } from '@/server/user'
 import { useModel } from '@/store'
@@ -17,13 +20,18 @@ const FriendVerification = () => {
   const { userInfo, setUserInfo } = useModel('user')
   const [visible, setVisible] = useState<boolean>(false)
   const [newFriend, setNewFriend] = useState<IUserInfo[]>([])
-  console.log(userInfo?.newFriend)
+  const [newGroup, setNewGroup] = useState<IGroupInfo[]>([])
 
   useEffect(() => {
     if (userInfo?.newFriend.length) {
       setNewFriend(userInfo?.newFriend)
     }
   }, [newFriend])
+  useEffect(() => {
+    if (userInfo?.newGroup.length) {
+      setNewGroup(userInfo?.newGroup)
+    }
+  }, [newGroup])
   // 同意加好友
   const confirm = (item: IUserInfo) => {
     asyncFetch(
@@ -53,6 +61,32 @@ const FriendVerification = () => {
       navigate(-1)
     })
   }
+  // 同意用户加入群聊
+  const groupConfirm = item => {
+    const curr = userInfo.message.filter(ele => ele.account === item.account)[0]
+    const tempData = userInfo.message.slice()
+    tempData.splice(
+      userInfo.message.findIndex(ele => ele.account === item.account),
+      1,
+      {
+        ...curr,
+        member: curr.member.concat(userInfo)
+      }
+    )
+    setUserInfo({
+      ...userInfo,
+      group: userInfo.group.concat(item),
+      newGroup: userInfo.newGroup.filter(ele => ele.account !== item.account),
+      message: tempData
+    })
+    asyncFetch(
+      updateGroupData({
+        ...item,
+        member: item.member.concat(userInfo)
+      })
+    )
+    setVisible(true)
+  }
   return (
     <div className={styles.container}>
       <header className={styles.back}>
@@ -74,7 +108,7 @@ const FriendVerification = () => {
       <div className={styles.content}>
         {type === '新朋友' &&
           newFriend.length > 0 &&
-          newFriend.map((item, index) => {
+          newFriend?.map((item, index) => {
             return (
               <div className={styles.list_item} key={index}>
                 <img
@@ -109,7 +143,7 @@ const FriendVerification = () => {
             )
           })}
         {type === '群通知' &&
-          userInfo.newGroup.map((item, index) => {
+          newGroup?.map((item, index) => {
             return (
               <div className={styles.list_item} key={index}>
                 <img
@@ -133,14 +167,7 @@ const FriendVerification = () => {
                       type='button'
                       color='primary'
                       block
-                      onClick={() => {
-                        setUserInfo({
-                          ...userInfo,
-                          group: userInfo.group.concat(item),
-                          newGroup: userInfo.newGroup.filter(ele => ele.account !== item.account)
-                        })
-                        setVisible(true)
-                      }}
+                      onClick={() => groupConfirm(item)}
                     >
                       同意
                     </Button>

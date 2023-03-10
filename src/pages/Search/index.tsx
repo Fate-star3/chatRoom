@@ -49,8 +49,8 @@ const Search = () => {
     }
   }
 
-  const sendMessage = (account: string, name: string) => {
-    navigate(`/message/detail/${account}`, { state: { name } })
+  const sendMessage = (account: string, item: any) => {
+    navigate(`/message/detail/${account}`, { state: item })
   }
   return (
     <div className={styles.search}>
@@ -99,7 +99,7 @@ const Search = () => {
                           <button
                             type='button'
                             className={styles.btn_send}
-                            onClick={() => sendMessage(item.account, item.name)}
+                            onClick={() => sendMessage(item.account, item)}
                           >
                             发消息
                           </button>
@@ -150,7 +150,7 @@ const Search = () => {
                           <button
                             type='button'
                             className={styles.btn_send}
-                            onClick={() => sendMessage(item.account, item.name)}
+                            onClick={() => sendMessage(item.account, item)}
                           >
                             进群聊
                           </button>

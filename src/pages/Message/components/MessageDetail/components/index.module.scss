@@ -50,24 +50,25 @@
   justify-content: flex-start;
 
   .content {
-    width: 40px;
-    height: 40px;
     max-width: 180px;
+    min-width: 40px;
+    min-height: 40px;
     padding: 10px;
-    margin-right: 10px;
+    margin-left: 10px;
     font-size: 14px;
     letter-spacing: 0;
     color: #000;
     text-align: left;
     word-break: break-all;
     word-wrap: break-word;
+    white-space: pre-line;
     vertical-align: middle;
     background: #dceafd;
     border-radius: 0 10px 10px;
 
-    img {
-      width: 15px;
-      height: 15px;
+    .face_pic {
+      width: 20px;
+      height: 20px;
     }
 
     .singleImage {
